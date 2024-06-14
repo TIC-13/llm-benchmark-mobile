@@ -1,5 +1,8 @@
 package ai.mlc.mlcchat
 
+import ai.mlc.mlcchat.utils.benchmark.cpuUsage
+import ai.mlc.mlcchat.utils.benchmark.gpuUsage
+import ai.mlc.mlcchat.utils.benchmark.ramUsage
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -34,19 +37,25 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @ExperimentalMaterial3Api
 @Composable
@@ -108,6 +117,7 @@ fun ChatView(
                     .wrapContentHeight()
                     .padding(top = 5.dp)
             )
+            BenchmarkView()
             Divider(thickness = 1.dp, modifier = Modifier.padding(vertical = 5.dp))
             LazyColumn(
                 modifier = Modifier.weight(9f),
@@ -130,6 +140,37 @@ fun ChatView(
             Divider(thickness = 1.dp, modifier = Modifier.padding(top = 5.dp))
             SendMessageView(chatState = chatState)
         }
+    }
+}
+
+@Composable
+fun BenchmarkView(modifier: Modifier = Modifier) {
+
+    val context = LocalContext.current
+
+    var ram by remember { mutableStateOf(0) }
+    var cpu by remember { mutableStateOf(0) }
+    var gpu by remember { mutableStateOf(0) }
+
+    LaunchedEffect(Unit) {
+        withContext(Dispatchers.IO){
+            while(true) {
+                delay(500)
+                ram = ramUsage()
+                cpu = cpuUsage(context)
+                gpu = gpuUsage()
+            }
+        }
+    }
+
+    Row (
+        modifier = modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ){
+        Text(text = "CPU: ${cpu}%")
+        Text(text = "GPU: ${gpu}%")
+        Text(text = "RAM: ${ram}MB")
     }
 }
 
