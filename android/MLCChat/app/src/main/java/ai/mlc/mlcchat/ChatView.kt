@@ -1,8 +1,10 @@
 package ai.mlc.mlcchat
 
+import ai.mlc.mlcchat.utils.benchmark.Sampler
 import ai.mlc.mlcchat.utils.benchmark.cpuUsage
 import ai.mlc.mlcchat.utils.benchmark.gpuUsage
 import ai.mlc.mlcchat.utils.benchmark.ramUsage
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -62,7 +64,27 @@ import kotlinx.coroutines.withContext
 fun ChatView(
     navController: NavController, chatState: AppViewModel.ChatState
 ) {
+
     val localFocusManager = LocalFocusManager.current
+    val context = LocalContext.current
+
+    val cpuSamples by remember { mutableStateOf(Sampler()) }
+    val gpuSamples by remember { mutableStateOf(Sampler()) }
+    val ramSamples by remember { mutableStateOf(Sampler()) }
+
+    LaunchedEffect(Unit) {
+            withContext(Dispatchers.IO) {
+                while(true) {
+                    delay(25)
+                    if(chatState.modelChatState.value !== ModelChatState.Generating)
+                        continue
+                    cpuSamples.addSample(cpuUsage(context))
+                    gpuSamples.addSample(gpuUsage())
+                    ramSamples.addSample(ramUsage())
+                }
+            }
+    }
+
     Scaffold(topBar = {
         TopAppBar(
             title = {

@@ -502,7 +502,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         val messages = emptyList<MessageData>().toMutableStateList()
         val report = mutableStateOf("")
         val modelName = mutableStateOf("")
-        private var modelChatState = mutableStateOf(ModelChatState.Ready)
+        var modelChatState = mutableStateOf(ModelChatState.Ready)
             @Synchronized get
             @Synchronized set
         private val engine = MLCEngine()
