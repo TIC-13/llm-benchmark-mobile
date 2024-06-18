@@ -97,9 +97,9 @@ fun ChatView(
         resultViewModel.results.add(
             BenchmarkingResult(
                 name = chatState.modelName.value,
-                cpu = Measurement(cpuSamples.average() ?: 0, 0, cpuSamples.peak()),
-                gpu = Measurement(gpuSamples.average() ?: 0, 0, gpuSamples.peak()),
-                ram = Measurement(ramSamples.average() ?: 0, 0, ramSamples.peak()),
+                cpu = cpuSamples.measurements(),
+                gpu = gpuSamples.measurements(),
+                ram = ramSamples.measurements(),
                 toks = Measurement(0,0,0)
             )
         )
