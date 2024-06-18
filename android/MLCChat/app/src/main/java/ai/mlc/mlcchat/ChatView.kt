@@ -1,5 +1,8 @@
 package ai.mlc.mlcchat
 
+import ai.mlc.mlcchat.interfaces.BenchmarkingResult
+import ai.mlc.mlcchat.interfaces.Measurement
+import ai.mlc.mlcchat.utils.benchmark.ResultViewModel
 import ai.mlc.mlcchat.utils.benchmark.Sampler
 import ai.mlc.mlcchat.utils.benchmark.cpuUsage
 import ai.mlc.mlcchat.utils.benchmark.gpuUsage
@@ -26,6 +29,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowRightAlt
+import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Replay
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.Divider
@@ -62,7 +67,7 @@ import kotlinx.coroutines.withContext
 @ExperimentalMaterial3Api
 @Composable
 fun ChatView(
-    navController: NavController, chatState: AppViewModel.ChatState
+    navController: NavController, chatState: AppViewModel.ChatState, resultViewModel: ResultViewModel
 ) {
 
     val localFocusManager = LocalFocusManager.current
@@ -73,6 +78,9 @@ fun ChatView(
     val ramSamples by remember { mutableStateOf(Sampler()) }
 
     LaunchedEffect(Unit) {
+
+            resultViewModel.resetResults()
+
             withContext(Dispatchers.IO) {
                 while(true) {
                     delay(25)
@@ -83,6 +91,19 @@ fun ChatView(
                     ramSamples.addSample(ramUsage())
                 }
             }
+    }
+
+    fun toResults() {
+        resultViewModel.results.add(
+            BenchmarkingResult(
+                name = chatState.modelName.value,
+                cpu = Measurement(cpuSamples.average() ?: 0, 0, cpuSamples.peak()),
+                gpu = Measurement(gpuSamples.average() ?: 0, 0, gpuSamples.peak()),
+                ram = Measurement(ramSamples.average() ?: 0, 0, ramSamples.peak()),
+                toks = Measurement(0,0,0)
+            )
+        )
+        navController.navigate("result")
     }
 
     Scaffold(topBar = {
@@ -114,6 +135,16 @@ fun ChatView(
                     Icon(
                         imageVector = Icons.Filled.Replay,
                         contentDescription = "reset the chat",
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
+                IconButton(
+                    onClick = { toResults() },
+                    enabled = true
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.BarChart,
+                        contentDescription = "continue to results",
                         tint = MaterialTheme.colorScheme.onPrimary
                     )
                 }
@@ -217,7 +248,6 @@ fun MessageView(messageData: MessageData) {
                         .padding(5.dp)
                         .widthIn(max = 300.dp)
                 )
-
             }
         } else {
             Row(
