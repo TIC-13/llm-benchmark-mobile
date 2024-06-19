@@ -1,5 +1,6 @@
 package ai.mlc.mlcchat
 
+import ai.mlc.mlcchat.utils.benchmark.DownloadView
 import ai.mlc.mlcchat.utils.benchmark.ResultViewModel
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
@@ -12,7 +13,9 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun NavView(appViewModel: AppViewModel = viewModel(), resultViewModel: ResultViewModel = viewModel()) {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "home") {
+    NavHost(navController = navController, startDestination = "main") {
+        composable("main") { HomeView(navController) }
+        composable("download") { DownloadView(navController, appViewModel)}
         composable("home") { StartView(navController, appViewModel) }
         composable("chat") { ChatView(navController, appViewModel.chatState, resultViewModel) }
         composable("result") { ResultView(navController, resultViewModel) }
