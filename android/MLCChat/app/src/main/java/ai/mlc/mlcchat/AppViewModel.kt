@@ -25,8 +25,14 @@ import kotlin.concurrent.thread
 import ai.mlc.mlcllm.OpenAIProtocol.ChatCompletionMessage
 import kotlinx.coroutines.*
 
+val benchmarkingModelsLabels = listOf(
+    "Qwen2-1.5B-Instruct-q4f16_1-MLC",
+    "gemma-2b-q4f16_1-MLC"
+)
+
 class AppViewModel(application: Application) : AndroidViewModel(application) {
     val modelList = emptyList<ModelState>().toMutableStateList()
+    var benchmarkingModels = emptyList<ModelState>()
     val chatState = ChatState()
     val modelSampleList = emptyList<ModelRecord>().toMutableStateList()
     private var showAlert = mutableStateOf(false)
@@ -81,6 +87,10 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         issueAlert("Model: $modelId has been deleted")
     }
 
+    fun allBenchmarkingModelsReady(): Boolean {
+        return benchmarkingModels
+            .all { it.modelInitState.value == ModelInitState.Finished }
+    }
 
     private fun loadAppConfig() {
         val appConfigFile = File(appDirFile, AppConfigFilename)
@@ -113,6 +123,8 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
                 )
             }
         }
+        benchmarkingModels = modelList
+            .filter{ benchmarkingModelsLabels.contains(it.modelConfig.modelId) }
     }
 
     private fun updateAppConfig(action: () -> Unit) {

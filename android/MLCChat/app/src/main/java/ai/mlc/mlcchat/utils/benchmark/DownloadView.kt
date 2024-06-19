@@ -21,37 +21,27 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import kotlinx.coroutines.delay
 
-val modelsLabel = listOf(
-    "Qwen2-1.5B-Instruct-q4f16_1-MLC",
-    "gemma-2b-q4f16_1-MLC"
-)
-
 @Composable
 fun DownloadView(
-    navController: NavController,
-    appViewModel: AppViewModel
+    modifier: Modifier = Modifier,
+    appViewModel: AppViewModel,
+    onDownloadsFinished: (() -> Unit)? = null
 ) {
 
-    var modelsList by remember {
-        mutableStateOf(
-            appViewModel.modelList.filter{ modelsLabel.contains(it.modelConfig.modelId) }
-        )
+    var pendingModels by remember {
+        mutableStateOf(appViewModel.benchmarkingModels)
     }
 
-    val numModels = remember {
-        modelsList.size
-    }
-
-    var finished by remember { mutableStateOf(false) }
+    val numModels = appViewModel.benchmarkingModels.size
 
     LaunchedEffect(Unit) {
-        while(modelsList.isNotEmpty()){
+        while(pendingModels.isNotEmpty()){
             delay(100)
 
-            val modelState = modelsList[0]
+            val modelState = pendingModels[0]
 
             if(modelState.modelInitState.value == ModelInitState.Finished){
-                modelsList = modelsList.subList(1, modelsList.size)
+                pendingModels = pendingModels.subList(1, pendingModels.size)
                 continue
             }
 
@@ -59,25 +49,24 @@ fun DownloadView(
                 modelState.handleStart()
             }
         }
-        finished = true
+        if(onDownloadsFinished !== null)
+            onDownloadsFinished()
     }
 
     Column (
-        modifier = Modifier
-            .fillMaxSize(),
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ){
-        if(modelsList.isNotEmpty()){
+        if(pendingModels.isNotEmpty()){
 
-            val modelState = modelsList[0]
+            val modelState = pendingModels[0]
 
             Text(
                 modifier = Modifier
                     .padding(0.dp, 15.dp),
-                text = "Downloading model ${numModels-modelsList.size+1} of $numModels"
+                text = "Downloading model ${numModels-pendingModels.size+1} of $numModels"
             )
-
             Column (
                 modifier = Modifier
                     .fillMaxWidth(0.8F),
@@ -89,12 +78,7 @@ fun DownloadView(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-
-        }
-        if(finished){
-            Text(text = "Finished downloading all models!")
         }
     }
-
 
 }
