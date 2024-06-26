@@ -26,7 +26,7 @@ import ai.mlc.mlcllm.OpenAIProtocol.ChatCompletionMessage
 import kotlinx.coroutines.*
 
 val benchmarkingModelsLabels = listOf(
-    //"Qwen2-1.5B-Instruct-q4f16_1-MLC",
+    "Qwen2-1.5B-Instruct-q4f16_1-MLC",
     "gemma-2b-q4f16_1-MLC"
 )
 

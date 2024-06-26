@@ -1,8 +1,15 @@
 package ai.mlc.mlcchat
 
+import ai.mlc.mlcchat.interfaces.BenchmarkingResult
+import ai.mlc.mlcchat.interfaces.Measurement
 import ai.mlc.mlcchat.utils.benchmark.ResultViewModel
+import ai.mlc.mlcchat.utils.benchmark.Sampler
+import ai.mlc.mlcchat.utils.benchmark.cpuUsage
+import ai.mlc.mlcchat.utils.benchmark.gpuUsage
+import ai.mlc.mlcchat.utils.benchmark.ramUsage
 import android.content.Context
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.BarChart
@@ -38,7 +46,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
@@ -72,10 +83,61 @@ fun BenchmarkingView(
         mutableStateOf(questions)
     }
 
+    var cpuSamples by remember { mutableStateOf(Sampler()) }
+    var gpuSamples by remember { mutableStateOf(Sampler()) }
+    var ramSamples by remember { mutableStateOf(Sampler()) }
+
+    fun addBenchmarkingSample() {
+        cpuSamples.addSample(cpuUsage(context))
+        gpuSamples.addSample(gpuUsage())
+        ramSamples.addSample(ramUsage())
+    }
+
+    fun resetBenchmarkingSamples() {
+        cpuSamples = Sampler()
+        gpuSamples = Sampler()
+        ramSamples = Sampler()
+    }
+
+    fun saveResults() {
+        resultViewModel.results.add(
+            BenchmarkingResult(
+                name = chatState.modelName.value,
+                cpu = cpuSamples.measurements(),
+                gpu = gpuSamples.measurements(),
+                ram = ramSamples.measurements(),
+                toks = Measurement(0,0,0)
+            )
+        )
+    }
+
+    LaunchedEffect(Unit) {
+
+        resultViewModel.resetResults()
+
+        withContext(Dispatchers.IO) {
+            while(true) {
+                delay(25)
+                if(chatState.modelChatState.value !== ModelChatState.Generating)
+                    continue
+                addBenchmarkingSample()
+            }
+        }
+    }
+
     LaunchedEffect(pendingModels) {
         if(pendingModels.isNotEmpty()){
+
+            if(pendingModels.size != viewModel.benchmarkingModels.size){
+                saveResults()
+                resetBenchmarkingSamples()
+            }
+
             val modelState = pendingModels[0]
             modelState.startChat()
+        }else{
+            saveResults()
+            navController.navigate("result")
         }
     }
 
@@ -128,6 +190,14 @@ fun BenchmarkingView(
             if(chatState.messages.isEmpty()){
                 CircularProgressIndicator()
             }else{
+                BenchmarkView(modifier =
+                    Modifier
+                        .padding(10.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.secondaryContainer,
+                            shape = RoundedCornerShape(5.dp)
+                        )
+                )
                 MessagesView(
                     modifier = Modifier.fillMaxSize(),
                     lazyColumnListState = lazyColumnListState,

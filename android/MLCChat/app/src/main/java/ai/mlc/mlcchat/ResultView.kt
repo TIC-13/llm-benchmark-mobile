@@ -42,6 +42,9 @@ fun ResultView(
     navController: NavController,
     resultViewModel: ResultViewModel
 ){
+
+    val goToHome = { navController.popBackStack("main", false) }
+
     Scaffold(topBar =
         {
             TopAppBar(
@@ -53,7 +56,7 @@ fun ResultView(
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
                 navigationIcon = {
                     IconButton(
-                        onClick = { navController.popBackStack("home", false) },
+                        onClick = { goToHome() },
                         enabled = true
                     ) {
                         Icon(
@@ -90,7 +93,7 @@ fun ResultView(
                 ContinueButton(
                     modifier = Modifier
                         .clickable {
-                            navController.popBackStack("home", false)
+                            goToHome()
                         }
                 )
             }
