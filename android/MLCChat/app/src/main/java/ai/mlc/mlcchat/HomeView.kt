@@ -29,7 +29,7 @@ fun HomeView(
     var downloadingModels by remember { mutableStateOf(false) }
 
     fun startBenchmarking() {
-
+        navController.navigate("benchmarking")
     }
 
     fun openDownloadDialog() {

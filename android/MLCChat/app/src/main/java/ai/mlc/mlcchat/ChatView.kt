@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -59,6 +60,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -172,24 +174,12 @@ fun ChatView(
             )
             BenchmarkView()
             Divider(thickness = 1.dp, modifier = Modifier.padding(vertical = 5.dp))
-            LazyColumn(
+            MessagesView(
                 modifier = Modifier.weight(9f),
-                verticalArrangement = Arrangement.spacedBy(5.dp, alignment = Alignment.Bottom),
-                state = lazyColumnListState
-            ) {
-                coroutineScope.launch {
-                    lazyColumnListState.animateScrollToItem(chatState.messages.size)
-                }
-                items(
-                    items = chatState.messages,
-                    key = { message -> message.id },
-                ) { message ->
-                    MessageView(messageData = message)
-                }
-                item {
-                    // place holder item for scrolling to the bottom
-                }
-            }
+                lazyColumnListState = lazyColumnListState,
+                coroutineScope = coroutineScope,
+                chatState = chatState
+            )
             Divider(thickness = 1.dp, modifier = Modifier.padding(top = 5.dp))
             SendMessageView(chatState = chatState)
         }
@@ -224,6 +214,28 @@ fun BenchmarkView(modifier: Modifier = Modifier) {
         Text(text = "CPU: ${cpu}%")
         Text(text = "GPU: ${gpu}%")
         Text(text = "RAM: ${ram}MB")
+    }
+}
+
+@Composable
+fun MessagesView(modifier: Modifier = Modifier, lazyColumnListState: LazyListState, coroutineScope: CoroutineScope, chatState: AppViewModel.ChatState) {
+    LazyColumn(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(5.dp, alignment = Alignment.Bottom),
+        state = lazyColumnListState
+    ) {
+        coroutineScope.launch {
+            lazyColumnListState.animateScrollToItem(chatState.messages.size)
+        }
+        items(
+            items = chatState.messages,
+            key = { message -> message.id },
+        ) { message ->
+            MessageView(messageData = message)
+        }
+        item {
+            // place holder item for scrolling to the bottom
+        }
     }
 }
 

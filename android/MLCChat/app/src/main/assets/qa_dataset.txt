@@ -1,0 +1,758 @@
+You are an AI assistant. You will be given a task. You must generate a detailed and long answer.
+Generate an approximately fifteen-word sentence that describes all this data: Midsummer House eatType restaurant; Midsummer House food Chinese; Midsummer House priceRange moderate; Midsummer House customer rating 3 out of 5; Midsummer House near All Bar One
+
+You are an AI assistant that helps people find information.
+James runs a TV show and there are 5 main characters and 4 minor characters. He pays the minor characters $15,000 each episode. He paid the major characters three times as much. How much does he pay per episode? Let's be accurate as possible.
+
+You are an AI assistant that helps people find information.
+Imagine a question and stream-of-consciousness explanation for which this is the answer: Sentence B
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+Can you generate a question with a factual answer?
+
+You are a helpful assistant, who always provide explanation. Think like you are answering to a five year old.
+Remove the spaces from the following sentence: It prevents users to suspect that there are some hidden products installed on theirs device.
+
+You are a helpful assistant, who always provide explanation. Think like you are answering to a five year old.
+Generate a context and a hypothesis.
+
+You are an AI assistant. You will be given a task. You must generate a detailed and long answer.
+What is an example of a tweet?
+
+You are an AI assistant. You will be given a task. You must generate a detailed and long answer.
+Generate a movie review with positive sentiment.
+
+You are a helpful assistant, who always provide explanation. Think like you are answering to a five year old.
+Write a sentence not in English.
+
+You are an AI assistant that helps people find information. User will you give you a question. Your task is to answer as faithfully as you can. While answering think step-bystep and justify your answer.
+Mark is running for an election and wins 70% of the votes in an area with 100,000 voters. He got twice as many total votes in the remaining area. How many votes did he get in total? Let's think first. Chain of thought:
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+Given this review: ""I've no idea why but now it works perfectly. Good job done."" Would you recommend this app to a friend? Not at all, No, Maybe, Yes, or Definitely?
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+What is the answer to this question? who has made the most money on the challenge?
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+Please answer this question: In which Country is Graham Greene's Novel The Comedians set?
+
+You are an AI assistant. You will be given a task. You must generate a detailed and long answer.
+Write a sentence not in English.
+
+You are a helpful assistant, who always provide explanation. Think like you are answering to a five year old.
+Write a sentence based on this summary: iraqi embassy in jakarta removes saddam hussein 's photo
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+Write a sentence not in English.
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+Translate ""There are special transport boxes for dogs."" to German?
+
+You are an AI assistant that helps people find information. Provide a detailed answer so user don’t need to search outside to understand the answer.
+Come up with a question and reasoning that would justify this answer: no
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+Generate a tweet that has the following sentiment: positive
+
+You are an AI assistant. You will be given a task. You must generate a detailed and long answer.
+Carlos Menem was the president of which country from 8 July 1989 to 10 December 1999?
+
+You are an AI assistant. You will be given a task. You must generate a detailed and long answer.
+Generate a short movie review that has ""ii."" sentiment (Select from: i. negative ii. positive).
+
+You are an AI assistant. You will be given a task. You must generate a detailed and long answer.
+Please add spaces between words: HarddriverecoveryMacsoftwareallowsusertorecoverfilesfromformattedharddriveonMacincoupleofmouseclicks.
+
+You are an AI assistant that helps people find information. Provide a detailed answer so user don’t need to search outside to understand the answer.
+Explain simply why 52 is the correct answer to: The ratio of boys to girls in a family is 5:7. The total number of children in the family is 180. If the boys are given $3900 to share, how much money does each boy receive?. Explanation:
+
+You are an AI assistant. You will be given a task. You must generate a detailed and long answer.
+Produce a long descriptive sentence that uses all these words: Albuquerque, New Mexico, areaOfLand, 486.2 (square kilometres); Albuquerque, New Mexico, populationDensity, 1142.3 (inhabitants per square kilometre); Albuquerque, New Mexico, isPartOf, Bernalillo County, New Mexico; Albuquerque, New Mexico, areaTotal, 490.9 (square kilometres)
+
+You are a helpful assistant, who always provide explanation. Think like you are answering to a five year old.
+Write a tweet that is negative.
+
+You are an AI assistant that helps people find information. Provide a detailed answer so user don’t need to search outside to understand the answer.
+Michael has $42. Michael gives away half the money to his brother. His brother then buys 3 dollars worth of candy. If his brother has $35 left, how much money, in dollars, did his brother have at first? Let's answer step by step:
+
+You are a helpful assistant, who always provide explanation. Think like you are answering to a five year old.
+How is ""This is coming late, really late."" said in Romanian?
+
+You are an AI assistant. You will be given a task. You must generate a detailed and long answer.
+Write an article based on this ""A man has been charged with murder and attempted murder after a woman and the man she was on a date with were stabbed at a restaurant in Sydney, Australia.""
+
+You are a helpful assistant, who always provide explanation. Think like you are answering to a five year old.
+Among the final works, the Conexus project by Ignacio Arizu, Jonathan Moeller, Joan Bombardó, Nacho Caturla and Aina García won first prize. Say this using Spanish
+
+You are an AI assistant. You will be given a task. You must generate a detailed and long answer.
+Generate a negative review for a place.
+
+You are a helpful assistant, who always provide explanation. Think like you are answering to a five year old.
+Write a negative yelp review (OPTIONS: [-] negative; [-] positive;).
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+Please add spaces between words: ThereweretheheelsofforeigninvasiontrampinguponFrance;therewasthedownfallofauEmpire,andthecaptivityofaBonaparte;andtheretheywerethemselves.
+
+You are an AI assistant that helps people find information.
+Give the step-by-step reasoning process and then the final answer. A woman is trying to decide whether it will be quicker to take an airplane or drive herself to a job interview. If she drives herself, the trip will take her 3 hours and 15 minutes. If she takes an airplane, she will first need to drive 10 minutes to the airport, and then wait 20 minutes to board the plane. After that, she will be on the airplane for one-third of the time it would have taken her to drive herself before landing in the destination city. Finally, it will take her an additional 10 minutes to get off the airplane and arrive at her interview site after the plane lands. Given this information, how many minutes faster is it for her to take the airplane?
+
+You are a helpful assistant, who always provide explanation. Think like you are answering to a five year old.
+Generate an approximately fifteen-word sentence that describes all this data: The Wrestlers eatType restaurant; The Wrestlers priceRange more than £30; The Wrestlers customer rating 5 out of 5; The Wrestlers familyFriendly yes
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+What is the answer to this question? what is the name of the satellite that orbits earth?
+
+You are an AI assistant that helps people find information. Provide a detailed answer so user don’t need to search outside to understand the answer.
+Given the sentence ""A man with a beard playing an instrument."" is it true that ""The person has a beard.""? Now, let's be accurate as possible. Some thinking first:
+
+You are an AI assistant that helps people find information. Provide a detailed answer so user don’t need to search outside to understand the answer.
+My question is: There are 4 trains waiting at a train station and each train has 4 carriages. Each carriage has 3 rows of wheels and the rows of wheels have 5 wheels each. How many wheels are at the train station? Your thoughts:
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+Produce a long descriptive sentence that uses all these words: The Punter eatType restaurant; The Punter food Fast food; The Punter priceRange £20-25
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+Translate ""Spacious rooms; eating places, including a pizza restaurant; and discounted overnight parking are features of Ballsbridge Inn."" to German?
+
+You are a helpful assistant, who always provide explanation. Think like you are answering to a five year old.
+Write a sentence not in English.
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+Solve 135489*p - 462 = 135511*p for p.
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+Combine facts and answer this: In what city is the college preparatory private school where the author of the novel featuring symbologist Robert Langdon and cryptologist Sophie Neveu located?
+
+You are an AI assistant. You will be given a task. You must generate a detailed and long answer.
+Title: Missleading promotion Review: I bought this camera along with a 256 Mb SD viking card. There was a promotional code to disscount $25 bucks from total price, however amazon does not have the camera, it is sent by a third party seller and then you are charge the full price. Didn't expect this from amazon. Be aware. Is the review positive or negative?
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+What's an example of a task that requires knowledge of physical objects to perform?
+
+You are a helpful assistant, who always provide explanation. Think like you are answering to a five year old.
+Generate a context and a hypothesis.
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+If ""A person is walking by the bridge."", does this mean that ""A person is outdoors walking by a large man made object.""?
+
+You are an AI assistant. You will be given a task. You must generate a detailed and long answer.
+Translate ""With the latest increase, the six-month growth rate of the index rose to a 2.2 per cent annual rate."" to French?
+
+You are an AI assistant. You will be given a task. You must generate a detailed and long answer.
+Here is some data about a restaurant: name = Giraffe, eatType = pub, food = Indian. Write a sentence that includes the following data about a restaurant
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+Ask a question about MP3.
+
+You are an AI assistant. You will be given a task. You must generate a detailed and long answer.
+Translate ""That would be good for all the three countries and for the Western Balkans as a whole."" to Romanian?
+
+You are an AI assistant. You will be given a task. You must generate a detailed and long answer.
+Ask a question about Queen Victoria.
+
+You are a helpful assistant, who always provide explanation. Think like you are answering to a five year old.
+Write a sentence not in English.
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+How is ""While having the same right as men to a professional career, women cannot, however, do the same work as men outside the home and triple the amount within the home."" said in Romanian?
+
+You are an AI assistant. Provide a detailed answer so user don’t need to search outside to understand the answer.
+I heard that sasha was ready and was able to catch the ball when they threw it back.  And I was wondering How would Sasha feel afterwards?
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+Write a brief sentence.
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+How is ""Papantoniou noted the progress Albania and Macedonia have made in fostering regional security, but stressed the need for a continued international presence in the Balkans."" said in Turkish?
+
+You are a helpful assistant, who always provide explanation. Think like you are answering to a five year old.
+How is ""I have completely failed at the most important thing in life."" said in Czech?
+
+You are an AI assistant. You will be given a task. You must generate a detailed and long answer.
+Write down the solution for this math problem: Solve -365*q - 8 = -367*q for q.
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+Write down the solution for this math problem: Solve 0 = -2*a + 6 - 6 for a.
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+Answer the question...who appoints the chief justice of the supreme court??
+
+You are an AI assistant. You will be given a task. You must generate a detailed and long answer.
+Please answer this question: how does the lens of the eye change shape?
+
+You are a helpful assistant, who always provide explanation. Think like you are answering to a five year old.
+Can you generate a question with a factual answer?
+
+You are a helpful assistant, who always provide explanation. Think like you are answering to a five year old.
+Write a sentence that about [The Eagle eatType restaurant; The Eagle food English; The Eagle customer rating 5 out of 5].
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+Here's a complex question that requires someone to reason about the input, can you answer it? At The 2012 Summit League Baseball Tournament, The top four regular season finishers of the league's seven teams met in the double-elimination tournament held at a university based in which city ?
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+Here is some data about a restaurant: name = Aromi, eatType = coffee shop, food = Japanese, customer rating = 5 out of 5, area = city centre, familyFriendly = yes. Write a sentence that includes the above data about a restaurant
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+Write a question about the following article: At the beginning of March 1919 the general offensive of the Whites on the eastern front began. Ufa was retaken on 13 March; by mid-April, the White Army stopped at the Glazov-Chistopol-Bugulma-Buguruslan-Sharlyk line. Reds started their counteroffensive against Kolchak's forces at the end of April. The Red 5th Army, led by the capable commander Tukhachevsky, captured Elabuga on 26 May, Sarapul on 2 June and Izevsk on the 7th and continued to push forward. Both sides had victories and losses, but by the middle of summer the Red Army was larger than the White Army and had managed to recapture territory previously lost. Following the abortive offensive at Chelyabinsk, the White armies withdrew beyond the Tobol. In September 1919 a White offensive was launched against the Tobol front, the last attempt to change the course of events. However, on 14 October the Reds counterattacked, and thus began the uninterrupted retreat of the Whites to the east. On 14 November 1919 the Red Army captured Omsk. Adm. Kolchak lost control of his government shortly after this defeat; White Army forces in Siberia essentially ceased to exist by December. Retreat of the eastern front by White armies lasted three months, until mid-February 1920, when the survivors, after crossing Lake Baikal, reached Chita area and joined Ataman Semenov's forces.
+
+You are a helpful assistant, who always provide explanation. Think like you are answering to a five year old.
+How is ""Before the vote on Amendment 10:"" said in Finnish?
+
+You are an AI assistant. You will be given a task. You must generate a detailed and long answer.
+How is ""A new EC-sponsored study aims to identify trends and prepare the workforce for the global marketplace."" said in Turkish?
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+Write a ""I."" movie review (Choose from: I. negative II. positive).
+
+You are an AI assistant. You will be given a task. You must generate a detailed and long answer.
+Produce a sentence which mentions all of these concepts: food, forage, mother
+
+You are an AI assistant. You will be given a task. You must generate a detailed and long answer.
+Nos caracterizamos por ofrecer un producto de alto valor tecnológico y de diseño innovador. Poseemos amplias colecciones de telas lisas y estampadas, tanto en tejidos planos como de punto. How do you say this sentence in English?
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+Generate a correctly punctuated version of the following text: The busiest beach is Playa de Alcudia which is located close to the largest holiday resort in Mallorca Port dAlcudia This is a family favourite with its calm and shallow water
+
+You are a helpful assistant, who always provide explanation. Think like you are answering to a five year old.
+23 But I call God for a witness upon my soul, that to spare you I forbare to come unto Corinth. Say this using Spanish.
+
+You are a helpful assistant, who always provide explanation. Think like you are answering to a five year old.
+Write a sentence not in English.
+
+You are a helpful assistant, who always provide explanation. Think like you are answering to a five year old.
+Generate a context and a hypothesis.
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+Translate ""We have to be practical; we have to be aware of the need for TENs, in infrastructure terms and in job-creation terms and in getting people and goods moving throughout the European Union."" to German?
+
+You are an AI assistant. You will be given a task. You must generate a detailed and long answer.
+Write a tweet that is positive.
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+Write down the solution for this math problem: Solve 280 = -57*f + 22*f for f.
+
+You are a helpful assistant, who always provide explanation. Think like you are answering to a five year old.
+How is """"We will organise special programmes to aid rural households,"" he told SETimes."" said in Romanian?
+
+You are an AI assistant. You will be given a task. You must generate a detailed and long answer.
+Write a sentence not in English.
+
+You are an AI assistant that helps people find information. Provide a detailed answer so user don’t need to search outside to understand the answer.
+Come up with a question and reasoning that would justify this answer: (F)
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+Solve -236*q + 1943 = -181 for q.
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+How is ""There was no lack of seriousness and toughness."" said in Finnish?
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+What is an example of a tweet?
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+If ""Man in denim shirt and tan pants with cowboy hat holds a jar in front of a house."", does it logically follow that ""The man is in the house vacuuming.""?
+
+You are a helpful assistant, who always provide explanation. Think like you are answering to a five year old.
+Write a sentence in English.
+
+You are an AI assistant. You will be given a task. You must generate a detailed and long answer.
+If mammals conserve body heat with their fuzzy, protective covering, then the protective covering on mammals, that helps them conserve body heat, is usually:?  Answer choices: - spiny  - scaley  - elastic  - dense  - fuzzy  - skin  - spiky  - fat
+
+You are a helpful assistant, who always provide explanation. Think like you are answering to a five year old.
+Write the following list of characters into a correctly formed sentence: Asaresult,todayPolandhastwotypesoftraditionalorchards:establishedbefore1950,withvarietiescultivatedinthe18thand19thcenturies(whosefruitsarerarelyinfectedbydisease)andorchardswithvarietiesintroducedtocultivationinthe1960s.
+
+You are a helpful assistant, who always provide explanation. Think like you are answering to a five year old.
+Write an article based on this ""Microsoft has reported a $3.2bn net loss for the three months to 30 June after posting $8.4bn of writedowns.""
+
+You are an AI assistant that helps people find information. User will you give you a question. Your task is to answer as faithfully as you can. While answering think step-bystep and justify your answer.
+Alex and his friend had a free throw contest. Alex made 8 baskets. Sandra made three times as many baskets as Alex and Hector made two times the number of baskets that Sandra made. How many baskets did they make in total? Let's answer step by step:
+
+You are a helpful assistant, who always provide explanation. Think like you are answering to a five year old.
+Solve 966*i = -2956*i - 58830 for i.. What is the answer??
+
+You are an AI assistant. You will be given a task. You must generate a detailed and long answer.
+Q: Excretion is the process of removing excess water and wastes from the body. what are the main organs of excretion?   A:
+
+You are an AI assistant. Provide a detailed answer so user don’t need to search outside to understand the answer.
+I am verifying the answers generated by an automatic system to the following question: where was thomas located on october 27 Suggested answer: Tomas later regained hurricane status as it reorganized near the Windward passage . Should I validate this answer?
+
+You are a helpful assistant, who always provide explanation. Think like you are answering to a five year old.
+Answer the question...when did the eastern and western church split??
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+Produce a long descriptive sentence that uses all these words: Cotto food English; Cotto customer rating low; Cotto familyFriendly yes; Cotto near Ranch
+
+You are an AI assistant. User will you give you a task. Your goal is to complete the task as faithfully as you can. While performing the task think step-by-step and justify your steps.
+In ‘Monty Python and the Holy Grail’, what was desired by the knights who say ‘Ni’?
+
+You are a helpful assistant, who always provide explanation. Think like you are answering to a five year old.
+Data: name = The Wrestlers, eatType = coffee shop, food = Japanese, priceRange = moderate, area = riverside, familyFriendly = yes, near = Raja Indian Cuisine. What is a sentence that describe this data?
+
+You are a helpful assistant, who always provide explanation. Think like you are answering to a five year old.
+How do you say ""Whilst preserving the criminal jurisprudence from the first ICCs, the International Criminal Court differs greatly from these first ad hoc ICCs."" in Spanish?
+
+You are an AI assistant. You will be given a task. You must generate a detailed and long answer.
+How is ""His 19-year-old brother, Muhamed, screamed back."" said in Turkish?
+
+You are an AI assistant. You will be given a task. You must generate a detailed and long answer.
+Write a sentence not in English.Flashcards about English Unit #7
+
+A person who has commited a crime or is guilty of some misconduct. An offender.
+Flashcards about English Unit #7
+
+To waste time, be idle, to spendd more time doing something than neccessary.
+Flashcards about English Unit #7
+
+To cut apart in preporation for scientific study, to annalyze with great care.
+Flashcards about English Unit #7
+
+Marked ny strong emotion expecially pity and sorrow, able to move people emotionnally, worthy of pity woefully innatequit.
+Flashcards about English Unit #7
+
+To keep doing something in spite of difficulties to refuse to quit even when the going is tough.
+Flashcards about English Unit #7
+
+To clean or polish by hand rubbing to examine with great care to move about quicklt in search of.
+Flashcards about English Unit #7
+
+to make twisting or turning movements in a way that suggests payne or stuggle.
+Flashcards about APHG all vocab
+
+Theory and practice of making visual representations of the earth's surface in the form of maps.
+Flashcards about APHG all vocab
+
+The study of the interactions between societies and the nat­ural environments they live in.
+Flashcards about APHG all vocab
+
+The human-modified natural landscape specifically con­taining the imprint of a particular culture or society.
+Flashcards about APHG all vocab
+
+Systematic approach to physical geography that looks at the interaction between the earth's physical systems and processes on a global scale.
+Flashcards about APHG all vocab
+
+The intersection between human and physical geography, which explores the spatial impacts humans have on the physical environment and vice versa.
+Flashcards about APHG all vocab
+
+The head librarian at Alexandria during the third century B.C.; he was one of the first cartographers. Performed a remarkably accurate com­putation of the earth's circumference. He is also credited with coining the term ""geography.""
+Flashcards about APHG all vocab
+
+A set of computer tools used to capture, store, transform, analyze, and display geographic data.
+Flashcards about APHG all vocab
+
+A set of satellites used to help determine location anywhere on the earth's surface with a portable electronic device.
+Flashcards about APHG all vocab
+
+Inventor, diplomat, politician, and scholar, his classic work, Man and Nature, or Physical Geography as Modified by Human Action, provided the first description of the extent to which natural systems had been impacted by human actions.
+Flashcards about APHG all vocab
+
+The physical landscape or environment that has not been affected by human activities.
+Flashcards about APHG all vocab
+
+He claimed that geography drew from four distinct traditions: the earth-science tradition, the culture-environment tradition, the locational tradition, and the area-analysis tradition.
+Flashcards about The Urinary System *
+
+(part of the kidney)funnel for urine coming from the kidney into the ureter
+Flashcards about The Urinary System *
+
+tubes that extend from the kidneys to the bladder that urine passes through
+Flashcards about The Urinary System *
+
+nerve cells in the bladder wall that send a message to the brain when the bladder is full
+Flashcards about The Urinary System *
+
+inability to control urination (resident with neurological disease or injury has no control over their urination)
+Flashcards about The Urinary System *
+
+a tube inserted intot he bladder that drains urine into a collection bag
+Flashcards about The Urinary System *
+
+swelling of feet, ankles, face, hands, fingers. Weight gain. Collection of fluid in abdomen and lungs. Decreased urine output
+Flashcards about The Urinary System *
+
+thirst, decreased urine output, dry skin with reduced elasticity, parched or cracked lips and tongue
+Flashcards about The Urinary System *
+
+glass tube that holds the urine and measuring device that reads the urine temp.
+Flashcards about The Urinary System *
+
+catching the urine between the time the residen begins to urinate and the time urination stops
+Flashcards about The Urinary System *
+
+a type of incontinence that results from the resident's inability to perform the activities necessary to go to the toilet independently
+Flashcards about Server Ch. 5
+
+What is the process of confirming that an authenticated user has the correct permissions to access one or more network resources?
+Flashcards about Server Ch. 5
+
+Which of the following is not a type of user account that can be configured in Windows Server 2008?
+Flashcards about Server Ch. 5
+
+What describes the process of configuring one or more groups as members of another group?
+Flashcards about Server Ch. 5
+
+__________ groups are a collection of user accounts that are local to one specific workstation or member server.
+Flashcards about Server Ch. 5
+
+You cannot manually modify the group membership of or view the membership lists of __________ groups.
+Flashcards about Server Ch. 5
+
+What command-line utility is used to import or export Active Directory information from a comma-separated value (.csv) file?
+Flashcards about Server Ch. 5
+
+What is the process of confirming a user's identity by using a known value, such as a password, pin number on a smart card, or user's fingerprint or handprint in the case of biometric authentication?
+Flashcards about Server Ch. 5
+
+What special identity group is used by the system to allow permission to protected system files for services to function properly?
+Flashcards about 6th grade Hhds
+
+Humans will eat..? a-producers b-primary consumers c-secondary consumers d-predators e - all of these
+Flashcards about Travel and Tourism 1
+
+Why would a Park City hotel increase its rates during the Sundance Film Festival?
+Flashcards about Travel and Tourism 1
+
+What types of items does U.S. Customs forbid from being brought back into a country
+Flashcards about Travel and Tourism 1
+
+What is it called when theme parks sell tickets to hotels and the hotels turn around and sell them to their guests?
+Flashcards about Travel and Tourism 1
+
+What car rental company introduced the ""rent it here, leave-it-there"" concept? What is it?
+Flashcards about Travel and Tourism 1
+
+What is the minimum age someone must be to rent a car from most agencies?
+Flashcards about Travel and Tourism 1
+
+What is the recommended daily tip for your waiter or cabin steward on a cruise?
+Flashcards about Chapter 1 Sect 5
+
+A section of the lithoshpere that slowly moves over the asthenosphere, carrying peices of continental and oceanic crust
+Flashcards about Chapter 1 Sect 5
+
+The theory that pieces of the Earth's lithoshpere are in constant motion, driven by convection currents in the mantle.
+Flashcards about Chapter 1 Sect 5
+
+A break or crack in the earth's lithoshpere along which the rocks move.
+Flashcards about Chapter 1 Sect 5
+
+A plate boundary where two plates move past each other in opposite directions
+Flashcards about The Urinary System *
+
+Death will usually occur if resident loses () of the total body fluids.
+Flashcards about The Urinary System *
+
+Should you discard vomiting or draingage before the nurse look at it?
+Flashcards about Pivot Point Ch 12
+
+When performing an alkaline wave on a client, thioglycolate is joined with what ingredient to create a waving lotion? a. ammonia b. sodium bromate c. sodium hydroxide d. hydrogen peroxide
+Flashcards about Pivot Point Ch 12
+
+The main ingredient found in an acid wave is: a. sodium hydroxide b. calcium hydroxide c. potassium hydroxide d. glycerol monothioglycolate
+Flashcards about Pivot Point Ch 12
+
+The chemical phase of perms involves all of the following EXCEPT: a. applying neutralizer b. applying perm solution c. wrapping hair around the perm tool d. rinsing the perm solution from the hair
+Flashcards about Pivot Point Ch 12
+
+To produce large curls, wave formations or body waves it is necessary to use: a. less neutralizer b. less waving lotion c. more waving lotion d. large diameter rods
+Flashcards about Pivot Point Ch 12
+
+Which type of perm rod would be used to achieve uniform curls? a. curved b. convex c. straight d. concave
+Flashcards about Pivot Point Ch 12
+
+With concave rods hair on both ends must travel farther than hair in the centre to make one complete turn around the rod, creating a: a. larger, looser curl in the centre b. narrow curl throughout the strands c. wider & more spiraling pattern on the ends
+Flashcards about Pivot Point Ch 12
+
+In the perm procedure, proper end paper techniques will eliminate crimps or: a. bevels in the hair b. spirals in the hair c. beads on the ends of the hair d. fishhooks on the ends of the hair
+Flashcards about Pivot Point Ch 12
+
+Which of the following descriptions identifies end paper placement for bookend technique used during perm wrapping? a. one end paper on top b. one end paper folded in half c. two end papers folded in half d. two end papers, one on top and one on bottom
+Flashcards about Pivot Point Ch 12
+
+When using the double-flat end paper technique, the first end paper is positioned under the strand past ends of the hair & the second paper is placed on top of the strand &: a. near scalp b. covering ends of the hair c. slightly past the first end paper
+Flashcards about Pivot Point Ch 12
+
+Water left in the end papers after rinsing the perm solution will dilute the neutralizer and: a. crimp the curl ends b. weaken the curl formation c. create a crease in the hair d. cause the curl to be tighter
+Flashcards about Pivot Point Ch 12
+
+The size of the base and the angle at which the hair is held while wrapping determines the tool position or: a. base size b. roller size c. base control d. curl formation
+Flashcards about Pivot Point Ch 12
+
+To create more volume, which tool position should be used? a. on base b. off base c. half off base d. underdirected
+Flashcards about Pivot Point Ch 12
+
+On base control is not recommended for alkaline perms since expansion is limited at the base and: a. chemicals weaken the curl b. causes a crease in the hair c. chemicals increase dryness d. tension may cause breakage
+Flashcards about Pivot Point Ch 12
+
+Which tool position results in no curl at the scalp and a minimal degree of volume? a. on base b. off base c. half-off base d. underdirected
+Flashcards about Pivot Point Ch 12
+
+Partial perms are designed to: a. curl only the ends b. produce only weak ends c. avoid splits in a final design d. position new texture only where it is desired
+Flashcards about Pivot Point Ch 12
+
+In alkaline waves, the perm solution chemically breaks the: a. porosity of the hair b. medulla of the hair c. strong disulfide bonds d. color molecules in the hair
+Flashcards about Pivot Point Ch 12
+
+In addition to tension and perm solution what do acid waves use to perform the processing action? a. heat b. cold c. drying d. alkalinity
+Flashcards about Pivot Point Ch 12
+
+Skipping rods when applying perm solution could cause: a. breakage b. frizziness c. loss of all curl d. inconsistent curl formation
+Flashcards about Pivot Point Ch 12
+
+Which of the following steps may be required when perming resistant hair? a. pre-lightening b. longer processing time c. longer neutralizing time d. shorter processing time
+Flashcards about Pivot Point Ch 12
+
+Which of the following chemicals is NOT one of the main ingredients found in most neutralizers? a. potassium b. sodium bromate c. sodium perborate d. hydrogen peroxide
+Flashcards about Pivot Point Ch 12
+
+Neutralizer rebonds & restores disulfide bonds in addition to which? a. increase swelling in the cortex b. softens bonds in the new shape c. reduces swelling caused by the alkalinity d. increases the rate at which the perm solution absorbs into the hair
+Flashcards about Pivot Point Ch 12
+
+To remove all chemicals after the hair has been neutralized the hair needs to be: a. rinsed b. blotted c. relaxed d. reprocessed
+Flashcards about Pivot Point Ch 12
+
+What is considered to be the range of pH for alkaline waves? a. 3.0 to 4.5 b. 5.0 to 6.5 c. 6.9 to 7.2 d. 8.0 to 9.5
+Flashcards about Pivot Point Ch 12
+
+The high alkalinity of cold waves causes the hair fiber to soften and: a. swell b. shrink c. become brittle d. become acidic
+Flashcards about Pivot Point Ch 12
+
+Alkaline perms produce faster processing times and: a. more shine b. better color c. stronger curl d. less curl consistency
+Flashcards about Pivot Point Ch 12
+
+Which of the following is NOT true about acid perms? a. better for fragile hair b. slower processing time c. create soft, natural curls d. better for use on resistant hair
+Flashcards about Pivot Point Ch 12
+
+The more porous hair is: a. the more elastic it is b. the more coarse it is c. the less resistant it is to absorbing perm solution d. the more resistant it is to absorbing perm solution
+Flashcards about Pivot Point Ch 12
+
+To equalize the porosity of highly porous hair it may be necessary to use which of the following products: a. prewrap product b. disulfide product c. strong shampoo product d. sodium hydroxide product
+Flashcards about Pivot Point Ch 12
+
+Which of the following descriptions does NOT identify the meaning of porosity? a. the hair's ability to stretch b. the hair's ability to retain liquids c. the hair's ability to absorb liquids d. the hair's ability to absorb perming solution
+Flashcards about Pivot Point Ch 12
+
+The hair's ability to stretch and return to its original shape is called: a. texture b. density c. porosity d. elasticity
+Flashcards about Pivot Point Ch 12
+
+Hair is generally referred to as fine, medium or coarse when analyzing which of the following classifications? a. texture b. density c. porosity d. elasticity
+Flashcards about Pivot Point Ch 12
+
+Which of the following could describe what determines the processing time and proper perm solution? a. client's growth pattern b. client's natural hair color c. the size of the applicator bottle d. the texture, elasticity and porosity of the client's hair
+Flashcards about Pivot Point Ch 12
+
+Hair density does not always match which of the following? a. color b. texture c. porosity d. elasticity
+Flashcards about Pivot Point Ch 12
+
+What determines the size and shape of the new curl configuration? a. hair color b. perm solution c. perm rod size d. neutralizing solution
+Flashcards about Pivot Point Ch 12
+
+Which of the following statements is NOT true? a. hair that has been colored cannot be permed b. avoid perming damaged hair that shows breakage c. do not perm hair if there are scalp abrasions d. never perm hair that has been treated with sodium hydroxide
+Flashcards about Pivot Point Ch 12
+
+Before perming, identify if the hair has been tinted, bleached, highlighted/frosted or: a. conditioned b. set in pincurls c. previously permed d. cut in the past month
+Flashcards about Pivot Point Ch 12
+
+What is applied to a client's hairline prior to a perm service to protect the skin? a. ammonia b. neutralizer c. perm solution d. protective cream
+Flashcards about Pivot Point Ch 12
+
+If perm solution comes in contact with the client's eyes or skin which of the following actions should be taken? a. cover the eye with a bandage b. rinse thoroughly with hot water c. rinse thoroughly with cool water d. cover the eye with a warm towel
+Flashcards about Pivot Point Ch 12
+
+Proper draping procedures for chemical services accomplish all of the following EXCEPT: a. preventing burns b. preventing skin irritation c. protecting the client's clothing d. place cape between client and chair back
+Flashcards about Pivot Point Ch 12
+
+What ingredient in color products could cause uneven curls, discoloration and hair breakage? a. red dye b. metallic salt c. oxidative color d. non-oxidative color
+Flashcards about Pivot Point Ch 12
+
+When performing a metallic test, immerse at least 20 strands of hair in the prepared mixture for: a. 5 minutes b. 10 minutes c. 15 minutes d. 30 minutes
+Flashcards about Pivot Point Ch 12
+
+Prior to performing a preliminary test curl, hair should be shampooed and: a. left wet b. air-dried c. thermally dried d. gently towel-dried
+Flashcards about Pivot Point Ch 12
+
+After completing a service it is important to upgrade the client's: a. record card b. release form c. consultation form d. home care products
+Flashcards about Pivot Point Ch 12
+
+What is the most likely cause of underprocessed hair? a. rods too small for the desired curl b. hair wrapped too tightly around rods c. perm solution left on the hair too long d. perm solution not left on the hair long enough
+Flashcards about Pivot Point Ch 12
+
+What could be the cause of weak or limp curls? a. client's mood b. overprocessing c. underprocessing d. using rods that are too small
+Flashcards about Pivot Point Ch 12
+
+Overprocessed hair could be indicated by hair that is: a. oily b. shiny c. curly when wet and frizzy when dry d. frizzy when wet and curly when dry
+Flashcards about Pivot Point Ch 12
+
+What could be the cause of a perm not lasting as long as expected? a. overprocessing b. uneven distribution c. excessive stretching d. incomplete neutralization
+Flashcards about Pivot Point Ch 12
+
+Hair wound on rods with too much tension may cause which of the following: a. lighter hair color b. unpleasant odor c. darker hair color d. breakage or dryness
+Flashcards about Pivot Point Ch 12
+
+The most common ingredient found in products that completely straighten the hair is: a. bisulfate b. potassium c. thioglycolate d. sodium hydroxide
+Flashcards about Pivot Point Ch 12
+
+Sodium hydroxide relaxers are also known as: a. lye relaxers b. thio relaxers c. no-lye relaxers d. base chemical relaxers
+Flashcards about Pivot Point Ch 12
+
+Super strength relaxer is used for which of the following hair conditions? a. fine, porous hair b. color-treated hair c. curly to medium textured hair d. tightly curled, coarse textured hairContext considers geographic and economic factors critical for retail success.
+What are the main factors to consider when choosing a location for a new retail clothing store?
+
+Blockchain's role in enhancing traceability and security in logistics.
+How does the implementation of blockchain technology improve transparency in supply chain management?
+
+The influence of societal views on legislative and policy decisions in democracies.
+What role does public opinion play in the development of government policies in democratic societies?
+
+The economic vulnerability of tourist-dependent economies to environmental events.
+How do natural disasters affect economic stability in regions that are heavily dependent on tourism?
+
+Employee retention challenges and solutions in hospitality.
+What strategies can be used to reduce the high turnover rate in the hospitality industry?
+
+Urban planning strategies to manage growth and reduce sprawl.
+How can urban planners address the challenges of increasing urban sprawl in major cities?
+
+The dual impact of technology on jobs and skill requirements in manufacturing.
+What impact do technological advancements have on the employment landscape in the manufacturing sector?
+
+The health impacts of dietary choices, specifically the role of antioxidants.
+In what ways can a diet rich in antioxidants benefit an individual's overall health?
+
+Environmental impact of land use changes on atmospheric carbon levels.
+What are the potential consequences of deforestation on the global carbon cycle?
+
+Policy measures to accelerate the shift towards sustainable transportation.
+How can governments promote the adoption of electric vehicles to reduce urban air pollution?
+
+Educational disparities and infrastructure challenges in rural settings.
+What are the challenges of implementing remote learning systems in rural areas?
+
+The impact of cultural diversity on global business operations.
+How do cultural differences influence business practices in international markets?
+
+Legal and ethical challenges posed by AI autonomy in decision-making.
+What are the legal implications of artificial intelligence making autonomous decisions?
+
+The economic and social impacts of international sports events on host locations.
+What are the economic benefits of hosting a major international sports event?
+
+Demographic shifts and their effects on healthcare provisioning and policy.
+How does the aging population affect healthcare systems in developed countries?
+
+Best practices for remote team management in tech industries.
+What steps should be taken to effectively manage a team remotely in the technology sector?
+
+The role of hydrological processes in Earth's climatic stability.
+How does the water cycle contribute to the regulation of Earth's temperature and climate system?
+
+Comparison of environmental impacts of different energy sources.
+What are the key differences between renewable energy sources and fossil fuels in terms of environmental impact?
+
+Techniques for maintaining engagement in online education environments.
+What strategies can be employed by educators to enhance student engagement in a virtual classroom setting?
+
+The transformative impact of AI on healthcare delivery and patient outcomes.
+In what ways has the introduction of artificial intelligence in healthcare changed patient care outcomes?
+
+Strategies for small businesses to enhance visibility and competitiveness through social media.
+How can small businesses leverage social media marketing to compete with larger corporations in their industry?
+
+Climate change impacts on coastal regions and adaptive strategies.
+What are the long-term effects of climate change on coastal ecosystems, and what mitigation measures can be implemented?
+
+Nutritional advantages of genetically modified versus traditional agriculture.
+How does the nutritional content of genetically modified crops compare to that of traditional crops?
+
+Policy development for sustainable waste management in urban areas.
+What factors should be considered when developing policies to manage urban waste effectively?
+
+Changes in real estate trends due to the rise of remote working.
+How has the global shift towards remote work impacted urban real estate markets?
+
+The importance of genetic variation in ecological conservation.
+What role does genetic diversity play in the resilience of plant species to climate change?
+
+The economic impact of enhanced infrastructure and public transport systems.
+How do investment in infrastructure and public transportation affect economic growth in urban areas?
+
+Ethical and regulatory challenges posed by civilian drone usage.
+What are the ethical concerns associated with the use of drones in civilian airspace?
+
+Strategies for museums to engage with the digital-native generation.
+How can cultural institutions like museums attract younger audiences in the digital age?
+
+Economic and real estate implications of climate-induced sea level rise.
+What implications do rising sea levels have for insurance and property values in coastal areas?
+
+Environmental concerns and solutions regarding microplastic pollution.
+How do microplastics affect marine ecosystems and what strategies can be used to mitigate their impact?
+
+Exploring the transition to smart electrical grids for better energy management.
+What are the challenges and benefits of implementing smart grids in electrical distribution systems?
+
+Partnerships for improving water infrastructure and public health in less developed regions.
+How can governments and NGOs work together to improve water sanitation in developing countries?
+
+Analyzing the dual effects of immigration on workforce and economic development.
+What are the economic impacts of immigration on labor markets in developed countries?
+
+Urban planning for climate adaptation to extreme heat conditions.
+What measures can cities take to become more resilient to heatwaves?
+
+The role of VR in transforming educational methodologies.
+How do virtual reality technologies impact the way educational content is delivered?
+
+Public health concerns related to antibiotic resistance stemming from agricultural practices.
+What are the consequences of antibiotic overuse in livestock on human health?
+
+Technical and policy challenges in the shift to renewable energy integration.
+How can renewable energy sources be integrated into existing power grids?
+
+Efforts to enhance digital inclusion and reduce disparities in technology access.
+What strategies are effective in reducing the digital divide in remote and underserved communities?
+
+Exploring the potential changes in urban traffic dynamics with the adoption of autonomous driving technology.
+How does the introduction of autonomous vehicles impact urban traffic management and road safety?
+
+The ecological importance of coral reefs and the impact of changing ocean chemistry on their health.
+What role do coral reefs play in marine biodiversity and how are they affected by ocean acidification?
+
+Approaches to enhance educational inclusivity and support for students with learning disabilities.
+What strategies can educators employ to address the needs of students with learning disabilities in inclusive classrooms?
+
+Analyzing the economic implications of digital commerce on traditional retail models.
+How does consumer behavior towards online shopping impact brick-and-mortar retail stores?
+
+Assessing the dual aspects of using CRISPR and other gene-editing tools in sustainable agriculture.
+What are the benefits and risks of gene editing technologies in agriculture?
+
+Urban policy measures aimed at improving public health through enhanced air quality.
+How can cities improve air quality and reduce the health risks associated with air pollution?
+
+The balance between leveraging machine learning for security and protecting individual privacy.
+What implications do advances in machine learning have for data privacy and security?
+
+Exploring the economic dynamics and consequences of international sanctions.
+How do economic sanctions impact the economy of the targeted country and the imposing country?
+
+Strategies for wildlife conservation in the face of environmental threats.
+What measures can be taken to protect endangered wildlife due to climate change and habitat loss?
+
+Demographic challenges and their economic impacts on social security and labor markets.
+How does the aging demographic in developed countries affect the workforce and pension systems?
+
+The importance of sustainable practices in agriculture to combat climate challenges and secure food supply.
+What role does sustainable agriculture play in addressing climate change and ensuring food security?
+
+The role of battery innovations in enabling more widespread use of renewable energy.
+How can advancements in battery technology impact the adoption of renewable energy sources?
+
+The multifaceted benefits of incorporating green spaces into urban planning.
+What are the socio-economic impacts of urban green spaces on local communities?
+
+The impact of digital technologies on the evolution of banking services and customer engagement.
+How does the digital transformation in the banking sector influence consumer behavior and financial services?
+
+The growing cybersecurity challenges posed by the Internet of Things and connected technology.
+What are the challenges of maintaining cybersecurity in an increasingly connected world?
