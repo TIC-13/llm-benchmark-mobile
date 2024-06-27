@@ -1,5 +1,6 @@
 package ai.mlc.mlcchat
 
+import ai.mlc.mlcchat.components.AppTopBar
 import ai.mlc.mlcchat.interfaces.BenchmarkingResult
 import ai.mlc.mlcchat.interfaces.Measurement
 import ai.mlc.mlcchat.utils.benchmark.Sampler
@@ -150,14 +151,8 @@ fun BenchmarkingView(
     }
 
     Scaffold(topBar = {
-        TopAppBar(
-            title = {
-                Text(
-                    text = chatState.modelName.value.split("-")[0],
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
-            },
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
+        AppTopBar(
+            title = chatState.modelName.value.split("-")[0]
         )
     }, modifier = Modifier.pointerInput(Unit) {
         detectTapGestures(onTap = {
@@ -165,34 +160,36 @@ fun BenchmarkingView(
         })
     }) {
         paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(horizontal = 10.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            val lazyColumnListState = rememberLazyListState()
-            val coroutineScope = rememberCoroutineScope()
+        HomeScreenBackground {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(horizontal = 10.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                val lazyColumnListState = rememberLazyListState()
+                val coroutineScope = rememberCoroutineScope()
 
-            if(chatState.messages.isEmpty()){
-                CircularProgressIndicator()
-            }else{
-                BenchmarkView(modifier =
+                if(chatState.messages.isEmpty()){
+                    CircularProgressIndicator()
+                }else{
+                    BenchmarkView(modifier =
                     Modifier
                         .padding(10.dp)
                         .background(
                             color = MaterialTheme.colorScheme.secondaryContainer,
                             shape = RoundedCornerShape(5.dp)
                         )
-                )
-                MessagesView(
-                    modifier = Modifier.fillMaxSize(),
-                    lazyColumnListState = lazyColumnListState,
-                    coroutineScope = coroutineScope,
-                    chatState = chatState
-                )
+                    )
+                    MessagesView(
+                        modifier = Modifier.fillMaxSize(),
+                        lazyColumnListState = lazyColumnListState,
+                        coroutineScope = coroutineScope,
+                        chatState = chatState
+                    )
+                }
             }
         }
     }

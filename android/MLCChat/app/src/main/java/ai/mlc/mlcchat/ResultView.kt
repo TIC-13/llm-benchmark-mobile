@@ -1,5 +1,6 @@
 package ai.mlc.mlcchat
 
+import ai.mlc.mlcchat.components.AppTopBar
 import ai.mlc.mlcchat.interfaces.BenchmarkingResult
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -46,55 +47,40 @@ fun ResultView(
 
     Scaffold(topBar =
         {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "Resultado",
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )},
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
-                navigationIcon = {
-                    IconButton(
-                        onClick = { goToHome() },
-                        enabled = true
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "back home page",
-                            tint = MaterialTheme.colorScheme.onPrimary
-                        )
-                    }
-                },
+            AppTopBar(
+                title = "Resultado",
+                onBack = { goToHome() }
             )
         }
     ) {
         paddingValues ->
-            Column (
-                modifier = Modifier
-                    .padding(paddingValues)
-                    .fillMaxSize(),
-            ){
-
-                Column(
+            HomeScreenBackground {
+                Column (
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(0.9f)
-                        .verticalScroll(rememberScrollState())
-                        .padding(0.dp, 15.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(15.dp)
-                ) {
-                    resultViewModel.results.map {
-                        ResultCard(result = it)
-                    }
-                }
-
-                ContinueButton(
-                    modifier = Modifier
-                        .clickable {
-                            goToHome()
+                        .padding(paddingValues)
+                        .fillMaxSize(),
+                ){
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight(0.9f)
+                            .verticalScroll(rememberScrollState())
+                            .padding(0.dp, 15.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(15.dp)
+                    ) {
+                        resultViewModel.results.map {
+                            ResultCard(result = it)
                         }
-                )
+                    }
+
+                    ContinueButton(
+                        modifier = Modifier
+                            .clickable {
+                                goToHome()
+                            }
+                    )
+                }
             }
     }
 }

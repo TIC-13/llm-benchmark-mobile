@@ -1,5 +1,6 @@
 package ai.mlc.mlcchat
 
+import ai.mlc.mlcchat.components.AppTopBar
 import ai.mlc.mlcchat.interfaces.BenchmarkingResult
 import ai.mlc.mlcchat.interfaces.Measurement
 import ai.mlc.mlcchat.utils.benchmark.Sampler
@@ -105,27 +106,12 @@ fun ChatView(
         navController.navigate("result")
     }
 
-    Scaffold(topBar = {
-        TopAppBar(
-            title = {
-                Text(
-                    text = "MLCChat: " + chatState.modelName.value.split("-")[0],
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
-            },
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
-            navigationIcon = {
-                IconButton(
-                    onClick = { navController.popBackStack() },
-                    enabled = chatState.interruptable()
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = "back home page",
-                        tint = MaterialTheme.colorScheme.onPrimary
-                    )
-                }
-            },
+    Scaffold(topBar =
+    {
+        AppTopBar(
+            title = chatState.modelName.value.split("-")[0],
+            onBack = { navController.popBackStack() },
+            backEnabled = chatState.interruptable(),
             actions = {
                 IconButton(
                     onClick = { chatState.requestResetChat() },
@@ -146,8 +132,9 @@ fun ChatView(
                         contentDescription = "continue to results",
                         tint = MaterialTheme.colorScheme.onPrimary
                     )
-                }
-            })
+            }
+        }
+    )
     }, modifier = Modifier.pointerInput(Unit) {
         detectTapGestures(onTap = {
             localFocusManager.clearFocus()
