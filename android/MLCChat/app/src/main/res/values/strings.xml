@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">MLCChat</string>
+    <string name="app_name">Speed.AI</string>
+    <string name="app_description">LLM Edtion</string>
 </resources>

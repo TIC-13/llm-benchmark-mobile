@@ -1,10 +1,14 @@
 package ai.mlc.mlcchat
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -14,6 +18,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 
@@ -50,7 +56,8 @@ fun DownloadView(
     }
 
     Column (
-        modifier = modifier,
+        modifier = modifier
+            .background(MaterialTheme.colorScheme.primary),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ){
@@ -59,19 +66,29 @@ fun DownloadView(
             val modelState = pendingModels[0]
 
             Text(
-                modifier = Modifier
-                    .padding(0.dp, 15.dp),
-                text = "Downloading model ${numModels-pendingModels.size+1} of $numModels"
+                modifier = Modifier,
+                text = "Downloading model ${numModels-pendingModels.size+1} of $numModels",
+                color = MaterialTheme.colorScheme.onPrimary,
+                style = MaterialTheme.typography.titleMedium,
+                //fontWeight = FontWeight.Light
             )
+            Spacer(modifier = Modifier.height(15.dp))
             Column (
                 modifier = Modifier
                     .fillMaxWidth(0.8F),
                 verticalArrangement = Arrangement.spacedBy(15.dp)
             ){
-                Text(text = modelState.modelConfig.modelId)
+                Text(
+                    text = modelState.modelConfig.modelId,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.Light
+                )
                 LinearProgressIndicator(
+                    modifier = Modifier.fillMaxWidth(),
                     progress = modelState.progress.value.toFloat() / modelState.total.value,
-                    modifier = Modifier.fillMaxWidth()
+                    color = MaterialTheme.colorScheme.inversePrimary,
+                    trackColor = Color.Gray
                 )
             }
         }
