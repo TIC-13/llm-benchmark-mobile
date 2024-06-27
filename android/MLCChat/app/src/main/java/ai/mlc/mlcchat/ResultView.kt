@@ -1,7 +1,6 @@
 package ai.mlc.mlcchat
 
 import ai.mlc.mlcchat.interfaces.BenchmarkingResult
-import ai.mlc.mlcchat.utils.benchmark.ResultViewModel
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

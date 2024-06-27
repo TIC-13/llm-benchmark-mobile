@@ -1,10 +1,7 @@
-package ai.mlc.mlcchat.utils.benchmark
+package ai.mlc.mlcchat
 
-import ai.mlc.mlcchat.AppViewModel
-import ai.mlc.mlcchat.ModelInitState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.LinearProgressIndicator
@@ -18,7 +15,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import kotlinx.coroutines.delay
 
 @Composable

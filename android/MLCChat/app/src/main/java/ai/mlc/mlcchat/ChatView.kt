@@ -2,12 +2,10 @@ package ai.mlc.mlcchat
 
 import ai.mlc.mlcchat.interfaces.BenchmarkingResult
 import ai.mlc.mlcchat.interfaces.Measurement
-import ai.mlc.mlcchat.utils.benchmark.ResultViewModel
 import ai.mlc.mlcchat.utils.benchmark.Sampler
 import ai.mlc.mlcchat.utils.benchmark.cpuUsage
 import ai.mlc.mlcchat.utils.benchmark.gpuUsage
 import ai.mlc.mlcchat.utils.benchmark.ramUsage
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -30,7 +28,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowRightAlt
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Replay
 import androidx.compose.material.icons.filled.Send

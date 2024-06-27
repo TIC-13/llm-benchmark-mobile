@@ -1,4 +1,4 @@
-package ai.mlc.mlcchat.utils.benchmark
+package ai.mlc.mlcchat
 
 import ai.mlc.mlcchat.interfaces.BenchmarkingResult
 import android.app.Application
