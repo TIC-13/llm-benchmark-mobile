@@ -52,11 +52,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -171,7 +174,11 @@ fun ChatView(
 }
 
 @Composable
-fun BenchmarkView(modifier: Modifier = Modifier) {
+fun BenchmarkView(
+    modifier: Modifier = Modifier,
+    textColor: Color = Color.Black,
+    fontWeight: FontWeight = FontWeight.Normal
+) {
 
     val context = LocalContext.current
 
@@ -191,13 +198,13 @@ fun BenchmarkView(modifier: Modifier = Modifier) {
     }
 
     Row (
-        modifier = modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly
+        modifier = modifier,
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically,
     ){
-        Text(text = "CPU: ${cpu}%")
-        Text(text = "GPU: ${gpu}%")
-        Text(text = "RAM: ${ram}MB")
+        Text(text = "CPU: ${cpu}%", color = textColor, fontWeight = fontWeight)
+        Text(text = "GPU: ${gpu}%", color = textColor, fontWeight = fontWeight)
+        Text(text = "RAM: ${ram}MB", color = textColor, fontWeight = fontWeight)
     }
 }
 
@@ -234,15 +241,17 @@ fun MessageView(messageData: MessageData) {
                 Text(
                     text = messageData.text,
                     textAlign = TextAlign.Left,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Light,
                     color = MaterialTheme.colorScheme.onSecondaryContainer,
                     modifier = Modifier
                         .wrapContentWidth()
                         .background(
                             color = MaterialTheme.colorScheme.secondaryContainer,
-                            shape = RoundedCornerShape(5.dp)
+                            shape = RoundedCornerShape(20.dp)
                         )
-                        .padding(5.dp)
-                        .widthIn(max = 300.dp)
+                        .padding(10.dp)
+                        .widthIn(max = 250.dp)
                 )
             }
         } else {
@@ -253,15 +262,17 @@ fun MessageView(messageData: MessageData) {
                 Text(
                     text = messageData.text,
                     textAlign = TextAlign.Right,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Light,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier
                         .wrapContentWidth()
                         .background(
                             color = MaterialTheme.colorScheme.primaryContainer,
-                            shape = RoundedCornerShape(5.dp)
+                            shape = RoundedCornerShape(20.dp)
                         )
-                        .padding(5.dp)
-                        .widthIn(max = 300.dp)
+                        .padding(10.dp)
+                        .widthIn(max = 250.dp)
                 )
 
             }

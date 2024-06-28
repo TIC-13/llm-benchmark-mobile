@@ -11,8 +11,12 @@ import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,9 +36,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import kotlinx.coroutines.Dispatchers
@@ -43,7 +49,6 @@ import kotlinx.coroutines.withContext
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BenchmarkingView(
     navController: NavController,
@@ -164,27 +169,37 @@ fun BenchmarkingView(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(paddingValues)
-                    .padding(horizontal = 10.dp),
+                    .padding(paddingValues),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
                 val lazyColumnListState = rememberLazyListState()
                 val coroutineScope = rememberCoroutineScope()
 
+                BenchmarkView(modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .defaultMinSize(0.dp, 50.dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.primary,
+                    ),
+                    textColor = Color.White,
+                    fontWeight = FontWeight.Light
+                )
+
+
                 if(chatState.messages.isEmpty()){
-                    CircularProgressIndicator()
-                }else{
-                    BenchmarkView(modifier =
-                    Modifier
-                        .padding(10.dp)
-                        .background(
-                            color = MaterialTheme.colorScheme.secondaryContainer,
-                            shape = RoundedCornerShape(5.dp)
-                        )
-                    )
-                    MessagesView(
+                    Box(
                         modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ){
+                        CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary)
+                    }
+                }else{
+                    MessagesView(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(10.dp, 0.dp),
                         lazyColumnListState = lazyColumnListState,
                         coroutineScope = coroutineScope,
                         chatState = chatState
