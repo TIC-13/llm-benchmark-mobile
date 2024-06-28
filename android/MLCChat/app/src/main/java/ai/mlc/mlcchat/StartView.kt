@@ -1,11 +1,14 @@
 package ai.mlc.mlcchat
 
 import ai.mlc.mlcchat.components.AppTopBar
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,6 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Chat
@@ -29,6 +33,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -41,12 +46,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
 
@@ -60,7 +67,7 @@ fun StartView(
     Scaffold(
         topBar = {
             AppTopBar(
-                title = stringResource(id = R.string.app_name),
+                title = "Model list",
                 onBack = { navController.popBackStack() }
             )
         },
@@ -71,31 +78,34 @@ fun StartView(
         }
     )
     { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(horizontal = 10.dp)
-        ) {
-            Text(text = "Model List", modifier = Modifier.padding(top = 10.dp))
-            LazyColumn() {
-                items(items = appViewModel.modelList,
-                    key = { modelState -> modelState.id }
-                ) { modelState ->
-                    ModelView(
-                        navController = navController,
-                        modelState = modelState,
-                        appViewModel = appViewModel
-                    )
+        HomeScreenBackground {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(horizontal = 10.dp)
+            ) {
+                Spacer(modifier = Modifier.height(30.dp))
+                LazyColumn() {
+                    items(items = appViewModel.modelList,
+                        key = { modelState -> modelState.id }
+                    ) { modelState ->
+                        ModelView(
+                            navController = navController,
+                            modelState = modelState,
+                            appViewModel = appViewModel
+                        )
+                        Spacer(modifier = Modifier.height(15.dp))
+                    }
                 }
             }
-        }
-        if (appViewModel.isShowingAlert()) {
-            AlertDialog(
-                onDismissRequest = { appViewModel.dismissAlert() },
-                onConfirmation = { appViewModel.copyError() },
-                error = appViewModel.errorMessage()
-            )
+            if (appViewModel.isShowingAlert()) {
+                AlertDialog(
+                    onDismissRequest = { appViewModel.dismissAlert() },
+                    onConfirmation = { appViewModel.copyError() },
+                    error = appViewModel.errorMessage()
+                )
+            }
         }
     }
 }
@@ -131,6 +141,10 @@ fun ModelView(
         verticalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
             .wrapContentHeight()
+            .defaultMinSize(0.dp, 60.dp)
+            .clip(RoundedCornerShape(15.dp))
+            .background(color = MaterialTheme.colorScheme.primary)
+            .padding(15.dp)
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(5.dp),
@@ -142,6 +156,9 @@ fun ModelView(
             Text(
                 text = modelState.modelConfig.modelId,
                 textAlign = TextAlign.Left,
+                color = MaterialTheme.colorScheme.onPrimary,
+                fontWeight = FontWeight.Light,
+                fontSize = 14.sp,
                 modifier = Modifier
                     .wrapContentHeight()
                     .weight(8f)
@@ -159,6 +176,7 @@ fun ModelView(
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Download,
+                        tint = MaterialTheme.colorScheme.onPrimary,
                         contentDescription = "start downloading",
                     )
                 }
@@ -171,6 +189,7 @@ fun ModelView(
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Pause,
+                        tint = MaterialTheme.colorScheme.onPrimary,
                         contentDescription = "pause downloading",
                     )
                 }
@@ -187,6 +206,7 @@ fun ModelView(
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Chat,
+                        tint = MaterialTheme.colorScheme.onPrimary,
                         contentDescription = "start chatting",
                     )
                 }
@@ -198,6 +218,7 @@ fun ModelView(
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Schedule,
+                        tint = MaterialTheme.colorScheme.onPrimary,
                         contentDescription = "pending",
                     )
                 }
@@ -220,9 +241,12 @@ fun ModelView(
                 }
             }
         }
+        Spacer(modifier = Modifier.height(10.dp))
         LinearProgressIndicator(
             progress = modelState.progress.value.toFloat() / modelState.total.value,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            trackColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            color = MaterialTheme.colorScheme.primaryContainer
         )
         if (isDeletingModel) {
             Row(
@@ -233,7 +257,7 @@ fun ModelView(
                     .wrapContentHeight()
             ) {
                 TextButton(onClick = { isDeletingModel = false }) {
-                    Text(text = "cancel")
+                    Text(text = "cancel", color = MaterialTheme.colorScheme.onPrimary)
                 }
                 TextButton(onClick = {
                     isDeletingModel = false
