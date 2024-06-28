@@ -10,10 +10,12 @@ import ai.mlc.mlcchat.utils.benchmark.ramUsage
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -36,10 +38,14 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -143,32 +149,63 @@ fun ChatView(
             localFocusManager.clearFocus()
         })
     }) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(horizontal = 10.dp)
-        ) {
-            val lazyColumnListState = rememberLazyListState()
-            val coroutineScope = rememberCoroutineScope()
-            Text(
-                text = chatState.report.value,
-                textAlign = TextAlign.Center,
+        HomeScreenBackground {
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(top = 5.dp)
-            )
-            BenchmarkView()
-            Divider(thickness = 1.dp, modifier = Modifier.padding(vertical = 5.dp))
-            MessagesView(
-                modifier = Modifier.weight(9f),
-                lazyColumnListState = lazyColumnListState,
-                coroutineScope = coroutineScope,
-                chatState = chatState
-            )
-            Divider(thickness = 1.dp, modifier = Modifier.padding(top = 5.dp))
-            SendMessageView(chatState = chatState)
+                    .fillMaxSize()
+                    .padding(paddingValues)
+            ) {
+                val lazyColumnListState = rememberLazyListState()
+                val coroutineScope = rememberCoroutineScope()
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .defaultMinSize(0.dp, 80.dp)
+                        .background(color = MaterialTheme.colorScheme.primary),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    if(chatState.report.value.trim() !== ""){
+                        Text(
+                            text = chatState.report.value,
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.Light,
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .padding(top = 5.dp)
+                        )
+                    }
+                    BenchmarkView(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        fontWeight = FontWeight.Light,
+                        textColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
+                Column (
+                    modifier = Modifier
+                        .fillMaxSize()
+                ){
+                    MessagesView(
+                        modifier = Modifier.weight(9f),
+                        lazyColumnListState = lazyColumnListState,
+                        coroutineScope = coroutineScope,
+                        chatState = chatState
+                    )
+                    Box(
+                        modifier = Modifier
+                            .background(
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            .padding(5.dp)
+                        ){
+                        SendMessageView(chatState = chatState)
+                    }
+                }
+            }
         }
     }
 }
@@ -299,6 +336,15 @@ fun SendMessageView(chatState: AppViewModel.ChatState) {
             label = { Text(text = "Input") },
             modifier = Modifier
                 .weight(9f),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),
+                unfocusedBorderColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),
+                unfocusedTextColor = MaterialTheme.colorScheme.onPrimary,
+                focusedTextColor = MaterialTheme.colorScheme.onPrimary,
+                focusedLabelColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),
+                unfocusedLabelColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),
+                cursorColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f)
+            )
         )
         IconButton(
             onClick = {
@@ -309,11 +355,13 @@ fun SendMessageView(chatState: AppViewModel.ChatState) {
             modifier = Modifier
                 .aspectRatio(1f)
                 .weight(1f),
-            enabled = (text != "" && chatState.chatable())
+            enabled = (text.isNotEmpty() && chatState.chatable())
         ) {
             Icon(
                 imageVector = Icons.Filled.Send,
                 contentDescription = "send message",
+                tint = MaterialTheme.colorScheme.onPrimary,
+                modifier = Modifier.background(color = MaterialTheme.colorScheme.primary)
             )
         }
     }

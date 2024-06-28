@@ -226,7 +226,7 @@ fun LargeRoundedButton(
         shape = RoundedCornerShape(16.dp),
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+            containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary,
             disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
             disabledContentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f)
