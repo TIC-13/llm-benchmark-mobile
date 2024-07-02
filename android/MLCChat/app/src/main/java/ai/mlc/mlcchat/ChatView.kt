@@ -82,22 +82,6 @@ fun ChatView(
 ) {
 
     val localFocusManager = LocalFocusManager.current
-    val context = LocalContext.current
-
-    LaunchedEffect(Unit) {
-
-            resultViewModel.resetResults()
-
-            withContext(Dispatchers.IO) {
-                while(true) {
-                    delay(25)
-                    if(chatState.modelChatState.value !== ModelChatState.Generating)
-                        continue
-                    resultViewModel.addBenchmarkingSample(context)
-                }
-            }
-
-    }
 
     fun toResults() {
         resultViewModel.wrapResultUp(chatState.modelName.value)
@@ -141,7 +125,8 @@ fun ChatView(
         HomeScreenBackground {
             ConversationView(
                 paddingValues = paddingValues,
-                chatState = chatState
+                chatState = chatState,
+                resultViewModel = resultViewModel
             ) {
                 Box(
                     modifier = Modifier
@@ -161,8 +146,24 @@ fun ChatView(
 fun ConversationView(
     paddingValues: PaddingValues,
     chatState: AppViewModel.ChatState,
+    resultViewModel: ResultViewModel,
     children: @Composable() (ColumnScope.() -> Unit)? = null
 ) {
+
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        resultViewModel.resetResults()
+        withContext(Dispatchers.IO) {
+            while(true) {
+                delay(25)
+                if(chatState.modelChatState.value !== ModelChatState.Generating)
+                    continue
+                resultViewModel.addBenchmarkingSample(context)
+            }
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()

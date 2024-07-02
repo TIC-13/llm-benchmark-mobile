@@ -8,6 +8,7 @@ import ai.mlc.mlcchat.utils.benchmark.cpuUsage
 import ai.mlc.mlcchat.utils.benchmark.gpuUsage
 import ai.mlc.mlcchat.utils.benchmark.ramUsage
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -78,20 +79,6 @@ fun BenchmarkingView(
         resultViewModel.wrapResultUp(chatState.modelName.value)
     }
 
-    LaunchedEffect(Unit) {
-
-        resultViewModel.resetResults()
-
-        withContext(Dispatchers.IO) {
-            while(true) {
-                delay(25)
-                if(chatState.modelChatState.value !== ModelChatState.Generating)
-                    continue
-                resultViewModel.addBenchmarkingSample(context)
-            }
-        }
-    }
-
     LaunchedEffect(pendingModels) {
         if(pendingModels.isNotEmpty()){
 
@@ -112,9 +99,7 @@ fun BenchmarkingView(
 
             if(pendingQuestions.isEmpty()){
 
-                if(pendingModels.isEmpty()){
-
-                }else{
+                if(pendingModels.isNotEmpty()){
                     pendingModels = pendingModels.subList(1, pendingModels.size)
                     pendingQuestions = questions
                 }
@@ -139,7 +124,8 @@ fun BenchmarkingView(
         HomeScreenBackground {
             ConversationView(
                 paddingValues = paddingValues,
-                chatState = chatState
+                chatState = chatState,
+                resultViewModel = resultViewModel
             )
         }
     }
