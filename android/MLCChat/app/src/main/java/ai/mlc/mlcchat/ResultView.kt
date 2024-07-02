@@ -69,7 +69,7 @@ fun ResultView(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(15.dp)
                     ) {
-                        resultViewModel.results.map {
+                        resultViewModel.getResults().map {
                             ResultCard(result = it)
                         }
                     }

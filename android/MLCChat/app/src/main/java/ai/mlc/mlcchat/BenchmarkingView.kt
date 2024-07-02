@@ -63,7 +63,7 @@ fun BenchmarkingView(
     }
 
     val questions = remember {
-        readQuestionsFile(context, questionsFileName).subList(0,3)
+        readQuestionsFile(context, questionsFileName).subList(0,1)
     }
 
     var pendingModels by remember {
@@ -74,32 +74,8 @@ fun BenchmarkingView(
         mutableStateOf(questions)
     }
 
-    var cpuSamples by remember { mutableStateOf(Sampler()) }
-    var gpuSamples by remember { mutableStateOf(Sampler()) }
-    var ramSamples by remember { mutableStateOf(Sampler()) }
-
-    fun addBenchmarkingSample() {
-        cpuSamples.addSample(cpuUsage(context))
-        gpuSamples.addSample(gpuUsage())
-        ramSamples.addSample(ramUsage())
-    }
-
-    fun resetBenchmarkingSamples() {
-        cpuSamples = Sampler()
-        gpuSamples = Sampler()
-        ramSamples = Sampler()
-    }
-
-    fun saveResults() {
-        resultViewModel.results.add(
-            BenchmarkingResult(
-                name = chatState.modelName.value,
-                cpu = cpuSamples.measurements(),
-                gpu = gpuSamples.measurements(),
-                ram = ramSamples.measurements(),
-                toks = Measurement(0,0,0)
-            )
-        )
+    fun saveLastResult() {
+        resultViewModel.wrapResultUp(chatState.modelName.value)
     }
 
     LaunchedEffect(Unit) {
@@ -111,7 +87,7 @@ fun BenchmarkingView(
                 delay(25)
                 if(chatState.modelChatState.value !== ModelChatState.Generating)
                     continue
-                addBenchmarkingSample()
+                resultViewModel.addBenchmarkingSample(context)
             }
         }
     }
@@ -120,14 +96,13 @@ fun BenchmarkingView(
         if(pendingModels.isNotEmpty()){
 
             if(pendingModels.size != viewModel.benchmarkingModels.size){
-                saveResults()
-                resetBenchmarkingSamples()
+                saveLastResult()
             }
 
             val modelState = pendingModels[0]
             modelState.startChat()
         }else{
-            saveResults()
+            saveLastResult()
             navController.navigate("result")
         }
     }
@@ -162,44 +137,10 @@ fun BenchmarkingView(
     }) {
         paddingValues ->
         HomeScreenBackground {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                val lazyColumnListState = rememberLazyListState()
-                val coroutineScope = rememberCoroutineScope()
-
-                BenchmarkView(modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .defaultMinSize(0.dp, 50.dp)
-                        .background(
-                            color = MaterialTheme.colorScheme.primary,
-                        ),
-                    textColor = Color.White,
-                    fontWeight = FontWeight.Light
-                )
-                if(chatState.messages.isEmpty()){
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ){
-                        CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary)
-                    }
-                }else{
-                    MessagesView(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(10.dp, 0.dp),
-                        lazyColumnListState = lazyColumnListState,
-                        coroutineScope = coroutineScope,
-                        chatState = chatState
-                    )
-                }
-            }
+            ConversationView(
+                paddingValues = paddingValues,
+                chatState = chatState
+            )
         }
     }
 }

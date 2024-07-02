@@ -12,7 +12,9 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.defaultMinSize
@@ -82,10 +84,6 @@ fun ChatView(
     val localFocusManager = LocalFocusManager.current
     val context = LocalContext.current
 
-    val cpuSamples by remember { mutableStateOf(Sampler()) }
-    val gpuSamples by remember { mutableStateOf(Sampler()) }
-    val ramSamples by remember { mutableStateOf(Sampler()) }
-
     LaunchedEffect(Unit) {
 
             resultViewModel.resetResults()
@@ -95,23 +93,14 @@ fun ChatView(
                     delay(25)
                     if(chatState.modelChatState.value !== ModelChatState.Generating)
                         continue
-                    cpuSamples.addSample(cpuUsage(context))
-                    gpuSamples.addSample(gpuUsage())
-                    ramSamples.addSample(ramUsage())
+                    resultViewModel.addBenchmarkingSample(context)
                 }
             }
+
     }
 
     fun toResults() {
-        resultViewModel.results.add(
-            BenchmarkingResult(
-                name = chatState.modelName.value,
-                cpu = cpuSamples.measurements(),
-                gpu = gpuSamples.measurements(),
-                ram = ramSamples.measurements(),
-                toks = Measurement(0,0,0)
-            )
-        )
+        resultViewModel.wrapResultUp(chatState.modelName.value)
         navController.navigate("result")
     }
 
@@ -150,65 +139,82 @@ fun ChatView(
         })
     }) { paddingValues ->
         HomeScreenBackground {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
+            ConversationView(
+                paddingValues = paddingValues,
+                chatState = chatState
             ) {
-                val lazyColumnListState = rememberLazyListState()
-                val coroutineScope = rememberCoroutineScope()
-
-                Column(
+                Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .defaultMinSize(0.dp, 80.dp)
-                        .background(color = MaterialTheme.colorScheme.primary),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    if(chatState.report.value.trim() !== ""){
-                        Text(
-                            text = chatState.report.value,
-                            textAlign = TextAlign.Center,
-                            fontWeight = FontWeight.Light,
-                            color = MaterialTheme.colorScheme.onPrimary,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight()
-                                .padding(top = 5.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.primary
                         )
-                    }
-                    BenchmarkView(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        fontWeight = FontWeight.Light,
-                        textColor = MaterialTheme.colorScheme.onPrimary
-                    )
-                }
-                Column (
-                    modifier = Modifier
-                        .fillMaxSize()
+                        .padding(5.dp)
                 ){
-                    MessagesView(
-                        modifier = Modifier.weight(9f),
-                        lazyColumnListState = lazyColumnListState,
-                        coroutineScope = coroutineScope,
-                        chatState = chatState
-                    )
-                    Box(
-                        modifier = Modifier
-                            .background(
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                            .padding(5.dp)
-                        ){
-                        SendMessageView(chatState = chatState)
-                    }
+                    SendMessageView(chatState = chatState)
                 }
             }
         }
     }
 }
+
+@Composable
+fun ConversationView(
+    paddingValues: PaddingValues,
+    chatState: AppViewModel.ChatState,
+    children: @Composable() (ColumnScope.() -> Unit)? = null
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues)
+    ){
+        val lazyColumnListState = rememberLazyListState()
+        val coroutineScope = rememberCoroutineScope()
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .defaultMinSize(0.dp, 80.dp)
+                .background(color = MaterialTheme.colorScheme.primary),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly
+        ) {
+            if(chatState.report.value.trim() !== ""){
+                Text(
+                    text = chatState.report.value,
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Light,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .padding(top = 5.dp)
+                )
+            }
+            BenchmarkView(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                fontWeight = FontWeight.Light,
+                textColor = MaterialTheme.colorScheme.onPrimary
+            )
+        }
+        Column (
+            modifier = Modifier
+                .fillMaxSize()
+        ){
+            MessagesView(
+                modifier = Modifier.weight(9f),
+                lazyColumnListState = lazyColumnListState,
+                coroutineScope = coroutineScope,
+                chatState = chatState
+            )
+            if (children != null) {
+                children()
+            }
+        }
+    }
+}
+
 
 @Composable
 fun BenchmarkView(
