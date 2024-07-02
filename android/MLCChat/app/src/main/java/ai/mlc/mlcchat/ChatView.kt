@@ -150,6 +150,10 @@ fun ConversationView(
     children: @Composable() (ColumnScope.() -> Unit)? = null
 ) {
 
+    val reportState by remember {
+        chatState.report
+    }
+
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
@@ -161,6 +165,16 @@ fun ConversationView(
                     continue
                 resultViewModel.addBenchmarkingSample(context)
             }
+        }
+    }
+
+    LaunchedEffect(reportState) {
+        if(reportState.trim() !== ""){
+            val regex = Regex("\\d+[,.]\\d+")
+            val matches = regex.findAll(reportState).map { it.value }.toList()
+            val numericValues = matches.map { it.replace(",", ".").toDouble() }
+            if(numericValues.size == 2)
+                resultViewModel.addTokenSample(numericValues[0], numericValues[1])
         }
     }
 

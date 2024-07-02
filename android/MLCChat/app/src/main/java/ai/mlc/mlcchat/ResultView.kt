@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -36,7 +37,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ResultView(
     navController: NavController,
@@ -48,7 +48,7 @@ fun ResultView(
     Scaffold(topBar =
         {
             AppTopBar(
-                title = "Resultado",
+                title = "Result",
                 onBack = { goToHome() }
             )
         }
@@ -123,19 +123,6 @@ fun ResultCard(modifier: Modifier = Modifier, result: BenchmarkingResult) {
 fun ResultTable(result: BenchmarkingResult) {
 
     @Composable
-    fun TableRow(
-        modifier: Modifier = Modifier,
-        content: @Composable () -> Unit
-    ) {
-        Row (
-            modifier = modifier
-                .fillMaxWidth()
-        ){
-            content()
-        }
-    }
-
-    @Composable
     fun TableCell(
         modifier: Modifier = Modifier,
         value: String,
@@ -152,43 +139,103 @@ fun ResultTable(result: BenchmarkingResult) {
         )
     }
 
+    data class RowContent(
+        val text: String,
+        val bold: Boolean = false
+    )
+
+    @Composable
+    fun TableRow(
+        modifier: Modifier = Modifier,
+        content: List<RowContent>
+    ) {
+        Row (
+            modifier = modifier
+                .fillMaxWidth()
+        ){
+            for((index, rowValue) in content.withIndex()) {
+                val isFirst = index == 0
+
+                TableCell(
+                    modifier = Modifier
+                        .weight(1f),
+                    value = rowValue.text,
+                    bold = rowValue.bold
+                )
+            }
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth(0.9f)
             .padding(10.dp, 0.dp, 0.dp, 0.dp),
         verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
-        TableRow(){
-            TableCell(modifier = Modifier.weight(1f), value = "")
-            TableCell(modifier = Modifier.weight(1f), value = "Média", bold = true)
-            TableCell(modifier = Modifier.weight(1f), value = "std", bold = true)
-            TableCell(modifier = Modifier.weight(1f), value = "Pico", bold = true)
-        }
-        TableRow(){
-            TableCell(modifier = Modifier.weight(1f), value = "CPU", bold = true)
-            TableCell(modifier = Modifier.weight(1f), value = "${result.cpu.average}%")
-            TableCell(modifier = Modifier.weight(1f), value = "${result.cpu.std}%")
-            TableCell(modifier = Modifier.weight(1f), value = "${result.cpu.peak}%")
-        }
-        TableRow(){
-            TableCell(modifier = Modifier.weight(1f), value = "GPU", bold = true)
-            TableCell(modifier = Modifier.weight(1f), value = "${result.gpu.average}%")
-            TableCell(modifier = Modifier.weight(1f), value = "${result.gpu.std}%")
-            TableCell(modifier = Modifier.weight(1f), value = "${result.gpu.peak}%")
-        }
-        TableRow(){
-            TableCell(modifier = Modifier.weight(1f), value = "RAM", bold = true)
-            TableCell(modifier = Modifier.weight(1f), value = "${result.ram.average}MB")
-            TableCell(modifier = Modifier.weight(1f), value = "${result.ram.std}MB")
-            TableCell(modifier = Modifier.weight(1f), value = "${result.ram.peak}MB")
-        }
-        TableRow(){
-            TableCell(modifier = Modifier.weight(1f), value = "tok/s", bold = true)
-            TableCell(modifier = Modifier.weight(1f), value = "${result.toks.average} tok/s")
-            TableCell(modifier = Modifier.weight(1f), value = "${result.toks.std} tok/s")
-            TableCell(modifier = Modifier.weight(1f), value = "${result.toks.peak} tok/s")
-        }
+        TableRow(
+            content = listOf(
+                RowContent(""),
+                RowContent("Average", bold = true),
+                RowContent("std", bold = true),
+                RowContent("Peak", bold = true)
+            )
+        )
+        TableRow(
+            content = listOf(
+                RowContent("CPU", bold = true),
+                RowContent("${result.cpu.average.toInt()}%"),
+                RowContent("${result.cpu.std.toInt()}%"),
+                RowContent("${result.cpu.peak.toInt()}%")
+            )
+        )
+        TableRow(
+            content = listOf(
+                RowContent("GPU", bold = true),
+                RowContent("${result.gpu.average.toInt()}%"),
+                RowContent("${result.gpu.std.toInt()}%"),
+                RowContent("${result.gpu.peak.toInt()}%")
+            )
+        )
+        TableRow(
+            content = listOf(
+                RowContent("RAM", bold = true),
+                RowContent("${result.ram.average.toInt()}MB"),
+                RowContent("${result.ram.std.toInt()}MB"),
+                RowContent("${result.ram.peak.toInt()}MB")
+            )
+        )
+
+        Spacer(modifier = Modifier.height(5.dp))
+
+        TableRow(
+            content = listOf(
+                RowContent(""),
+                RowContent("Median", bold = true),
+                RowContent("std", bold = true),
+                RowContent("Peak", bold = true)
+            )
+        )
+        TableRow(
+            content = listOf(
+                RowContent("Prefill", bold = true),
+                RowContent("${formatDouble(result.prefill.median)} tok/s"),
+                RowContent("${formatDouble(result.prefill.std)} tok/s"),
+                RowContent("${formatDouble(result.prefill.peak)} tok/s")
+            )
+        )
+        TableRow(
+            content = listOf(
+                RowContent("Decode", bold = true),
+                RowContent("${formatDouble(result.decode.median)} tok/s"),
+                RowContent("${formatDouble(result.decode.std)} tok/s"),
+                RowContent("${formatDouble(result.decode.peak)} tok/s")
+            )
+        )
     }
+}
+
+fun formatDouble(number: Number): String {
+    return String.format("%.1f", number)
 }
 
 @Composable

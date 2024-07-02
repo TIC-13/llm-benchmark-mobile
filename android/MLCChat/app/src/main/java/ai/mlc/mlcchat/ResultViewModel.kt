@@ -23,11 +23,18 @@ class ResultViewModel(
     private var cpuSamples = Sampler()
     private var gpuSamples = Sampler()
     private var ramSamples = Sampler()
+    private var prefillSamples = Sampler()
+    private var decodeSamples = Sampler()
 
     fun addBenchmarkingSample(context: Context) {
-        cpuSamples.addSample(cpuUsage(context))
-        gpuSamples.addSample(gpuUsage())
-        ramSamples.addSample(ramUsage())
+        cpuSamples.addSample(cpuUsage(context).toDouble())
+        gpuSamples.addSample(gpuUsage().toDouble())
+        ramSamples.addSample(ramUsage().toDouble())
+    }
+
+    fun addTokenSample(prefill: Double, decode: Double) {
+        prefillSamples.addSample(prefill)
+        decodeSamples.addSample(decode)
     }
 
     fun wrapResultUp(modelName: String) {
@@ -37,7 +44,8 @@ class ResultViewModel(
                 cpu = cpuSamples.measurements(),
                 gpu = gpuSamples.measurements(),
                 ram = ramSamples.measurements(),
-                toks = Measurement(0,0,0)
+                prefill = prefillSamples.measurements(),
+                decode = decodeSamples.measurements()
             )
         )
         resetSamplers()
@@ -47,6 +55,8 @@ class ResultViewModel(
         cpuSamples = Sampler()
         gpuSamples = Sampler()
         ramSamples = Sampler()
+        prefillSamples = Sampler()
+        decodeSamples = Sampler()
     }
 
     fun getResults(): ArrayList<BenchmarkingResult> {

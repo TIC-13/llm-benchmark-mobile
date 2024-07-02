@@ -64,7 +64,7 @@ fun BenchmarkingView(
     }
 
     val questions = remember {
-        readQuestionsFile(context, questionsFileName).subList(0,1)
+        readQuestionsFile(context, questionsFileName).subList(0,3)
     }
 
     var pendingModels by remember {
