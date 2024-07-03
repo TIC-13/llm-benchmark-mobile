@@ -26,6 +26,7 @@ import ai.mlc.mlcllm.OpenAIProtocol.ChatCompletionMessage
 import kotlinx.coroutines.*
 
 val benchmarkingModelsLabels = listOf(
+    //"Llama-3-8B-Instruct-q3f16_1-MLC",
     "Qwen2-1.5B-Instruct-q4f16_1-MLC",
     "gemma-2b-q4f16_1-MLC"
 )
@@ -688,9 +689,9 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
                     var texts = ""
                     for (response in channel) {
                         if (!callBackend {
-                            val finalsage = response.usage
-                            if (finalsage != null) {
-                                report.value = (finalsage.extra?.asTextLabel()?:"")
+                            val finalUsage = response.usage
+                            if (finalUsage != null) {
+                                report.value = (finalUsage.extra?.asTextLabel()?:"")
                             } else {
                                 if (response.choices.size > 0) {
                                     texts += response.choices[0].delta.content?.asText().orEmpty()
@@ -710,7 +711,22 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
 
 
         private fun updateMessage(role: MessageRole, text: String) {
-            messages[messages.size - 1] = MessageData(role, text)
+            messages[messages.size - 1] = MessageData(
+                role = role,
+                text = text,
+                prefillTime = messages[messages.size - 1].prefillTime,
+                decodeTime = messages[messages.size - 1].decodeTime
+            )
+        }
+
+        fun updateMessageUI(message: MessageData) {
+            val index = messages.indexOfFirst { it.id === message.id }
+            messages[index] = MessageData(
+                role = messages[index].role,
+                text = messages[index].text,
+                prefillTime = messages[index].prefillTime,
+                decodeTime = messages[index].decodeTime
+            )
         }
 
         fun chatable(): Boolean {
@@ -752,7 +768,13 @@ enum class MessageRole {
 
 data class DownloadTask(val url: URL, val file: File)
 
-data class MessageData(val role: MessageRole, val text: String, val id: UUID = UUID.randomUUID())
+data class MessageData(
+    val role: MessageRole,
+    val text: String,
+    val id: UUID = UUID.randomUUID(),
+    var prefillTime: Long? = null,
+    var decodeTime: Long? = null,
+)
 
 data class AppConfig(
     @SerializedName("model_libs") var modelLibs: MutableList<String>,

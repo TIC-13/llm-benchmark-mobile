@@ -7,6 +7,7 @@ import ai.mlc.mlcchat.utils.benchmark.Sampler
 import ai.mlc.mlcchat.utils.benchmark.cpuUsage
 import ai.mlc.mlcchat.utils.benchmark.gpuUsage
 import ai.mlc.mlcchat.utils.benchmark.ramUsage
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
@@ -58,12 +60,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -86,6 +90,10 @@ fun ChatView(
     fun toResults() {
         resultViewModel.wrapResultUp(chatState.modelName.value)
         navController.navigate("result")
+    }
+
+    val modelChatState by remember {
+        chatState.modelChatState
     }
 
     Scaffold(topBar =
@@ -126,7 +134,8 @@ fun ChatView(
             ConversationView(
                 paddingValues = paddingValues,
                 chatState = chatState,
-                resultViewModel = resultViewModel
+                resultViewModel = resultViewModel,
+                modelChatState = modelChatState
             ) {
                 Box(
                     modifier = Modifier
@@ -147,12 +156,15 @@ fun ConversationView(
     paddingValues: PaddingValues,
     chatState: AppViewModel.ChatState,
     resultViewModel: ResultViewModel,
+    modelChatState: ModelChatState,
     children: @Composable() (ColumnScope.() -> Unit)? = null
 ) {
 
     val reportState by remember {
         chatState.report
     }
+
+    var startReadMessageTime by remember { mutableStateOf(0L) }
 
     val context = LocalContext.current
 
@@ -175,6 +187,39 @@ fun ConversationView(
             val numericValues = matches.map { it.replace(",", ".").toDouble() }
             if(numericValues.size == 2)
                 resultViewModel.addTokenSample(numericValues[0], numericValues[1])
+        }
+    }
+
+    LaunchedEffect(modelChatState) {
+        Log.d("chat_state", modelChatState.toString())
+        if(modelChatState === ModelChatState.Ready && startReadMessageTime != 0L) {
+            val endReadMessageTime = System.currentTimeMillis()
+            val timeDecode = endReadMessageTime - startReadMessageTime
+            val lastAnswerNotEmpty = chatState.messages.findLast { it.role === MessageRole.Assistant && it.text.isNotEmpty() }
+            lastAnswerNotEmpty?.decodeTime = timeDecode
+            if (lastAnswerNotEmpty != null) {
+                chatState.updateMessageUI(lastAnswerNotEmpty)
+            }
+        }
+        if(modelChatState === ModelChatState.Generating)
+            startReadMessageTime = System.currentTimeMillis()
+    }
+
+    val modelStartedAnswering =
+        chatState.messages.isNotEmpty() &&
+                chatState.messages.last().role === MessageRole.Assistant &&
+                chatState.messages.last().text.isNotEmpty()
+
+    LaunchedEffect(modelStartedAnswering) {
+        if(modelStartedAnswering){
+            val endReadMessageTime = System.currentTimeMillis()
+            val prefillTime = endReadMessageTime - startReadMessageTime
+            val lastAnswer = chatState.messages.findLast { it.role === MessageRole.Assistant }
+            lastAnswer?.prefillTime = prefillTime
+            if (lastAnswer != null) {
+                chatState.updateMessageUI(lastAnswer)
+            }
+            startReadMessageTime = System.currentTimeMillis()
         }
     }
 
@@ -290,11 +335,33 @@ fun MessagesView(modifier: Modifier = Modifier, lazyColumnListState: LazyListSta
 
 @Composable
 fun MessageView(messageData: MessageData) {
+
+    @Composable
+    fun BottomText(text: String) {
+        Text(
+            modifier = Modifier
+                .fillMaxWidth(),
+            text = text,
+            textAlign = TextAlign.Right,
+            fontSize = 12.sp,
+            fontWeight = FontWeight.ExtraLight,
+            fontStyle = FontStyle.Italic,
+            color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.5f),
+        )
+    }
+
     SelectionContainer {
         if (messageData.role == MessageRole.Assistant) {
-            Row(
-                horizontalArrangement = Arrangement.Start,
-                modifier = Modifier.fillMaxWidth()
+            Column(
+                horizontalAlignment = Alignment.Start,
+                modifier = Modifier
+                    .background(
+                        color = MaterialTheme.colorScheme.secondaryContainer,
+                        shape = RoundedCornerShape(20.dp)
+                    )
+                    .padding(10.dp)
+                    .widthIn(max = 250.dp)
+                    .wrapContentWidth()
             ) {
                 Text(
                     text = messageData.text,
@@ -303,14 +370,16 @@ fun MessageView(messageData: MessageData) {
                     fontWeight = FontWeight.Light,
                     color = MaterialTheme.colorScheme.onSecondaryContainer,
                     modifier = Modifier
-                        .wrapContentWidth()
-                        .background(
-                            color = MaterialTheme.colorScheme.secondaryContainer,
-                            shape = RoundedCornerShape(20.dp)
-                        )
-                        .padding(10.dp)
-                        .widthIn(max = 250.dp)
                 )
+
+                if(messageData.prefillTime !== null) {
+                    Spacer(modifier = Modifier.height(20.dp))
+                    BottomText(text = "Prefill time: ${messageData.prefillTime?.let { formatDouble(it.toDouble()/1000) }}s")
+                }
+
+                if(messageData.decodeTime !== null) {
+                    BottomText(text = "Decode time: ${messageData.decodeTime?.let { formatDouble(it.toDouble()/1000) }}s")
+                }
             }
         } else {
             Row(

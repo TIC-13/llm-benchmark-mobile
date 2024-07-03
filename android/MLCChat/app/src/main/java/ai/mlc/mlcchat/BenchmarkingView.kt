@@ -125,7 +125,8 @@ fun BenchmarkingView(
             ConversationView(
                 paddingValues = paddingValues,
                 chatState = chatState,
-                resultViewModel = resultViewModel
+                resultViewModel = resultViewModel,
+                modelChatState = modelChatState
             )
         }
     }
