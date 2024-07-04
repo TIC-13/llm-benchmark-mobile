@@ -64,7 +64,7 @@ fun BenchmarkingView(
     }
 
     val questions = remember {
-        readQuestionsFile(context, questionsFileName).subList(0,3)
+        readQuestionsFile(context, questionsFileName).subList(0,5)
     }
 
     var pendingModels by remember {
@@ -97,6 +97,8 @@ fun BenchmarkingView(
     LaunchedEffect(modelChatState) {
         if(chatState.chatable()){
 
+            delay(1000)
+
             if(pendingQuestions.isEmpty()){
 
                 if(pendingModels.isNotEmpty()){
@@ -105,6 +107,7 @@ fun BenchmarkingView(
                 }
 
             }else{
+
                 chatState.requestGenerate(pendingQuestions[0])
                 pendingQuestions = pendingQuestions.subList(1, pendingQuestions.size)
             }
@@ -126,7 +129,7 @@ fun BenchmarkingView(
                 paddingValues = paddingValues,
                 chatState = chatState,
                 resultViewModel = resultViewModel,
-                modelChatState = modelChatState
+                modelChatState = modelChatState,
             )
         }
     }

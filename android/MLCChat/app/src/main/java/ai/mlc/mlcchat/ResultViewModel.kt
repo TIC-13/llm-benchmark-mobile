@@ -4,6 +4,8 @@ import ai.mlc.mlcchat.interfaces.BenchmarkingResult
 import ai.mlc.mlcchat.interfaces.Measurement
 import ai.mlc.mlcchat.utils.benchmark.Sampler
 import ai.mlc.mlcchat.utils.benchmark.cpuUsage
+import ai.mlc.mlcchat.utils.benchmark.getBatteryCurrentAmperes
+import ai.mlc.mlcchat.utils.benchmark.getBatteryVoltageVolts
 import ai.mlc.mlcchat.utils.benchmark.gpuUsage
 import ai.mlc.mlcchat.utils.benchmark.ramUsage
 import android.app.Application
@@ -23,6 +25,10 @@ class ResultViewModel(
     private var cpuSamples = Sampler()
     private var gpuSamples = Sampler()
     private var ramSamples = Sampler()
+    private var voltages = Sampler()
+    private var currents = Sampler()
+    private var voltagesIdle = Sampler()
+    private var currentsIdle = Sampler()
     private var prefillSamples = Sampler()
     private var decodeSamples = Sampler()
 
@@ -35,6 +41,16 @@ class ResultViewModel(
     fun addTokenSample(prefill: Double, decode: Double) {
         prefillSamples.addSample(prefill)
         decodeSamples.addSample(decode)
+    }
+
+    fun addEnergySample(context: Context) {
+        voltages.addSample(getBatteryVoltageVolts(context).toDouble())
+        currents.addSample(getBatteryCurrentAmperes(context).toDouble())
+    }
+
+    fun addEnergySampleIdle(context: Context) {
+        voltagesIdle.addSample(getBatteryVoltageVolts(context).toDouble())
+        currentsIdle.addSample(getBatteryCurrentAmperes(context).toDouble())
     }
 
     fun wrapResultUp(modelName: String) {
@@ -57,6 +73,8 @@ class ResultViewModel(
         ramSamples = Sampler()
         prefillSamples = Sampler()
         decodeSamples = Sampler()
+        voltages = Sampler()
+        currents = Sampler()
     }
 
     fun getResults(): ArrayList<BenchmarkingResult> {

@@ -173,9 +173,22 @@ fun ConversationView(
         withContext(Dispatchers.IO) {
             while(true) {
                 delay(25)
-                if(chatState.modelChatState.value !== ModelChatState.Generating)
-                    continue
-                resultViewModel.addBenchmarkingSample(context)
+                if(chatState.modelChatState.value === ModelChatState.Generating)
+                    resultViewModel.addBenchmarkingSample(context)
+            }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        withContext(Dispatchers.IO) {
+            while(true) {
+                delay(5)
+                if(chatState.modelChatState.value === ModelChatState.Generating){
+                    resultViewModel.addEnergySample(context)
+                }else if(chatState.modelChatState.value === ModelChatState.Ready){
+                    resultViewModel.addEnergySampleIdle(context)
+                }
+
             }
         }
     }
