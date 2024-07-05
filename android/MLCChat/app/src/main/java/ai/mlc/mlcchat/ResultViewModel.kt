@@ -16,65 +16,63 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
+data class BenchmarkingSamples(
+    val cpu: Sampler = Sampler(),
+    val gpu: Sampler = Sampler(),
+    val ram: Sampler = Sampler(),
+    val voltages: Sampler = Sampler(),
+    val currents: Sampler = Sampler(),
+    val prefill: Sampler = Sampler(),
+    val decode: Sampler = Sampler(),
+)
+
+data class IdleSamples(
+    val voltages: Sampler = Sampler(),
+    val currents: Sampler = Sampler(),
+)
+
 class ResultViewModel(
-        application: Application
+    application: Application
 ) : AndroidViewModel(application) {
 
     private var results = arrayListOf<BenchmarkingResult>()
 
-    private var cpuSamples = Sampler()
-    private var gpuSamples = Sampler()
-    private var ramSamples = Sampler()
-    private var voltages = Sampler()
-    private var currents = Sampler()
-    private var voltagesIdle = Sampler()
-    private var currentsIdle = Sampler()
-    private var prefillSamples = Sampler()
-    private var decodeSamples = Sampler()
+    private var samples = BenchmarkingSamples()
+    private var idleSamples = IdleSamples()
 
     fun addBenchmarkingSample(context: Context) {
-        cpuSamples.addSample(cpuUsage(context).toDouble())
-        gpuSamples.addSample(gpuUsage().toDouble())
-        ramSamples.addSample(ramUsage().toDouble())
+        samples.cpu.addSample(cpuUsage(context).toDouble())
+        samples.gpu.addSample(gpuUsage().toDouble())
+        samples.ram.addSample(ramUsage().toDouble())
     }
 
     fun addTokenSample(prefill: Double, decode: Double) {
-        prefillSamples.addSample(prefill)
-        decodeSamples.addSample(decode)
+        samples.prefill.addSample(prefill)
+        samples.decode.addSample(decode)
     }
 
     fun addEnergySample(context: Context) {
-        voltages.addSample(getBatteryVoltageVolts(context).toDouble())
-        currents.addSample(getBatteryCurrentAmperes(context).toDouble())
+        samples.voltages.addSample(getBatteryVoltageVolts(context).toDouble())
+        samples.currents.addSample(getBatteryCurrentAmperes(context).toDouble())
     }
 
     fun addEnergySampleIdle(context: Context) {
-        voltagesIdle.addSample(getBatteryVoltageVolts(context).toDouble())
-        currentsIdle.addSample(getBatteryCurrentAmperes(context).toDouble())
+        idleSamples.voltages.addSample(getBatteryVoltageVolts(context).toDouble())
+        idleSamples.currents.addSample(getBatteryCurrentAmperes(context).toDouble())
     }
 
     fun wrapResultUp(modelName: String) {
         results.add(
             BenchmarkingResult(
                 name = modelName,
-                cpu = cpuSamples.measurements(),
-                gpu = gpuSamples.measurements(),
-                ram = ramSamples.measurements(),
-                prefill = prefillSamples.measurements(),
-                decode = decodeSamples.measurements()
+                samples = samples
             )
         )
-        resetSamplers()
+        resetSampler()
     }
 
-    private fun resetSamplers() {
-        cpuSamples = Sampler()
-        gpuSamples = Sampler()
-        ramSamples = Sampler()
-        prefillSamples = Sampler()
-        decodeSamples = Sampler()
-        voltages = Sampler()
-        currents = Sampler()
+    private fun resetSampler() {
+        samples = BenchmarkingSamples()
     }
 
     fun getResults(): ArrayList<BenchmarkingResult> {
@@ -83,6 +81,6 @@ class ResultViewModel(
 
     fun resetResults() {
         results = arrayListOf()
-        resetSamplers()
+        resetSampler()
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
+import kotlin.math.abs
 
 fun getBatteryVoltageVolts(context: Context): Float {
     val intentFilter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
@@ -26,3 +27,4 @@ fun isBatteryCharging(context: Context): Boolean {
     val status = batteryStatus?.getIntExtra(BatteryManager.EXTRA_STATUS, -1) ?: -1
     return status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_STATUS_FULL
 }
+

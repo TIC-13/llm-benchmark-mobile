@@ -183,25 +183,25 @@ fun ResultTable(result: BenchmarkingResult) {
         TableRow(
             content = listOf(
                 RowContent("CPU", bold = true),
-                RowContent("${result.cpu.average.toInt()}%"),
-                RowContent("${result.cpu.std.toInt()}%"),
-                RowContent("${result.cpu.peak.toInt()}%")
+                RowContent("${result.samples.cpu.average().toInt()}%"),
+                RowContent("${result.samples.cpu.std().toInt()}%"),
+                RowContent("${result.samples.cpu.peak().toInt()}%")
             )
         )
         TableRow(
             content = listOf(
                 RowContent("GPU", bold = true),
-                RowContent("${result.gpu.average.toInt()}%"),
-                RowContent("${result.gpu.std.toInt()}%"),
-                RowContent("${result.gpu.peak.toInt()}%")
+                RowContent("${result.samples.gpu.average().toInt()}%"),
+                RowContent("${result.samples.gpu.std().toInt()}%"),
+                RowContent("${result.samples.gpu.peak().toInt()}%")
             )
         )
         TableRow(
             content = listOf(
                 RowContent("RAM", bold = true),
-                RowContent("${result.ram.average.toInt()}MB"),
-                RowContent("${result.ram.std.toInt()}MB"),
-                RowContent("${result.ram.peak.toInt()}MB")
+                RowContent("${result.samples.ram.average().toInt()}MB"),
+                RowContent("${result.samples.ram.std().toInt()}MB"),
+                RowContent("${result.samples.ram.peak().toInt()}MB")
             )
         )
 
@@ -218,17 +218,17 @@ fun ResultTable(result: BenchmarkingResult) {
         TableRow(
             content = listOf(
                 RowContent("Prefill", bold = true),
-                RowContent("${formatDouble(result.prefill.median)} tok/s"),
-                RowContent("${formatDouble(result.prefill.std)} tok/s"),
-                RowContent("${formatDouble(result.prefill.peak)} tok/s")
+                RowContent("${formatDouble(result.samples.prefill.median())} tok/s"),
+                RowContent("${formatDouble(result.samples.prefill.std())} tok/s"),
+                RowContent("${formatDouble(result.samples.prefill.peak())} tok/s")
             )
         )
         TableRow(
             content = listOf(
                 RowContent("Decode", bold = true),
-                RowContent("${formatDouble(result.decode.median)} tok/s"),
-                RowContent("${formatDouble(result.decode.std)} tok/s"),
-                RowContent("${formatDouble(result.decode.peak)} tok/s")
+                RowContent("${formatDouble(result.samples.decode.median())} tok/s"),
+                RowContent("${formatDouble(result.samples.decode.std())} tok/s"),
+                RowContent("${formatDouble(result.samples.decode.peak())} tok/s")
             )
         )
     }

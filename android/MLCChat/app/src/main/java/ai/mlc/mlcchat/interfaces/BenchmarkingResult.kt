@@ -1,12 +1,10 @@
 package ai.mlc.mlcchat.interfaces
 
+import ai.mlc.mlcchat.BenchmarkingSamples
+
 data class BenchmarkingResult(
     val name: String,
-    val cpu: Measurement,
-    val gpu: Measurement,
-    val ram: Measurement,
-    val prefill: Measurement,
-    val decode: Measurement,
+    val samples: BenchmarkingSamples
 )
 
 data class Measurement(
