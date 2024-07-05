@@ -79,6 +79,10 @@ class ResultViewModel(
         return results
     }
 
+    fun getIdleSamples(): IdleSamples {
+        return idleSamples
+    }
+
     fun resetResults() {
         results = arrayListOf()
         resetSampler()

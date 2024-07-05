@@ -33,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -70,7 +71,7 @@ fun ResultView(
                         verticalArrangement = Arrangement.spacedBy(15.dp)
                     ) {
                         resultViewModel.getResults().map {
-                            ResultCard(result = it)
+                            ResultCard(result = it, idleSamples = resultViewModel.getIdleSamples())
                         }
                     }
 
@@ -86,7 +87,11 @@ fun ResultView(
 }
 
 @Composable
-fun ResultCard(modifier: Modifier = Modifier, result: BenchmarkingResult) {
+fun ResultCard(
+    modifier: Modifier = Modifier,
+    result: BenchmarkingResult,
+    idleSamples: IdleSamples
+) {
     Column(
         modifier = modifier
             .fillMaxWidth(0.8F)
@@ -113,25 +118,27 @@ fun ResultCard(modifier: Modifier = Modifier, result: BenchmarkingResult) {
             )
         }
 
-        ResultTable(result = result)
+        ResultTable(result = result, idleSamples = idleSamples)
 
         Spacer(modifier = Modifier.height(15.dp))
     }
 }
 
 @Composable
-fun ResultTable(result: BenchmarkingResult) {
+fun ResultTable(result: BenchmarkingResult, idleSamples: IdleSamples) {
 
     @Composable
     fun TableCell(
         modifier: Modifier = Modifier,
         value: String,
-        bold: Boolean = false
+        bold: Boolean = false,
+        textAlign: TextAlign = TextAlign.Left
     ) {
         Text(
             modifier = modifier,
             text = value,
             fontSize = 12.sp,
+            textAlign = textAlign,
             fontWeight = if(bold)
                 FontWeight.Bold
             else
@@ -141,6 +148,7 @@ fun ResultTable(result: BenchmarkingResult) {
 
     data class RowContent(
         val text: String,
+        val textAlign: TextAlign = TextAlign.Left,
         val bold: Boolean = false
     )
 
@@ -159,12 +167,16 @@ fun ResultTable(result: BenchmarkingResult) {
                 TableCell(
                     modifier = Modifier
                         .weight(1f),
+                    textAlign = rowValue.textAlign,
                     value = rowValue.text,
                     bold = rowValue.bold
                 )
             }
         }
     }
+
+    val powerConsumption = result.samples.voltages.average() * result.samples.currents.average()
+    val powerIdle = idleSamples.voltages.average()*idleSamples.currents.average()
 
     Column(
         modifier = Modifier
@@ -202,6 +214,14 @@ fun ResultTable(result: BenchmarkingResult) {
                 RowContent("${result.samples.ram.average().toInt()}MB"),
                 RowContent("${result.samples.ram.std().toInt()}MB"),
                 RowContent("${result.samples.ram.peak().toInt()}MB")
+            )
+        )
+        TableRow(
+            content = listOf(
+                RowContent("Potência", bold = true),
+                RowContent("${formatDouble(powerConsumption - powerIdle)}W"),
+                RowContent("-"),
+                RowContent("-")
             )
         )
 
