@@ -1,6 +1,5 @@
 package ai.mlc.mlcchat.utils.benchmark
 
-import ai.mlc.mlcchat.interfaces.Measurement
 import kotlin.math.sqrt
 
 class Sampler {

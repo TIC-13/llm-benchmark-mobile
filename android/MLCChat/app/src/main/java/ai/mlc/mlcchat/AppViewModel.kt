@@ -27,8 +27,8 @@ import kotlinx.coroutines.*
 
 val benchmarkingModelsLabels = listOf(
     //"Llama-3-8B-Instruct-q3f16_1-MLC",
-    //"Qwen2-1.5B-Instruct-q4f16_1-MLC",
-    "gemma-2b-q4f16_1-MLC"
+    "Qwen2-1.5B-Instruct-q4f16_1-MLC",
+    //"gemma-2b-q4f16_1-MLC"
 )
 
 class AppViewModel(application: Application) : AndroidViewModel(application) {

@@ -1,11 +1,9 @@
 package ai.mlc.mlcchat
 
 import ai.mlc.mlcchat.components.AppTopBar
-import ai.mlc.mlcchat.interfaces.BenchmarkingResult
-import ai.mlc.mlcchat.interfaces.Measurement
-import ai.mlc.mlcchat.utils.benchmark.Sampler
 import ai.mlc.mlcchat.utils.benchmark.cpuUsage
 import ai.mlc.mlcchat.utils.benchmark.gpuUsage
+import ai.mlc.mlcchat.utils.benchmark.isBatteryCharging
 import ai.mlc.mlcchat.utils.benchmark.ramUsage
 import android.util.Log
 import androidx.compose.foundation.background
@@ -34,24 +32,17 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Replay
 import androidx.compose.material.icons.filled.Send
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonColors
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -60,7 +51,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -183,12 +173,13 @@ fun ConversationView(
         withContext(Dispatchers.IO) {
             while(true) {
                 delay(5)
-                if(chatState.modelChatState.value === ModelChatState.Generating){
-                    resultViewModel.addEnergySample(context)
-                }else if(chatState.modelChatState.value === ModelChatState.Ready){
-                    resultViewModel.addEnergySampleIdle(context)
+                if(!isBatteryCharging(context)) {
+                    if(chatState.modelChatState.value === ModelChatState.Generating){
+                        resultViewModel.addEnergySample(context)
+                    }else if(chatState.modelChatState.value === ModelChatState.Ready){
+                        resultViewModel.addEnergySampleIdle(context)
+                    }
                 }
-
             }
         }
     }

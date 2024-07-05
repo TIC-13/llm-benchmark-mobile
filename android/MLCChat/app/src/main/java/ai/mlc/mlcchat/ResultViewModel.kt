@@ -1,7 +1,6 @@
 package ai.mlc.mlcchat
 
 import ai.mlc.mlcchat.interfaces.BenchmarkingResult
-import ai.mlc.mlcchat.interfaces.Measurement
 import ai.mlc.mlcchat.utils.benchmark.Sampler
 import ai.mlc.mlcchat.utils.benchmark.cpuUsage
 import ai.mlc.mlcchat.utils.benchmark.getBatteryCurrentAmperes
@@ -10,11 +9,7 @@ import ai.mlc.mlcchat.utils.benchmark.gpuUsage
 import ai.mlc.mlcchat.utils.benchmark.ramUsage
 import android.app.Application
 import android.content.Context
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
 
 data class BenchmarkingSamples(
     val cpu: Sampler = Sampler(),
@@ -65,7 +60,8 @@ class ResultViewModel(
         results.add(
             BenchmarkingResult(
                 name = modelName,
-                samples = samples
+                samples = samples,
+                idleSamples = idleSamples
             )
         )
         resetSampler()
@@ -73,6 +69,7 @@ class ResultViewModel(
 
     private fun resetSampler() {
         samples = BenchmarkingSamples()
+        idleSamples = IdleSamples()
     }
 
     fun getResults(): ArrayList<BenchmarkingResult> {

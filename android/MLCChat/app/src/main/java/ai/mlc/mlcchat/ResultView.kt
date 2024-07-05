@@ -71,7 +71,7 @@ fun ResultView(
                         verticalArrangement = Arrangement.spacedBy(15.dp)
                     ) {
                         resultViewModel.getResults().map {
-                            ResultCard(result = it, idleSamples = resultViewModel.getIdleSamples())
+                            ResultCard(result = it)
                         }
                     }
 
@@ -89,8 +89,7 @@ fun ResultView(
 @Composable
 fun ResultCard(
     modifier: Modifier = Modifier,
-    result: BenchmarkingResult,
-    idleSamples: IdleSamples
+    result: BenchmarkingResult
 ) {
     Column(
         modifier = modifier
@@ -118,14 +117,14 @@ fun ResultCard(
             )
         }
 
-        ResultTable(result = result, idleSamples = idleSamples)
+        ResultTable(result = result)
 
         Spacer(modifier = Modifier.height(15.dp))
     }
 }
 
 @Composable
-fun ResultTable(result: BenchmarkingResult, idleSamples: IdleSamples) {
+fun ResultTable(result: BenchmarkingResult) {
 
     @Composable
     fun TableCell(
@@ -176,7 +175,12 @@ fun ResultTable(result: BenchmarkingResult, idleSamples: IdleSamples) {
     }
 
     val powerConsumption = result.samples.voltages.average() * result.samples.currents.average()
-    val powerIdle = idleSamples.voltages.average()*idleSamples.currents.average()
+    val powerIdle = result.idleSamples.voltages.average()*result.idleSamples.currents.average()
+    val powerResult =
+        if(powerConsumption.isNaN() || powerIdle.isNaN())
+            "N/A"
+        else
+            "${formatDouble(powerConsumption - powerIdle)}W"
 
     Column(
         modifier = Modifier
@@ -219,9 +223,9 @@ fun ResultTable(result: BenchmarkingResult, idleSamples: IdleSamples) {
         TableRow(
             content = listOf(
                 RowContent("Potência", bold = true),
-                RowContent("${formatDouble(powerConsumption - powerIdle)}W"),
-                RowContent("-"),
-                RowContent("-")
+                RowContent(powerResult),
+                RowContent("   -"),
+                RowContent("   -")
             )
         )
 

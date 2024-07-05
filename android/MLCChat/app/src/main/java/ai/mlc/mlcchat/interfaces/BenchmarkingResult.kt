@@ -1,15 +1,11 @@
 package ai.mlc.mlcchat.interfaces
 
 import ai.mlc.mlcchat.BenchmarkingSamples
+import ai.mlc.mlcchat.IdleSamples
 
 data class BenchmarkingResult(
     val name: String,
-    val samples: BenchmarkingSamples
+    val samples: BenchmarkingSamples,
+    val idleSamples: IdleSamples
 )
 
-data class Measurement(
-    val average: Number,
-    val std: Number,
-    val peak: Number,
-    val median: Number,
-)
