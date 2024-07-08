@@ -41,10 +41,14 @@ import androidx.navigation.NavController
 @Composable
 fun ResultView(
     navController: NavController,
+    chatState: AppViewModel.ChatState,
     resultViewModel: ResultViewModel
 ){
 
-    val goToHome = { navController.popBackStack("main", false) }
+    fun goToHome() {
+        chatState.requestResetChat()
+        navController.popBackStack("main", false)
+    }
 
     Scaffold(topBar =
         {

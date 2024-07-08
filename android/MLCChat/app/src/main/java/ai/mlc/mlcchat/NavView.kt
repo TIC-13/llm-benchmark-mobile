@@ -51,6 +51,7 @@ fun NavView(
         composable("result") {
             ResultView(
                 navController,
+                appViewModel.chatState,
                 resultViewModel
             )
         }
