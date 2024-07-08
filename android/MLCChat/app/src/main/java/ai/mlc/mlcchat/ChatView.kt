@@ -196,7 +196,6 @@ fun ConversationView(
     }
 
     LaunchedEffect(modelChatState) {
-        Log.d("chat_state", modelChatState.toString())
         if(modelChatState === ModelChatState.Ready && startReadMessageTime != 0L) {
             val endReadMessageTime = System.currentTimeMillis()
             val timeDecode = endReadMessageTime - startReadMessageTime
@@ -214,7 +213,8 @@ fun ConversationView(
     val modelStartedAnswering =
         chatState.messages.isNotEmpty() &&
                 chatState.messages.last().role === MessageRole.Assistant &&
-                chatState.messages.last().text.isNotEmpty()
+                chatState.messages.last().text.isNotEmpty() &&
+                startReadMessageTime != 0L
 
     LaunchedEffect(modelStartedAnswering) {
         if(modelStartedAnswering){
