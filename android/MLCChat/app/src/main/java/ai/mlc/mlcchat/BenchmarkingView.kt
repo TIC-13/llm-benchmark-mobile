@@ -63,6 +63,7 @@ fun BenchmarkingView(
             modelState.startChat()
         }else{
             saveLastResult()
+            resultViewModel.setType(ResultType.BENCHMARKING)
             navController.navigate("result")
         }
     }

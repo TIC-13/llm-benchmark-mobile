@@ -79,6 +79,7 @@ fun ChatView(
 
     fun toResults() {
         resultViewModel.wrapResultUp(chatState.modelName.value)
+        resultViewModel.setType(ResultType.CONVERSATION)
         navController.navigate("result")
     }
 

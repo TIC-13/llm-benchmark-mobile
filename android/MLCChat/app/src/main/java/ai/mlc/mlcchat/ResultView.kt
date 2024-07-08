@@ -50,7 +50,14 @@ fun ResultView(
         {
             AppTopBar(
                 title = "Result",
-                onBack = { goToHome() }
+                onBack = {
+                    if(resultViewModel.getType() == ResultType.BENCHMARKING)
+                        goToHome()
+                    else if(resultViewModel.getType() == ResultType.CONVERSATION)
+                        navController.popBackStack()
+                    else
+                        goToHome()
+                }
             )
         }
     ) {

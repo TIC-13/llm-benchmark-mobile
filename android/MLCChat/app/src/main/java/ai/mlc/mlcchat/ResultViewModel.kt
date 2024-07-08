@@ -28,6 +28,10 @@ data class IdleSamples(
     val currents: Sampler = Sampler(),
 )
 
+enum class ResultType {
+    BENCHMARKING, CONVERSATION
+}
+
 class ResultViewModel(
     application: Application
 ) : AndroidViewModel(application) {
@@ -36,6 +40,16 @@ class ResultViewModel(
 
     private var samples = BenchmarkingSamples()
     private var idleSamples = IdleSamples()
+
+    private var type = ResultType.BENCHMARKING
+
+    fun getType(): ResultType {
+        return type
+    }
+
+    fun setType(newType: ResultType) {
+        type = newType
+    }
 
     fun addBenchmarkingSample(context: Context) {
         samples.cpu.addSample(cpuUsage(context).toDouble())
