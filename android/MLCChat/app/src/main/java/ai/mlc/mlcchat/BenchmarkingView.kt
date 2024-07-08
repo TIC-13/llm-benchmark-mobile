@@ -14,10 +14,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.capitalize
 import androidx.navigation.NavController
 import kotlinx.coroutines.delay
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.util.Locale
 
 @Composable
 fun BenchmarkingView(
@@ -51,6 +53,9 @@ fun BenchmarkingView(
     fun saveLastResult() {
         resultViewModel.wrapResultUp(chatState.modelName.value)
     }
+
+    val numModelsTotal = benchmarkingModelsLabels.size
+    val numModelsDone = numModelsTotal - pendingModels.size + 1
 
     LaunchedEffect(pendingModels) {
         if(pendingModels.isNotEmpty()){
@@ -90,7 +95,11 @@ fun BenchmarkingView(
 
     Scaffold(topBar = {
         AppTopBar(
-            title = chatState.modelName.value.split("-")[0]
+            title = "${chatState.modelName.value.split("-")[0].replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(
+                    Locale.ROOT
+                ) else it.toString()
+            }} - Model $numModelsDone of $numModelsTotal"
         )
     }, modifier = Modifier.pointerInput(Unit) {
         detectTapGestures(onTap = {
