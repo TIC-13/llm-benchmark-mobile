@@ -719,7 +719,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
             )
         }
 
-        fun updateMessageUI(message: MessageData) {
+        fun updateMessage(message: MessageData) {
             val index = messages.indexOfFirst { it.id === message.id }
             messages[index] = MessageData(
                 role = messages[index].role,

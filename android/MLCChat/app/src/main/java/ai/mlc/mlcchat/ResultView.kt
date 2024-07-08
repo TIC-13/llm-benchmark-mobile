@@ -176,11 +176,22 @@ fun ResultTable(result: BenchmarkingResult) {
 
     val powerConsumption = result.samples.voltages.average() * result.samples.currents.average()
     val powerIdle = result.idleSamples.voltages.average()*result.idleSamples.currents.average()
+    val powerDifference = powerConsumption - powerIdle
     val powerResult =
-        if(powerConsumption.isNaN() || powerIdle.isNaN())
+        if(powerDifference.isNaN())
             "N/A"
         else
-            "${formatDouble(powerConsumption - powerIdle)}W"
+            "${formatDouble(powerDifference)}W"
+
+    result.samples.prefill
+    result.samples.decode
+    val energyConsumptionDifference = powerDifference * (result.samples.prefillTime.sum() + result.samples.decodeTime.sum())
+    val energyConsumptionResult =
+        if(energyConsumptionDifference.isNaN())
+            "N/A"
+        else
+            "${formatDouble(energyConsumptionDifference)}J"
+
 
     Column(
         modifier = Modifier
@@ -222,10 +233,18 @@ fun ResultTable(result: BenchmarkingResult) {
         )
         TableRow(
             content = listOf(
-                RowContent("Potência", bold = true),
+                RowContent("Power", bold = true),
                 RowContent(powerResult),
-                RowContent("   -"),
-                RowContent("   -")
+                RowContent(""),
+                RowContent("")
+            )
+        )
+        TableRow(
+            content = listOf(
+                RowContent("Energy", bold = true),
+                RowContent(energyConsumptionResult),
+                RowContent(""),
+                RowContent("")
             )
         )
 

@@ -19,6 +19,8 @@ data class BenchmarkingSamples(
     val currents: Sampler = Sampler(),
     val prefill: Sampler = Sampler(),
     val decode: Sampler = Sampler(),
+    val prefillTime: Sampler = Sampler(),
+    val decodeTime: Sampler = Sampler()
 )
 
 data class IdleSamples(
@@ -54,6 +56,14 @@ class ResultViewModel(
     fun addEnergySampleIdle(context: Context) {
         idleSamples.voltages.addSample(getBatteryVoltageVolts(context).toDouble())
         idleSamples.currents.addSample(getBatteryCurrentAmperes(context).toDouble())
+    }
+
+    fun addPrefillTimeSample(prefill: Double) {
+        samples.prefillTime.addSample(prefill)
+    }
+
+    fun addDecodeTimeSample(decode: Double) {
+        samples.decodeTime.addSample(decode)
     }
 
     fun wrapResultUp(modelName: String) {

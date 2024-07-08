@@ -202,7 +202,8 @@ fun ConversationView(
             val lastAnswerNotEmpty = chatState.messages.findLast { it.role === MessageRole.Assistant && it.text.isNotEmpty() }
             lastAnswerNotEmpty?.decodeTime = timeDecode
             if (lastAnswerNotEmpty != null) {
-                chatState.updateMessageUI(lastAnswerNotEmpty)
+                chatState.updateMessage(lastAnswerNotEmpty)
+                resultViewModel.addDecodeTimeSample(timeDecode.toDouble() / 1000F)
             }
         }
         if(modelChatState === ModelChatState.Generating)
@@ -221,7 +222,8 @@ fun ConversationView(
             val lastAnswer = chatState.messages.findLast { it.role === MessageRole.Assistant }
             lastAnswer?.prefillTime = prefillTime
             if (lastAnswer != null) {
-                chatState.updateMessageUI(lastAnswer)
+                chatState.updateMessage(lastAnswer)
+                resultViewModel.addPrefillTimeSample(prefillTime.toDouble() / 1000F)
             }
             startReadMessageTime = System.currentTimeMillis()
         }

@@ -21,6 +21,10 @@ class Sampler {
         return samples
     }
 
+    fun sum(): Double {
+        return samples.sum()
+    }
+
     fun average(): Double {
         return samples.average()
     }
