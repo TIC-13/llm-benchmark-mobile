@@ -1,5 +1,6 @@
 package ai.mlc.mlcchat.utils.benchmark
 
+import ai.mlc.mlcchat.api.Measurement
 import kotlin.math.sqrt
 
 class Sampler {
@@ -58,6 +59,15 @@ class Sampler {
 
     fun getCreationTime(): Long {
         return creationTime
+    }
+
+    fun getMeasurements(): Measurement {
+        return Measurement(
+            average = this.average(),
+            peak = this.peak(),
+            std = this.std(),
+            median = this.median()
+        )
     }
 
 }

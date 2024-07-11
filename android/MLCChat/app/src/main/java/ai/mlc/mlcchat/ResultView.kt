@@ -1,7 +1,10 @@
 package ai.mlc.mlcchat
 
+import ai.mlc.mlcchat.api.PostResult
+import ai.mlc.mlcchat.api.postResult
 import ai.mlc.mlcchat.components.AppTopBar
 import ai.mlc.mlcchat.interfaces.BenchmarkingResult
+import ai.mlc.mlcchat.utils.benchmark.system.getPhoneData
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,24 +17,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -44,6 +41,8 @@ fun ResultView(
     chatState: AppViewModel.ChatState,
     resultViewModel: ResultViewModel
 ){
+
+    val results = resultViewModel.getResults()
 
     fun goToHome() {
         chatState.requestResetChat()
@@ -81,8 +80,11 @@ fun ResultView(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(15.dp)
                     ) {
-                        resultViewModel.getResults().map {
-                            ResultCard(result = it)
+                        results.map {
+                            ResultCard(
+                                result = it,
+                                postResults = results.size > 1
+                            )
                         }
                     }
 
@@ -100,8 +102,32 @@ fun ResultView(
 @Composable
 fun ResultCard(
     modifier: Modifier = Modifier,
-    result: BenchmarkingResult
+    result: BenchmarkingResult,
+    postResults: Boolean = false
 ) {
+
+    val context = LocalContext.current
+    val samples = result.samples
+
+    LaunchedEffect(Unit) {
+
+        if(!postResults) return@LaunchedEffect
+
+        val power = getPowerConsumption(result)
+        val energy = getEnergyConsumption(result)
+
+        postResult(PostResult(
+            phone = getPhoneData(context),
+            ram = samples.ram.getMeasurements(),
+            cpu = samples.cpu.getMeasurements(),
+            gpu = samples.gpu.getMeasurements(),
+            decode = samples.decode.getMeasurements(),
+            prefill = samples.prefill.getMeasurements(),
+            energyAverage = if(!energy.isNaN()) energy else null,
+            powerAverage = if(!power.isNaN()) power else null
+        ))
+    }
+
     Column(
         modifier = modifier
             .fillMaxWidth(0.8F)
@@ -136,6 +162,9 @@ fun ResultCard(
 
 @Composable
 fun ResultTable(result: BenchmarkingResult) {
+
+    val context = LocalContext.current
+    val samples = result.samples
 
     @Composable
     fun TableCell(
@@ -185,24 +214,19 @@ fun ResultTable(result: BenchmarkingResult) {
         }
     }
 
-    val powerConsumption = result.samples.voltages.average() * result.samples.currents.average()
-    val powerIdle = result.idleSamples.voltages.average()*result.idleSamples.currents.average()
-    val powerDifference = powerConsumption - powerIdle
+    val powerDifference = getPowerConsumption(result)
     val powerResult =
         if(powerDifference.isNaN())
             "N/A"
         else
             "${formatDouble(powerDifference)}W"
 
-    result.samples.prefill
-    result.samples.decode
-    val energyConsumptionDifference = powerDifference * (result.samples.prefillTime.sum() + result.samples.decodeTime.sum())
+    val energyConsumptionDifference = getEnergyConsumption(result)
     val energyConsumptionResult =
         if(energyConsumptionDifference.isNaN())
             "N/A"
         else
             "${formatDouble(energyConsumptionDifference)}J"
-
 
     Column(
         modifier = Modifier
@@ -291,6 +315,17 @@ fun ResultTable(result: BenchmarkingResult) {
 fun formatDouble(number: Number): String {
     return String.format("%.1f", number)
 }
+
+fun getPowerConsumption(result: BenchmarkingResult): Double {
+    val powerConsumption = result.samples.voltages.average() * result.samples.currents.average()
+    val powerIdle = result.idleSamples.voltages.average()*result.idleSamples.currents.average()
+    return powerConsumption - powerIdle
+}
+
+fun getEnergyConsumption(result: BenchmarkingResult): Double {
+    return getPowerConsumption(result) * (result.samples.prefillTime.sum() + result.samples.decodeTime.sum())
+}
+
 
 @Composable
 fun ContinueButton(modifier: Modifier = Modifier) {
