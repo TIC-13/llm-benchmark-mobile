@@ -5,6 +5,7 @@ import ai.mlc.mlcchat.api.postResult
 import ai.mlc.mlcchat.components.AppTopBar
 import ai.mlc.mlcchat.interfaces.BenchmarkingResult
 import ai.mlc.mlcchat.utils.benchmark.system.getPhoneData
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -83,7 +84,8 @@ fun ResultView(
                         results.map {
                             ResultCard(
                                 result = it,
-                                postResults = results.size > 1
+                                postResults = results.size > 0,
+                                resultViewModel = resultViewModel
                             )
                         }
                     }
@@ -103,7 +105,8 @@ fun ResultView(
 fun ResultCard(
     modifier: Modifier = Modifier,
     result: BenchmarkingResult,
-    postResults: Boolean = false
+    postResults: Boolean = false,
+    resultViewModel: ResultViewModel
 ) {
 
     val context = LocalContext.current
@@ -113,8 +116,8 @@ fun ResultCard(
 
         if(!postResults) return@LaunchedEffect
 
-        val power = getPowerConsumption(result)
-        val energy = getEnergyConsumption(result)
+        val power = getPowerConsumption(result, resultViewModel.getIdleSamples())
+        val energy = getEnergyConsumption(result, resultViewModel.getIdleSamples())
 
         postResult(PostResult(
             phone = getPhoneData(context),
@@ -154,17 +157,14 @@ fun ResultCard(
             )
         }
 
-        ResultTable(result = result)
+        ResultTable(result = result, resultViewModel = resultViewModel)
 
         Spacer(modifier = Modifier.height(15.dp))
     }
 }
 
 @Composable
-fun ResultTable(result: BenchmarkingResult) {
-
-    val context = LocalContext.current
-    val samples = result.samples
+fun ResultTable(result: BenchmarkingResult, resultViewModel: ResultViewModel) {
 
     @Composable
     fun TableCell(
@@ -201,8 +201,6 @@ fun ResultTable(result: BenchmarkingResult) {
                 .fillMaxWidth()
         ){
             for((index, rowValue) in content.withIndex()) {
-                val isFirst = index == 0
-
                 TableCell(
                     modifier = Modifier
                         .weight(1f),
@@ -214,14 +212,14 @@ fun ResultTable(result: BenchmarkingResult) {
         }
     }
 
-    val powerDifference = getPowerConsumption(result)
+    val powerDifference = getPowerConsumption(result, resultViewModel.getIdleSamples())
     val powerResult =
         if(powerDifference.isNaN())
             "N/A"
         else
             "${formatDouble(powerDifference)}W"
 
-    val energyConsumptionDifference = getEnergyConsumption(result)
+    val energyConsumptionDifference = getEnergyConsumption(result, resultViewModel.getIdleSamples())
     val energyConsumptionResult =
         if(energyConsumptionDifference.isNaN())
             "N/A"
@@ -316,14 +314,15 @@ fun formatDouble(number: Number): String {
     return String.format("%.1f", number)
 }
 
-fun getPowerConsumption(result: BenchmarkingResult): Double {
+fun getPowerConsumption(result: BenchmarkingResult, idleSamples: IdleSamples): Double {
     val powerConsumption = result.samples.voltages.average() * result.samples.currents.average()
-    val powerIdle = result.idleSamples.voltages.average()*result.idleSamples.currents.average()
+    val powerIdle = idleSamples.voltages.average()*idleSamples.currents.average()
     return powerConsumption - powerIdle
 }
 
-fun getEnergyConsumption(result: BenchmarkingResult): Double {
-    return getPowerConsumption(result) * (result.samples.prefillTime.sum() + result.samples.decodeTime.sum())
+fun getEnergyConsumption(result: BenchmarkingResult, idleSamples: IdleSamples): Double {
+    Log.d("idle", idleSamples.voltages.average().toString())
+    return getPowerConsumption(result, idleSamples) * (result.samples.prefillTime.sum() + result.samples.decodeTime.sum())
 }
 
 

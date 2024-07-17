@@ -2,7 +2,6 @@ package ai.mlc.mlcchat.utils.benchmark
 
 import ai.mlc.mlcchat.api.Measurement
 import kotlin.math.sqrt
-
 class Sampler {
 
     private val samples = arrayListOf<Double>()
@@ -13,27 +12,33 @@ class Sampler {
         creationTime = System.currentTimeMillis()
     }
 
+    @Synchronized
     fun addSample(sample: Double): Unit {
         if(sample > peak) peak = sample
         samples.add(sample)
     }
 
-    fun getSamples(): ArrayList<Double> {
-        return samples
+    @Synchronized
+    fun getSamples(): List<Double> {
+        return ArrayList(samples)
     }
 
+    @Synchronized
     fun sum(): Double {
         return samples.sum()
     }
 
+    @Synchronized
     fun average(): Double {
         return samples.average()
     }
 
+    @Synchronized
     fun peak(): Double {
         return peak
     }
 
+    @Synchronized
     fun std(): Double {
         val mean = samples.average()
         val sumOfSquaredDiffs = samples.sumOf { (it - mean) * (it - mean) }
@@ -41,6 +46,7 @@ class Sampler {
         return sqrt(variance)
     }
 
+    @Synchronized
     fun median(): Double {
         if (samples.isEmpty()) {
             //throw IllegalArgumentException("The list cannot be empty")
@@ -69,5 +75,4 @@ class Sampler {
             median = this.median()
         )
     }
-
 }

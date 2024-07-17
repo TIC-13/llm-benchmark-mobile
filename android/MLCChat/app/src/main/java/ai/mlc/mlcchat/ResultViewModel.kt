@@ -93,7 +93,7 @@ class ResultViewModel(
 
     private fun resetSampler() {
         samples = BenchmarkingSamples()
-        idleSamples = IdleSamples()
+        //idleSamples = IdleSamples()
     }
 
     fun getResults(): ArrayList<BenchmarkingResult> {
