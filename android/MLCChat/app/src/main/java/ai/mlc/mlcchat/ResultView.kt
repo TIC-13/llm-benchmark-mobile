@@ -242,6 +242,14 @@ fun ResultTable(result: BenchmarkingResult, resultViewModel: ResultViewModel) {
         TableRow(
             content = listOf(
                 RowContent(""),
+                RowContent("Tok/s", bold = true),
+                RowContent("${formatDouble(result.samples.prefill.median() + result.samples.decode.median())} tok/s"),
+                RowContent("")
+            )
+        )
+        TableRow(
+            content = listOf(
+                RowContent(""),
                 RowContent("Init time", bold = true),
                 RowContent(loadTimeResult),
                 RowContent("")
@@ -252,7 +260,7 @@ fun ResultTable(result: BenchmarkingResult, resultViewModel: ResultViewModel) {
             content = listOf(
                 RowContent(""),
                 RowContent("Average", bold = true),
-                RowContent("std", bold = true),
+                RowContent("STD", bold = true),
                 RowContent("Peak", bold = true)
             )
         )
@@ -303,7 +311,7 @@ fun ResultTable(result: BenchmarkingResult, resultViewModel: ResultViewModel) {
             content = listOf(
                 RowContent(""),
                 RowContent("Median", bold = true),
-                RowContent("std", bold = true),
+                RowContent("STD", bold = true),
                 RowContent("Peak", bold = true)
             )
         )
