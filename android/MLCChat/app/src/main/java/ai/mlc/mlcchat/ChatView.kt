@@ -156,9 +156,11 @@ fun ConversationView(
     }
 
     var startReadMessageTime by remember { mutableStateOf(0L) }
+    var initLoadTime by remember { mutableStateOf<Long?>(null) }
 
     val context = LocalContext.current
 
+    //Medição de CPU, GPU e RAM
     LaunchedEffect(Unit) {
         resultViewModel.resetResults()
         withContext(Dispatchers.IO) {
@@ -170,10 +172,11 @@ fun ConversationView(
         }
     }
 
+    //Medição do consumo de energia
     LaunchedEffect(Unit) {
         withContext(Dispatchers.IO) {
             while(true) {
-                delay(5)
+                delay(25)
                 if(!isBatteryCharging(context)) {
                     if(chatState.modelChatState.value === ModelChatState.Generating){
                         resultViewModel.addEnergySample(context)
@@ -185,6 +188,20 @@ fun ConversationView(
         }
     }
 
+    //Medição do tempo de inicialização
+    LaunchedEffect(modelChatState) {
+        if(modelChatState === ModelChatState.Reloading){
+            initLoadTime = System.currentTimeMillis()
+            return@LaunchedEffect
+        }
+        if(initLoadTime !== null){
+            val finishLoadTime = System.currentTimeMillis()
+            resultViewModel.setLoadTime(finishLoadTime - initLoadTime!!)
+            initLoadTime = null
+        }
+    }
+
+    //Medição de tokens por segundo
     LaunchedEffect(reportState) {
         if(reportState.trim() !== ""){
             val regex = Regex("\\d+[,.]\\d+")
@@ -195,6 +212,7 @@ fun ConversationView(
         }
     }
 
+    //Medição do tempo de decode
     LaunchedEffect(modelChatState) {
         if(modelChatState === ModelChatState.Ready && startReadMessageTime != 0L) {
             val endReadMessageTime = System.currentTimeMillis()
@@ -216,6 +234,7 @@ fun ConversationView(
                 chatState.messages.last().text.isNotEmpty() &&
                 startReadMessageTime != 0L
 
+    //Medição do tempo de prefill
     LaunchedEffect(modelStartedAnswering) {
         if(modelStartedAnswering){
             val endReadMessageTime = System.currentTimeMillis()

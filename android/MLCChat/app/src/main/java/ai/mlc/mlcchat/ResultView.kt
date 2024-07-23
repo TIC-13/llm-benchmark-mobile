@@ -121,6 +121,7 @@ fun ResultCard(
 
         postResult(PostResult(
             phone = getPhoneData(context),
+            load_time = result.loadTime?.toInt(),
             ram = samples.ram.getMeasurements(),
             cpu = samples.cpu.getMeasurements(),
             gpu = samples.gpu.getMeasurements(),
@@ -226,12 +227,27 @@ fun ResultTable(result: BenchmarkingResult, resultViewModel: ResultViewModel) {
         else
             "${formatDouble(energyConsumptionDifference)}J"
 
+    val loadTimeResult =
+        if(result.loadTime == null)
+            "N/A"
+        else
+            "${result.loadTime} ms"
+
     Column(
         modifier = Modifier
             .fillMaxWidth(0.9f)
             .padding(10.dp, 0.dp, 0.dp, 0.dp),
         verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
+        TableRow(
+            content = listOf(
+                RowContent(""),
+                RowContent("Init time", bold = true),
+                RowContent(loadTimeResult),
+                RowContent("")
+            )
+        )
+        Spacer(modifier = Modifier.height(15.dp))
         TableRow(
             content = listOf(
                 RowContent(""),

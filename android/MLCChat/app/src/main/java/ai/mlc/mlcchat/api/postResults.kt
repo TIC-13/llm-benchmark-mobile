@@ -26,6 +26,7 @@ data class Measurement(
 
 data class PostResult(
     val phone: Phone,
+    val load_time: Int?,
     val ram: Measurement,
     val cpu: Measurement,
     val gpu: Measurement,

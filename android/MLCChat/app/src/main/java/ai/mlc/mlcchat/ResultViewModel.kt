@@ -41,6 +41,8 @@ class ResultViewModel(
     private var samples = BenchmarkingSamples()
     private var idleSamples = IdleSamples()
 
+    private var loadTime: Long? = null
+
     private var type = ResultType.BENCHMARKING
 
     fun getType(): ResultType {
@@ -80,15 +82,21 @@ class ResultViewModel(
         samples.decodeTime.addSample(decode)
     }
 
+    fun setLoadTime(newLoadTime: Long?) {
+        loadTime = newLoadTime
+    }
+
     fun wrapResultUp(modelName: String) {
         results.add(
             BenchmarkingResult(
+                loadTime = loadTime,
                 name = modelName,
                 samples = samples,
                 idleSamples = idleSamples
             )
         )
         resetSampler()
+        loadTime = null
     }
 
     private fun resetSampler() {
