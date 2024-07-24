@@ -11,13 +11,22 @@ fun getBatteryVoltageVolts(context: Context): Float {
     val batteryStatus = context.registerReceiver(null, intentFilter)
     val result  = batteryStatus?.getIntExtra(BatteryManager.EXTRA_VOLTAGE, -1) ?: -1
     if(result == -1) throw Exception("Erro ao calcular a tensão")
-    return abs(result.toFloat()) / 1_000F
+    val voltage = abs(result.toFloat())
+    return if(voltage > 1000)
+        voltage / 1000F
+    else
+        voltage
 }
 
 fun getBatteryCurrentAmperes(context: Context): Float {
     val batteryManager = context.getSystemService(Context.BATTERY_SERVICE) as BatteryManager
-    val result = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW).toFloat()
-    return abs(result) / 1_000F
+    val result =
+        batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW).toFloat()
+    val current = abs(result)
+    return if (current > 1000)
+        current / 1_000_000
+    else
+        current / 1_000
 }
 
 fun isBatteryCharging(context: Context): Boolean {

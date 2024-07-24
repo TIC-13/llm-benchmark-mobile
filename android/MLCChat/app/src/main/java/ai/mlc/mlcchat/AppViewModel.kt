@@ -23,11 +23,14 @@ import java.util.UUID
 import java.util.concurrent.Executors
 import kotlin.concurrent.thread
 import ai.mlc.mlcllm.OpenAIProtocol.ChatCompletionMessage
+import androidx.compose.ui.text.toLowerCase
 import kotlinx.coroutines.*
+import java.util.Locale
 
 val benchmarkingModelsLabels = listOf(
-    "Qwen2-1.5B-Instruct-q4f16_1-MLC",
-    "gemma-2b-q4f16_1-MLC"
+    "llama",
+    "gemma",
+    //"qwen",
 )
 
 class AppViewModel(application: Application) : AndroidViewModel(application) {
@@ -124,7 +127,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
         benchmarkingModels = modelList
-            .filter{ benchmarkingModelsLabels.contains(it.modelConfig.modelId) }
+            .filter { model -> benchmarkingModelsLabels.any {label -> model.modelConfig.modelId.lowercase(Locale.getDefault()).contains(label.lowercase(Locale.getDefault()))} }
     }
 
     private fun updateAppConfig(action: () -> Unit) {
