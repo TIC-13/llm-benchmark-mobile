@@ -6,9 +6,14 @@ import ai.mlc.mlcchat.utils.benchmark.cpuUsage
 import ai.mlc.mlcchat.utils.benchmark.getBatteryCurrentAmperes
 import ai.mlc.mlcchat.utils.benchmark.getBatteryVoltageVolts
 import ai.mlc.mlcchat.utils.benchmark.gpuUsage
+import ai.mlc.mlcchat.utils.benchmark.isBatteryCharging
 import ai.mlc.mlcchat.utils.benchmark.ramUsage
 import android.app.Application
 import android.content.Context
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 
 data class BenchmarkingSamples(
@@ -31,6 +36,8 @@ data class IdleSamples(
 enum class ResultType {
     BENCHMARKING, CONVERSATION
 }
+
+val IDLE_MEASUREMENT_TIME = 3000L
 
 class ResultViewModel(
     application: Application
@@ -65,11 +72,13 @@ class ResultViewModel(
     }
 
     fun addEnergySample(context: Context) {
+        if(isBatteryCharging(context)) return
         samples.voltages.addSample(getBatteryVoltageVolts(context).toDouble())
         samples.currents.addSample(getBatteryCurrentAmperes(context).toDouble())
     }
 
     fun addEnergySampleIdle(context: Context) {
+        if(isBatteryCharging(context)) return
         idleSamples.voltages.addSample(getBatteryVoltageVolts(context).toDouble())
         idleSamples.currents.addSample(getBatteryCurrentAmperes(context).toDouble())
     }
@@ -110,6 +119,10 @@ class ResultViewModel(
 
     fun getIdleSamples(): IdleSamples {
         return idleSamples
+    }
+
+    fun anyIdleSampleCollected(): Boolean {
+        return idleSamples.voltages.getSamples().isNotEmpty()
     }
 
     fun resetResults() {

@@ -338,13 +338,15 @@ fun formatDouble(number: Number): String {
     return String.format("%.1f", number)
 }
 
-fun getPowerConsumption(result: BenchmarkingResult, idleSamples: IdleSamples): Double {
+fun getPowerConsumption(result: BenchmarkingResult, idleSamples: IdleSamples?): Double {
+    if(idleSamples == null) return Double.NaN
     val powerConsumption = result.samples.voltages.average() * result.samples.currents.average()
     val powerIdle = idleSamples.voltages.average()*idleSamples.currents.average()
     return powerConsumption - powerIdle
 }
 
-fun getEnergyConsumption(result: BenchmarkingResult, idleSamples: IdleSamples): Double {
+fun getEnergyConsumption(result: BenchmarkingResult, idleSamples: IdleSamples?): Double {
+    if(idleSamples == null) return Double.NaN
     Log.d("idle", idleSamples.voltages.average().toString())
     return getPowerConsumption(result, idleSamples) * (result.samples.prefillTime.sum() + result.samples.decodeTime.sum())
 }

@@ -28,9 +28,9 @@ import kotlinx.coroutines.*
 import java.util.Locale
 
 val benchmarkingModelsLabels = listOf(
-    "llama",
+    //"llama",
     "gemma",
-    //"qwen",
+    "qwen",
 )
 
 class AppViewModel(application: Application) : AndroidViewModel(application) {

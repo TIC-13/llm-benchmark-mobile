@@ -177,12 +177,8 @@ fun ConversationView(
         withContext(Dispatchers.IO) {
             while(true) {
                 delay(25)
-                if(!isBatteryCharging(context)) {
-                    if(chatState.modelChatState.value === ModelChatState.Generating){
-                        resultViewModel.addEnergySample(context)
-                    }else if(chatState.modelChatState.value === ModelChatState.Ready){
-                        resultViewModel.addEnergySampleIdle(context)
-                    }
+                if(chatState.modelChatState.value === ModelChatState.Generating) {
+                    resultViewModel.addEnergySample(context)
                 }
             }
         }

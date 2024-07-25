@@ -21,7 +21,8 @@ fun NavView(
         composable("main") {
             HomeView(
                 navController,
-                appViewModel
+                appViewModel,
+                resultViewModel
             )
         }
 
