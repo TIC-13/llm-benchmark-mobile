@@ -58,10 +58,12 @@ fun HomeView(
 
     val context = LocalContext.current
 
-    val isIdleMeasured = useMeasureIdleEnergyConsumption(
-        context = context,
-        resultViewModel = resultViewModel
-    )
+    //val isIdleMeasured = useMeasureIdleEnergyConsumption(
+    //    context = context,
+    //    resultViewModel = resultViewModel
+    //)
+
+    val isIdleMeasured = true
 
     var showStartDownloadDialog by remember { mutableStateOf(false) }
     var downloadingModels by remember { mutableStateOf(false) }

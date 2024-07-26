@@ -5,6 +5,7 @@ import ai.mlc.mlcchat.utils.benchmark.cpuUsage
 import ai.mlc.mlcchat.utils.benchmark.gpuUsage
 import ai.mlc.mlcchat.utils.benchmark.isBatteryCharging
 import ai.mlc.mlcchat.utils.benchmark.ramUsage
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -160,6 +161,12 @@ fun ConversationView(
 
     val context = LocalContext.current
 
+    //useMeasureEnergyConsumption(
+    //    context = context,
+    //    chatState = chatState,
+    //    resultViewModel = resultViewModel
+    //)
+
     //Medição de CPU, GPU e RAM
     LaunchedEffect(Unit) {
         resultViewModel.resetResults()
@@ -172,17 +179,6 @@ fun ConversationView(
         }
     }
 
-    //Medição do consumo de energia
-    LaunchedEffect(Unit) {
-        withContext(Dispatchers.IO) {
-            while(true) {
-                delay(25)
-                if(chatState.modelChatState.value === ModelChatState.Generating) {
-                    resultViewModel.addEnergySample(context)
-                }
-            }
-        }
-    }
 
     //Medição do tempo de inicialização
     LaunchedEffect(modelChatState) {
@@ -292,6 +288,24 @@ fun ConversationView(
             )
             if (children != null) {
                 children()
+            }
+        }
+    }
+}
+
+@Composable
+fun useMeasureEnergyConsumption(
+    context: Context,
+    chatState: AppViewModel.ChatState,
+    resultViewModel: ResultViewModel
+): Unit {
+    LaunchedEffect(Unit) {
+        withContext(Dispatchers.IO) {
+            while(true) {
+                delay(25)
+                if(chatState.modelChatState.value === ModelChatState.Generating) {
+                    resultViewModel.addEnergySample(context)
+                }
             }
         }
     }

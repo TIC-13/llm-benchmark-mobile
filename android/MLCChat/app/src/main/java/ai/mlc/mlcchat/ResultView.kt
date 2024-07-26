@@ -288,6 +288,8 @@ fun ResultTable(result: BenchmarkingResult, resultViewModel: ResultViewModel) {
                 RowContent("${result.samples.ram.peak().toInt()}MB")
             )
         )
+
+        /*
         TableRow(
             content = listOf(
                 RowContent("Power", bold = true),
@@ -304,6 +306,7 @@ fun ResultTable(result: BenchmarkingResult, resultViewModel: ResultViewModel) {
                 RowContent("")
             )
         )
+         */
 
         Spacer(modifier = Modifier.height(5.dp))
 
