@@ -2,7 +2,10 @@ package ai.mlc.mlcchat
 
 import ai.mlc.mlcchat.api.PostResult
 import ai.mlc.mlcchat.api.postResult
+import ai.mlc.mlcchat.components.AccordionItem
+import ai.mlc.mlcchat.components.AccordionText
 import ai.mlc.mlcchat.components.AppTopBar
+import ai.mlc.mlcchat.components.Chip
 import ai.mlc.mlcchat.interfaces.BenchmarkingResult
 import ai.mlc.mlcchat.utils.benchmark.system.getPhoneData
 import android.util.Log
@@ -21,14 +24,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -72,6 +79,7 @@ fun ResultView(
                         .padding(paddingValues)
                         .fillMaxSize(),
                 ){
+
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -81,6 +89,24 @@ fun ResultView(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(15.dp)
                     ) {
+
+                        AccordionItem(
+                            modifier = Modifier.fillMaxWidth(0.8f),
+                            title = "Help"
+                        ){
+                            AccordionItem(title = "What is prefill?") {
+                                AccordionText(
+                                    text = "Prefill tok/s measures how many tokens the model can process per second during this initial setup phase."
+                                )
+                            }
+                            AccordionItem(title = "What is decode?") {
+                                AccordionText(
+                                    text = "Decode tok/s measures how many tokens the model can generate per second during this decoding phase."
+                                )
+                            }
+                            Chip(text = "std = Standard deviation")
+                        }
+
                         results.map {
                             ResultCard(
                                 result = it,
@@ -112,21 +138,24 @@ fun ResultCard(
     val context = LocalContext.current
     val samples = result.samples
 
+    val prefill = remember { samples.prefill.getMeasurements() }
+    val decode = remember { samples.decode.getMeasurements() }
+
     LaunchedEffect(Unit) {
 
         if(!postResults) return@LaunchedEffect
 
         val power = getPowerConsumption(result, resultViewModel.getIdleSamples())
         val energy = getEnergyConsumption(result, resultViewModel.getIdleSamples())
-
+        
         postResult(PostResult(
             phone = getPhoneData(context),
             load_time = result.loadTime?.toInt(),
             ram = samples.ram.getMeasurements(),
             cpu = samples.cpu.getMeasurements(),
             gpu = samples.gpu.getMeasurements(),
-            decode = samples.decode.getMeasurements(),
-            prefill = samples.prefill.getMeasurements(),
+            decode = decode,
+            prefill = prefill,
             energyAverage = if(!energy.isNaN()) energy else null,
             powerAverage = if(!power.isNaN()) power else null
         ))
@@ -159,7 +188,14 @@ fun ResultCard(
         }
 
         ResultTable(result = result, resultViewModel = resultViewModel)
-
+        
+        if(prefill.median.isNaN() || decode.median.isNaN()){
+            Chip(
+                text = "Tok/s values not measured",
+                icon = Icons.Default.Warning
+            )
+        }
+        
         Spacer(modifier = Modifier.height(15.dp))
     }
 }
