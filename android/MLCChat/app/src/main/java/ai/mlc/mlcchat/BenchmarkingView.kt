@@ -2,6 +2,7 @@ package ai.mlc.mlcchat
 
 import ai.mlc.mlcchat.components.AppTopBar
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -29,77 +30,29 @@ fun BenchmarkingView(
 ){
 
     val localFocusManager = LocalFocusManager.current
-    val context = LocalContext.current
-    val questionsFileName = "qa_dataset.txt"
-
     val chatState = viewModel.chatState
-
     val modelChatState by remember {
         viewModel.chatState.modelChatState
     }
 
-    val questions = remember {
-        readQuestionsFile(context, questionsFileName).subList(0,3)
-    }
-
-    var pendingModels by remember {
-        mutableStateOf(viewModel.benchmarkingModels)
-    }
-
-    var pendingQuestions by remember {
-        mutableStateOf(questions)
-    }
-
-    fun saveLastResult() {
+    fun saveResult() {
         resultViewModel.wrapResultUp(chatState.modelName.value)
     }
-
-    val numModelsTotal = benchmarkingModelsLabels.size
-    val numModelsDone = numModelsTotal - pendingModels.size + 1
-
-    LaunchedEffect(pendingModels) {
-        if(pendingModels.isNotEmpty()){
-
-            if(pendingModels.size != viewModel.benchmarkingModels.size){
-                saveLastResult()
-            }
-
-            val modelState = pendingModels[0]
-            modelState.startChat()
-        }else{
-            saveLastResult()
-            resultViewModel.setType(ResultType.BENCHMARKING)
-            navController.navigate("result")
-        }
+    fun finishAll() {
+        resultViewModel.setType(ResultType.BENCHMARKING)
+        navController.navigate("result")
     }
 
-    LaunchedEffect(modelChatState) {
-        if(chatState.chatable()){
-
-            delay(1000)
-
-            if(pendingQuestions.isEmpty()){
-
-                if(pendingModels.isNotEmpty()){
-                    pendingModels = pendingModels.subList(1, pendingModels.size)
-                    pendingQuestions = questions
-                }
-
-            }else{
-
-                chatState.requestGenerate("${pendingQuestions[0]}.")
-                pendingQuestions = pendingQuestions.subList(1, pendingQuestions.size)
-            }
-        }
-    }
+    val (modelName, numModelsTotal, numModelsDone) = useBenchmarking(
+        numQuestions = 2,
+        viewModel = viewModel,
+        onSaveSingleResult = ::saveResult,
+        onFinishAll = ::finishAll
+    )
 
     Scaffold(topBar = {
         AppTopBar(
-            title = "${chatState.modelName.value.split("-")[0].replaceFirstChar {
-                if (it.isLowerCase()) it.titlecase(
-                    Locale.ROOT
-                ) else it.toString()
-            }} - Model $numModelsDone of $numModelsTotal"
+            title = "$modelName - Model $numModelsDone of $numModelsTotal"
         )
     }, modifier = Modifier.pointerInput(Unit) {
         detectTapGestures(onTap = {
@@ -117,6 +70,107 @@ fun BenchmarkingView(
         }
     }
 }
+
+data class ExecutingModelsState(
+    val modelName: String,
+    val numModelsTotal: Int,
+    val numModelsDone: Int
+)
+
+@Composable
+fun useBenchmarking(
+    viewModel: AppViewModel,
+    onSaveSingleResult: () -> Unit,
+    onFinishAll: () -> Unit,
+    numQuestions: Int = 2,
+): ExecutingModelsState {
+
+    val context = LocalContext.current
+    val questionsFileName = "qa_dataset.txt"
+
+    val chatState = viewModel.chatState
+
+    val modelChatState by remember {
+        viewModel.chatState.modelChatState
+    }
+
+    val questions = remember {
+        readQuestionsFile(context, questionsFileName).subList(0,numQuestions)
+    }
+
+    var pendingModels by remember {
+        mutableStateOf(viewModel.benchmarkingModels)
+    }
+
+    var pendingQuestions by remember {
+        mutableStateOf(questions)
+    }
+
+    val numModelsTotal = benchmarkingModelsLabels.size
+    val numModelsDone = numModelsTotal - pendingModels.size + 1
+    val modelName = chatState.modelName.value.split("-")[0].replaceFirstChar {
+        if (it.isLowerCase()) it.titlecase(
+            Locale.ROOT
+        ) else it.toString()
+    }
+
+    fun goToNextModel(): Unit {
+        if(pendingModels.isNotEmpty()){
+            pendingModels = pendingModels.subList(1, pendingModels.size)
+            pendingQuestions = questions
+            return
+        }
+        onFinishAll()
+    }
+
+    fun goToNextQuestion(): Unit {
+        if(pendingQuestions.isEmpty()){
+            goToNextModel()
+            return
+        }
+        chatState.requestGenerate("${pendingQuestions[0]}.")
+        pendingQuestions = pendingQuestions.subList(1, pendingQuestions.size)
+    }
+
+    //Init model
+    LaunchedEffect(pendingModels) {
+        if(pendingModels.isNotEmpty()){
+            if(pendingModels.size != viewModel.benchmarkingModels.size){
+                onSaveSingleResult()
+            }
+            val modelState = pendingModels[0]
+            try {
+                modelState.startChat()
+            }catch(e: Exception) {
+                Log.d("crash", "init")
+                goToNextModel()
+            }
+        }else{
+            onSaveSingleResult()
+            onFinishAll()
+        }
+    }
+
+    //Init question
+    LaunchedEffect(modelChatState) {
+        if(chatState.chatable()){
+            delay(1000)
+            try {
+                goToNextQuestion()
+            }catch(e: Exception){
+                Log.d("crash", "question")
+                goToNextModel()
+            }
+        }
+    }
+
+    return ExecutingModelsState(
+        modelName = modelName,
+        numModelsTotal = numModelsTotal,
+        numModelsDone = numModelsDone
+    )
+}
+
 
 fun readQuestionsFile(context: Context, fileName: String): List<String> {
     val inputStream = context.assets.open(fileName)
