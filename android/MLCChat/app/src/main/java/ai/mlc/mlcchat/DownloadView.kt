@@ -26,34 +26,9 @@ import kotlinx.coroutines.delay
 @Composable
 fun DownloadView(
     modifier: Modifier = Modifier,
-    appViewModel: AppViewModel,
-    onDownloadsFinished: (() -> Unit)? = null
+    pendingModels: List<AppViewModel.ModelState>,
+    numModels: Int,
 ) {
-
-    var pendingModels by remember {
-        mutableStateOf(appViewModel.benchmarkingModels)
-    }
-
-    val numModels = appViewModel.benchmarkingModels.size
-
-    LaunchedEffect(Unit) {
-        while(pendingModels.isNotEmpty()){
-            delay(100)
-
-            val modelState = pendingModels[0]
-
-            if(modelState.modelInitState.value == ModelInitState.Finished){
-                pendingModels = pendingModels.subList(1, pendingModels.size)
-                continue
-            }
-
-            if(modelState.modelInitState.value !== ModelInitState.Downloading){
-                modelState.handleStart()
-            }
-        }
-        if(onDownloadsFinished !== null)
-            onDownloadsFinished()
-    }
 
     Column (
         modifier = modifier
@@ -70,7 +45,6 @@ fun DownloadView(
                 text = "Downloading model ${numModels-pendingModels.size+1} of $numModels",
                 color = MaterialTheme.colorScheme.onPrimary,
                 style = MaterialTheme.typography.titleMedium,
-                //fontWeight = FontWeight.Light
             )
             Spacer(modifier = Modifier.height(15.dp))
             Column (

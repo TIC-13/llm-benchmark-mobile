@@ -1,9 +1,7 @@
 package ai.mlc.mlcchat
 
-import ai.mlc.mlcchat.components.AccordionItem
-import ai.mlc.mlcchat.components.AccordionText
-import ai.mlc.mlcchat.components.Chip
 import ai.mlc.mlcchat.components.LoadingTopBottomIndicator
+import ai.mlc.mlcchat.hooks.useModal
 import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,12 +21,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material3.Button
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -64,28 +60,25 @@ fun HomeView(
 
     val isIdleMeasured = true
 
-    var showStartDownloadDialog by remember { mutableStateOf(false) }
-    var downloadingModels by remember { mutableStateOf(false) }
+    val (startBenchmarking) = useStartBenchmarking(
+        onStart = { navController.navigate("benchmarking") }
+    )
 
-    fun startBenchmarking() {
-        navController.navigate("benchmarking")
-    }
+    val (startConversation) = useStartConversation(
+        onStart = { navController.navigate("home") }
+    )
 
-    fun openDownloadDialog() {
+    val (isDownloading, pendingModels, numModels, startDownload) = useDownloadModels(
+        viewModel = appViewModel,
+        onFinish = { startBenchmarking() }
+    )
+
+    fun initBenchmarkingFlux() {
         if(!appViewModel.allBenchmarkingModelsReady()){
-            showStartDownloadDialog = true
+            startDownload()
         }else{
             startBenchmarking()
         }
-    }
-
-    fun startDownload() {
-        downloadingModels = true
-    }
-
-    fun onDownloadsFinished() {
-        downloadingModels = false
-        startBenchmarking()
     }
 
     Column (
@@ -117,8 +110,8 @@ fun HomeView(
                 
                 LargeRoundedButton(
                     icon = Icons.Default.BarChart,
-                    onClick = { openDownloadDialog() },
-                    enabled = !downloadingModels && isIdleMeasured,
+                    onClick = { initBenchmarkingFlux() },
+                    enabled = !isDownloading && isIdleMeasured,
                     text = "Start benchmarking"
                 )
 
@@ -126,13 +119,12 @@ fun HomeView(
 
                 LargeRoundedButton(
                     icon = Icons.Default.Chat,
-                    onClick = { navController.navigate("home") },
-                    enabled = !downloadingModels && isIdleMeasured,
+                    onClick = { startConversation() },
+                    enabled = !isDownloading && isIdleMeasured,
                     text = "Chat with LLMs"
                 )
 
             }
-
             Column(
                 modifier = Modifier
                     .weight(1f),
@@ -149,32 +141,123 @@ fun HomeView(
                     )
                 }
 
-                if(downloadingModels) {
+                if(isDownloading) {
                     DownloadView(
                         modifier = Modifier
                             .fillMaxSize(),
-                        appViewModel = appViewModel,
-                        onDownloadsFinished = { onDownloadsFinished() }
+                        pendingModels = pendingModels,
+                        numModels = numModels
                     )
                 }
             }
-
-        }
-
-        if(showStartDownloadDialog) {
-            AlertDialog(
-                title = { Text(text = "Download Models") },
-                text = { Text(text = "To start the benchmarking, we need to download the LLM models.\n\nThis may take some time and require a large download.\n\nDo you want to continue?") },
-                onDismissRequest = { showStartDownloadDialog = false },
-                confirmButton = {
-                    TextButton(onClick = { startDownload(); showStartDownloadDialog = false }) { Text("Download") }
-                },
-                dismissButton = {
-                    TextButton(onClick = { showStartDownloadDialog = false }) { Text("Cancel") }
-                }
-            )
         }
     }
+}
+
+data class DownloadModelsActions(
+    val isDownloading: Boolean,
+    val pendingModels: List<AppViewModel.ModelState>,
+    val numModels: Int,
+    val startDownload: () -> Unit,
+)
+
+@Composable
+fun useDownloadModels(
+    viewModel: AppViewModel,
+    onFinish: () -> Unit
+): DownloadModelsActions {
+
+    var isDownloading by remember { mutableStateOf(false) }
+
+    var pendingModels by remember {
+        mutableStateOf(viewModel.benchmarkingModels)
+    }
+
+    val numModels = viewModel.benchmarkingModels.size
+
+    LaunchedEffect(isDownloading) {
+
+        if(!isDownloading)
+            return@LaunchedEffect
+
+        while(pendingModels.isNotEmpty()){
+            delay(100)
+
+            val modelState = pendingModels[0]
+
+            if(modelState.modelInitState.value == ModelInitState.Finished){
+                pendingModels = pendingModels.subList(1, pendingModels.size)
+                continue
+            }
+
+            if(modelState.modelInitState.value !== ModelInitState.Downloading){
+                modelState.handleStart()
+            }
+        }
+        isDownloading = false
+        onFinish()
+    }
+
+    val (showDownloadModal) = useModal(
+        title = "Download Models",
+        text = "To start the benchmarking, we need to download the LLM models.\n" +
+                "\n" +
+                "This may take some time and require a large download.\n" +
+                "\n" +
+                "Do you want to continue?",
+        onConfirm = { isDownloading = true },
+        confirmLabel = "Download"
+    )
+
+    return DownloadModelsActions(
+        isDownloading = isDownloading,
+        startDownload = showDownloadModal,
+        pendingModels = pendingModels,
+        numModels = numModels
+    )
+}
+
+data class StartBenchmarkActions(
+    val startBenchmarking: () -> Unit
+)
+
+@Composable
+fun useStartBenchmarking(
+    onStart: () -> Unit
+): StartBenchmarkActions {
+
+    val (showStartBenchmarkingModal) = useModal(
+        title = "Warning",
+        text = "The execution of LLMs on Android devices can be very taxing, and can cause crashes, especially on devices with less than 8GB of RAM.",
+        onConfirm = { onStart() },
+        confirmLabel = "Continue"
+    )
+
+    return StartBenchmarkActions(
+        startBenchmarking = showStartBenchmarkingModal
+    )
+}
+
+data class StartConversationActions(
+    val startConversation: () -> Unit
+)
+
+@Composable
+fun useStartConversation(
+    onStart: () -> Unit
+): StartConversationActions {
+
+    val (showStartConversationModal) = useModal(
+        title = "Warning",
+        text = "The execution of LLMs on Android devices can be very taxing, and can cause crashes, especially on devices with less than 8GB of RAM.\n"
+                + "\nThe custom conversation option has the same restrictions as the default benchmarking",
+        onConfirm = { onStart() },
+        confirmLabel = "Continue"
+    )
+
+    return StartConversationActions(
+        startConversation = showStartConversationModal
+    )
 }
 
 @Composable
