@@ -28,9 +28,9 @@ import kotlinx.coroutines.*
 import java.util.Locale
 
 val benchmarkingModelsLabels = listOf(
-    //"llama",
-    "gemma",
-    "qwen",
+    "llama",
+    //"gemma",
+    //"qwen",
 )
 
 class AppViewModel(application: Application) : AndroidViewModel(application) {
@@ -525,11 +525,12 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         private var modelPath = ""
         private val executorService = Executors.newSingleThreadExecutor()
         private val viewModelScope = CoroutineScope(Dispatchers.Main + Job())
-        private fun mainResetChat() {
+        private fun mainResetChat(clearsHistory: Boolean = true) {
             executorService.submit {
                 callBackend { engine.reset() }
                 viewModelScope.launch {
-                    clearHistory()
+                    if(clearsHistory)
+                        clearHistory()
                     switchToReady()
                 }
             }
@@ -579,14 +580,14 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
             return true
         }
 
-        fun requestResetChat() {
+        fun requestResetChat(clearsHistory: Boolean = true) {
             require(interruptable())
             interruptChat(
                 prologue = {
                     switchToResetting()
                 },
                 epilogue = {
-                    mainResetChat()
+                    mainResetChat(clearsHistory = clearsHistory)
                 }
             )
         }

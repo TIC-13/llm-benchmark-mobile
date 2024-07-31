@@ -39,7 +39,7 @@ fun BenchmarkingView(
     }
 
     val questions = remember {
-        readQuestionsFile(context, questionsFileName).subList(0,2)
+        readQuestionsFile(context, questionsFileName).subList(0,3)
     }
 
     var pendingModels by remember {
@@ -87,7 +87,7 @@ fun BenchmarkingView(
 
             }else{
 
-                chatState.requestGenerate(pendingQuestions[0])
+                chatState.requestGenerate("${pendingQuestions[0]}.")
                 pendingQuestions = pendingQuestions.subList(1, pendingQuestions.size)
             }
         }

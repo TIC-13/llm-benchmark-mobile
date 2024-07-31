@@ -4,6 +4,7 @@ import ai.mlc.mlcchat.components.AppTopBar
 import ai.mlc.mlcchat.utils.benchmark.cpuUsage
 import ai.mlc.mlcchat.utils.benchmark.gpuUsage
 import ai.mlc.mlcchat.utils.benchmark.isBatteryCharging
+import ai.mlc.mlcchat.utils.benchmark.launchEffectWithCoroutinesAndDelay
 import ai.mlc.mlcchat.utils.benchmark.ramUsage
 import android.content.Context
 import android.util.Log
@@ -66,6 +67,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -159,6 +161,8 @@ fun ConversationView(
     var startReadMessageTime by remember { mutableStateOf(0L) }
     var initLoadTime by remember { mutableStateOf<Long?>(null) }
 
+    var cancelExecutionJob by remember { mutableStateOf<Job?>(null)}
+
     val context = LocalContext.current
 
     //useMeasureEnergyConsumption(
@@ -179,7 +183,6 @@ fun ConversationView(
         }
     }
 
-
     //Medição do tempo de inicialização
     LaunchedEffect(modelChatState) {
         if(modelChatState === ModelChatState.Reloading){
@@ -195,6 +198,9 @@ fun ConversationView(
 
     //Medição de tokens por segundo
     LaunchedEffect(reportState) {
+
+        Log.d("repState","Report state: $reportState")
+
         if(reportState.trim() !== ""){
             val regex = Regex("\\d+[,.]\\d+")
             val matches = regex.findAll(reportState).map { it.value }.toList()
@@ -214,6 +220,7 @@ fun ConversationView(
             if (lastAnswerNotEmpty != null) {
                 chatState.updateMessage(lastAnswerNotEmpty)
                 resultViewModel.addDecodeTimeSample(timeDecode.toDouble() / 1000F)
+                cancelExecutionJob?.cancel()
             }
         }
         if(modelChatState === ModelChatState.Generating)
@@ -236,6 +243,9 @@ fun ConversationView(
             if (lastAnswer != null) {
                 chatState.updateMessage(lastAnswer)
                 resultViewModel.addPrefillTimeSample(prefillTime.toDouble() / 1000F)
+                cancelExecutionJob = launchEffectWithCoroutinesAndDelay(delayMillis = 60000) {
+                    chatState.requestResetChat(clearsHistory = false)
+                }
             }
             startReadMessageTime = System.currentTimeMillis()
         }
