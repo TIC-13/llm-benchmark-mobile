@@ -233,20 +233,24 @@ fun ResultTable(result: BenchmarkingResult, resultViewModel: ResultViewModel) {
         else
             "${result.loadTime} ms"
 
+    val toksTotal = result.samples.prefill.median() + result.samples.decode.median()
+
     Column(
         modifier = Modifier
             .fillMaxWidth(0.9f)
             .padding(10.dp, 0.dp, 0.dp, 0.dp),
         verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
-        TableRow(
-            content = listOf(
-                RowContent(""),
-                RowContent("Tok/s", bold = true),
-                RowContent("${formatDouble(result.samples.prefill.median() + result.samples.decode.median())} tok/s"),
-                RowContent("")
+        if(!toksTotal.isNaN()){
+            TableRow(
+                content = listOf(
+                    RowContent(""),
+                    RowContent("Tok/s", bold = true),
+                    RowContent("${formatDouble(toksTotal)} tok/s"),
+                    RowContent("")
+                )
             )
-        )
+        }
         TableRow(
             content = listOf(
                 RowContent(""),
@@ -310,30 +314,35 @@ fun ResultTable(result: BenchmarkingResult, resultViewModel: ResultViewModel) {
 
         Spacer(modifier = Modifier.height(5.dp))
 
-        TableRow(
-            content = listOf(
-                RowContent(""),
-                RowContent("Median", bold = true),
-                RowContent("STD", bold = true),
-                RowContent("Peak", bold = true)
+        if(result.samples.prefill.getSamples().isNotEmpty() &&
+            result.samples.decode.getSamples().isNotEmpty()) {
+
+            TableRow(
+                content = listOf(
+                    RowContent(""),
+                    RowContent("Median", bold = true),
+                    RowContent("STD", bold = true),
+                    RowContent("Peak", bold = true)
+                )
             )
-        )
-        TableRow(
-            content = listOf(
-                RowContent("Prefill", bold = true),
-                RowContent("${formatDouble(result.samples.prefill.median())} tok/s"),
-                RowContent("${formatDouble(result.samples.prefill.std())} tok/s"),
-                RowContent("${formatDouble(result.samples.prefill.peak())} tok/s")
+            TableRow(
+                content = listOf(
+                    RowContent("Prefill", bold = true),
+                    RowContent("${formatDouble(result.samples.prefill.median())} tok/s"),
+                    RowContent("${formatDouble(result.samples.prefill.std())} tok/s"),
+                    RowContent("${formatDouble(result.samples.prefill.peak())} tok/s")
+                )
             )
-        )
-        TableRow(
-            content = listOf(
-                RowContent("Decode", bold = true),
-                RowContent("${formatDouble(result.samples.decode.median())} tok/s"),
-                RowContent("${formatDouble(result.samples.decode.std())} tok/s"),
-                RowContent("${formatDouble(result.samples.decode.peak())} tok/s")
+            TableRow(
+                content = listOf(
+                    RowContent("Decode", bold = true),
+                    RowContent("${formatDouble(result.samples.decode.median())} tok/s"),
+                    RowContent("${formatDouble(result.samples.decode.std())} tok/s"),
+                    RowContent("${formatDouble(result.samples.decode.peak())} tok/s")
+                )
             )
-        )
+
+        }
     }
 }
 
