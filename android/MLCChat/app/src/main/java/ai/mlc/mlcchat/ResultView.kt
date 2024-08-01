@@ -93,18 +93,23 @@ fun ResultView(
                         AccordionItem(
                             modifier = Modifier.fillMaxWidth(0.8f),
                             title = "Help"
-                        ){
+                        ) {
                             AccordionItem(title = "What is prefill?") {
                                 AccordionText(
-                                    text = "Prefill tok/s measures how many tokens the model can process per second during this initial setup phase."
+                                    text = "Prefill tok/s measures how many tokens the model can process per second during the initial setup phase."
                                 )
                             }
                             AccordionItem(title = "What is decode?") {
                                 AccordionText(
-                                    text = "Decode tok/s measures how many tokens the model can generate per second during this decoding phase."
+                                    text = "Decode tok/s measures how many tokens the model can generate per second during the decoding phase."
                                 )
                             }
-                            Chip(text = "std = Standard deviation")
+                            AccordionItem(title = "Why can't the tok/s values be measured?") {
+                                AccordionText(
+                                    text = "When the response takes too long, the app assumes that the model is broken or has entered a loop and interrupts the response. In that case, the tok/s values are not measured."
+                                )
+                            }
+                            Chip(text = "STD = Standard Deviation")
                         }
 
                         results.map {

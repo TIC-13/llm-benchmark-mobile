@@ -249,8 +249,8 @@ fun useStartConversation(
 
     val (showStartConversationModal) = useModal(
         title = "Warning",
-        text = "The execution of LLMs on Android devices can be very taxing, and can cause crashes, especially on devices with less than 8GB of RAM.\n"
-                + "\nThe custom conversation option has the same restrictions as the default benchmarking",
+        text = "\nThe custom conversation option has the same restrictions as the default benchmarking\n" +
+                "\nThe execution of LLMs on Android devices can be very taxing, and can cause crashes, especially on devices with less than 8GB of RAM.",
         onConfirm = { onStart() },
         confirmLabel = "Continue"
     )
