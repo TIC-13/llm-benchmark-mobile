@@ -81,6 +81,9 @@ fun HomeView(
         }
     }
 
+    val isReady = appViewModel.isReady.value
+    val canStart = isReady && !isDownloading && isIdleMeasured
+
     Column (
         modifier = Modifier
             .fillMaxSize(),
@@ -111,7 +114,7 @@ fun HomeView(
                 LargeRoundedButton(
                     icon = Icons.Default.BarChart,
                     onClick = { initBenchmarkingFlux() },
-                    enabled = !isDownloading && isIdleMeasured,
+                    enabled = canStart,
                     text = "Start benchmarking"
                 )
 
@@ -120,10 +123,9 @@ fun HomeView(
                 LargeRoundedButton(
                     icon = Icons.Default.Chat,
                     onClick = { startConversation() },
-                    enabled = !isDownloading && isIdleMeasured,
+                    enabled = canStart,
                     text = "Chat with LLMs"
                 )
-
             }
             Column(
                 modifier = Modifier
@@ -139,8 +141,15 @@ fun HomeView(
                             .fillMaxWidth(),
                         text = "Measuring idle energy consumption"
                     )
+                }else if(!isReady){
+                    LoadingTopBottomIndicator(
+                        modifier = Modifier
+                            .fillMaxHeight(0.5f)
+                            .fillMaxWidth(),
+                        text = "Getting models ready",
+                        subtitleText = "Be sure you are connected to the internet"
+                    )
                 }
-
                 if(isDownloading) {
                     DownloadView(
                         modifier = Modifier
@@ -169,9 +178,7 @@ fun useDownloadModels(
 
     var isDownloading by remember { mutableStateOf(false) }
 
-    var pendingModels by remember {
-        mutableStateOf(viewModel.benchmarkingModels)
-    }
+    var pendingModels = viewModel.benchmarkingModels
 
     val numModels = viewModel.benchmarkingModels.size
 

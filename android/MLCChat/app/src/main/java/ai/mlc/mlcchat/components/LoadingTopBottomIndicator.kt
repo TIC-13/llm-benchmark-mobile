@@ -2,6 +2,7 @@ package ai.mlc.mlcchat.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -19,8 +20,9 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun LoadingTopBottomIndicator(
+    modifier: Modifier = Modifier,
     text: String,
-    modifier: Modifier = Modifier
+    subtitleText: String? = null,
 ) {
     Row(
         modifier = modifier
@@ -37,13 +39,25 @@ fun LoadingTopBottomIndicator(
             strokeWidth = 2.dp
         )
         Spacer(modifier = Modifier.width(20.dp))
-        Text(
-            modifier = Modifier
-                .wrapContentHeight(align = Alignment.CenterVertically),
-            text = text,
-            color = MaterialTheme.colorScheme.onPrimary,
-            style = MaterialTheme.typography.titleSmall,
-            fontWeight = FontWeight.Light
-        )
+        Column {
+            Text(
+                modifier = Modifier
+                    .wrapContentHeight(align = Alignment.CenterVertically),
+                text = text,
+                color = MaterialTheme.colorScheme.onPrimary,
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Light
+            )
+            if(subtitleText !== null){
+                Text(
+                    modifier = Modifier
+                        .wrapContentHeight(align = Alignment.CenterVertically),
+                    text = subtitleText,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.Light
+                )
+            }
+        }
     }
 }

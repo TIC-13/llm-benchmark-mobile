@@ -38,6 +38,8 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     var benchmarkingModels = emptyList<ModelState>()
     val chatState = ChatState()
     val modelSampleList = emptyList<ModelRecord>().toMutableStateList()
+    var isReady = mutableStateOf(false)
+
     private var showAlert = mutableStateOf(false)
     private var alertMessage = mutableStateOf("")
     private var appConfig = AppConfig(
@@ -126,8 +128,6 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
                 )
             }
         }
-        benchmarkingModels = modelList
-            .filter { model -> benchmarkingModelsLabels.any {label -> model.modelConfig.modelId.lowercase(Locale.getDefault()).contains(label.lowercase(Locale.getDefault()))} }
     }
 
     private fun updateAppConfig(action: () -> Unit) {
@@ -147,6 +147,12 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
                 File(appDirFile, modelConfig.modelId)
             )
         )
+        benchmarkingModels = modelList
+            .filter { model -> benchmarkingModelsLabels.any {label -> model.modelConfig.modelId.lowercase(Locale.getDefault()).contains(label.lowercase(Locale.getDefault()))} }
+
+        if(modelList.size == appConfig.modelList.size)
+            isReady.value = true
+
         if (!isBuiltin) {
             updateAppConfig {
                 appConfig.modelList.add(
