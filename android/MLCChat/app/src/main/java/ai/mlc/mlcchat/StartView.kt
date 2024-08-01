@@ -257,20 +257,25 @@ fun ModelView(
                     .wrapContentHeight()
             ) {
                 TextButton(onClick = { isDeletingModel = false }) {
-                    Text(text = "cancel", color = MaterialTheme.colorScheme.onPrimary)
+                    Text(text = "Cancel", color = MaterialTheme.colorScheme.onPrimary)
                 }
+
+                // Deletes the model, but it can be downloaded again
                 TextButton(onClick = {
                     isDeletingModel = false
                     modelState.handleClear()
                 }) {
-                    Text(text = "clear data", color = MaterialTheme.colorScheme.error)
+                    Text(text = "Delete model", color = MaterialTheme.colorScheme.error)
                 }
+
+                /* Deletes the model permanently, it only can be downloaded again if the app is re-installed
                 TextButton(onClick = {
                     isDeletingModel = false
                     modelState.handleDelete()
                 }) {
                     Text(text = "delete model", color = MaterialTheme.colorScheme.error)
                 }
+                 */
             }
         }
     }
