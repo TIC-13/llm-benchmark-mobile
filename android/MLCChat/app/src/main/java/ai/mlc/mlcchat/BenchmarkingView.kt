@@ -106,7 +106,7 @@ fun useBenchmarking(
         mutableStateOf(questions)
     }
 
-    val numModelsTotal = benchmarkingModelsLabels.size
+    val numModelsTotal = viewModel.benchmarkingModels.size
     val numModelsDone = numModelsTotal - pendingModels.size + 1
     val modelName = chatState.modelName.value.split("-")[0].replaceFirstChar {
         if (it.isLowerCase()) it.titlecase(
