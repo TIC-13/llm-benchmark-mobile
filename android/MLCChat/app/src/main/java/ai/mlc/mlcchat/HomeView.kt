@@ -176,9 +176,16 @@ fun useDownloadModels(
     onFinish: () -> Unit
 ): DownloadModelsActions {
 
+    val isReady = viewModel.isReady.value
     var isDownloading by remember { mutableStateOf(false) }
 
-    var pendingModels = viewModel.benchmarkingModels
+    var pendingModels by remember {
+        mutableStateOf(viewModel.benchmarkingModels)
+    }
+
+    LaunchedEffect(key1 = isReady) {
+        pendingModels = viewModel.benchmarkingModels
+    }
 
     val numModels = viewModel.benchmarkingModels.size
 
