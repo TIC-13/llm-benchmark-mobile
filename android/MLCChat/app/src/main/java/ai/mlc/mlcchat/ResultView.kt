@@ -417,7 +417,7 @@ fun ContinueButton(modifier: Modifier = Modifier) {
     ){
         Text(
             fontWeight = FontWeight.Bold,
-            text = "CONTINUAR",
+            text = "CONTINUE",
             color = MaterialTheme.colorScheme.onPrimary
         )
     }
