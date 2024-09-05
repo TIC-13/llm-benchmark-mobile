@@ -1,5 +1,6 @@
 package ai.mlc.mlcchat
 
+import ai.mlc.mlcchat.api.LLMModel
 import ai.mlc.mlcchat.api.PostResult
 import ai.mlc.mlcchat.api.postResult
 import ai.mlc.mlcchat.components.AccordionItem
@@ -155,6 +156,7 @@ fun ResultCard(
         
         postResult(PostResult(
             phone = getPhoneData(context),
+            llm_model = LLMModel(name = result.name),
             load_time = result.loadTime?.toInt(),
             ram = samples.ram.getMeasurements(),
             cpu = samples.cpu.getMeasurements(),

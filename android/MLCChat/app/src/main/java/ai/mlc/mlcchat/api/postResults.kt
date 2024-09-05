@@ -17,6 +17,10 @@ data class Phone(
     val total_ram: Int
 )
 
+data class LLMModel(
+    val name: String
+)
+
 data class Measurement(
     val average: Double,
     val median: Double,
@@ -26,6 +30,7 @@ data class Measurement(
 
 data class PostResult(
     val phone: Phone,
+    val llm_model: LLMModel,
     val load_time: Int?,
     val ram: Measurement,
     val cpu: Measurement,
