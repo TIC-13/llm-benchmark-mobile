@@ -1,6 +1,7 @@
 package ai.mlc.mlcchat
 
 import ai.mlc.mlcchat.components.AppTopBar
+import ai.mlc.mlcchat.utils.benchmark.ModelStatusLog
 import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -87,6 +88,7 @@ fun useBenchmarking(
 ): ExecutingModelsState {
 
     val context = LocalContext.current
+    val modelStatusLog = ModelStatusLog(context)
     val questionsFileName = "qa_dataset.txt"
 
     val chatState = viewModel.chatState
@@ -117,6 +119,8 @@ fun useBenchmarking(
 
     fun goToNextModel(): Unit {
         if(pendingModels.isNotEmpty()){
+            val modelState = pendingModels[0]
+            modelStatusLog.logEndModel(modelState.modelConfig.modelId)
             pendingModels = pendingModels.subList(1, pendingModels.size)
             pendingQuestions = questions
             return
@@ -140,12 +144,8 @@ fun useBenchmarking(
                 onSaveSingleResult()
             }
             val modelState = pendingModels[0]
-            try {
-                modelState.startChat()
-            }catch(e: Exception) {
-                Log.d("crash", "init")
-                goToNextModel()
-            }
+            modelStatusLog.logStartModel(modelState.modelConfig.modelId)
+            modelState.startChat()
         }else{
             onSaveSingleResult()
             onFinishAll()

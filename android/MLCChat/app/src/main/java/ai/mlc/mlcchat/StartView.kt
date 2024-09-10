@@ -87,7 +87,8 @@ fun StartView(
             ) {
                 Spacer(modifier = Modifier.height(30.dp))
                 LazyColumn() {
-                    items(items = appViewModel.modelList,
+                    items(
+                        items = appViewModel.modelList,
                         key = { modelState -> modelState.id }
                     ) { modelState ->
                         ModelView(
