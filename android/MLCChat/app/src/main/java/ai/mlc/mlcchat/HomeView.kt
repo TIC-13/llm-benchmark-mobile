@@ -60,8 +60,8 @@ fun HomeView(
 
     val isIdleMeasured = true
 
-    val (startBenchmarking) = useStartBenchmarking(
-        onStart = { navController.navigate("benchmarking") }
+    val (startBenchmarking) = useStartModelSelection(
+        onStart = { navController.navigate("modelSelection") }
     )
 
     val (startConversation) = useStartConversation(
@@ -236,7 +236,7 @@ data class StartBenchmarkActions(
 )
 
 @Composable
-fun useStartBenchmarking(
+fun useStartModelSelection(
     onStart: () -> Unit
 ): StartBenchmarkActions {
 

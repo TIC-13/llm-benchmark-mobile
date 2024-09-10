@@ -28,12 +28,12 @@ import kotlinx.coroutines.*
 import java.util.Locale
 
 val benchmarkingModelsLabels = listOf(
-    "llama",
-    "gemma",
-    "gpt",
+    //"llama",
+    //"gemma",
+    //"gpt",
     "phi",
     "qwen",
-    "red",
+    //"red",
 )
 
 class AppViewModel(application: Application) : AndroidViewModel(application) {
@@ -140,6 +140,11 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         appConfigFile.writeText(jsonString)
     }
 
+    fun resetBenchmarkingModels() {
+        benchmarkingModels = modelList
+            .filter { model -> benchmarkingModelsLabels.any {label -> model.modelConfig.modelId.lowercase(Locale.getDefault()).contains(label.lowercase(Locale.getDefault()))} }
+    }
+
     private fun addModelConfig(modelConfig: ModelConfig, modelUrl: String, isBuiltin: Boolean) {
         require(!modelIdSet.contains(modelConfig.modelId))
         modelIdSet.add(modelConfig.modelId)
@@ -150,8 +155,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
                 File(appDirFile, modelConfig.modelId)
             )
         )
-        benchmarkingModels = modelList
-            .filter { model -> benchmarkingModelsLabels.any {label -> model.modelConfig.modelId.lowercase(Locale.getDefault()).contains(label.lowercase(Locale.getDefault()))} }
+        resetBenchmarkingModels()
 
         if(modelList.size == appConfig.modelList.size)
             isReady.value = true

@@ -34,6 +34,13 @@ fun NavView(
             )
         }
 
+        composable("modelSelection") {
+            ModelSelectionView(
+                navController = navController,
+                viewModel = appViewModel
+            )
+        }
+
         composable("home") {
             StartView(
                 navController,

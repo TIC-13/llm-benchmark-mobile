@@ -40,6 +40,7 @@ fun BenchmarkingView(
     }
     fun finishAll() {
         resultViewModel.setType(ResultType.BENCHMARKING)
+        viewModel.resetBenchmarkingModels()
         navController.navigate("result")
     }
 
