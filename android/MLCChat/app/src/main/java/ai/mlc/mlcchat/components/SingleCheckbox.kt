@@ -1,5 +1,6 @@
 package ai.mlc.mlcchat.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
@@ -16,7 +17,6 @@ import androidx.compose.ui.text.style.TextAlign
 fun SingleCheckbox(
     modifier: Modifier = Modifier,
     labelModifier: Modifier = Modifier,
-    prependedModifier: Modifier = Modifier,
     checkboxModifier: Modifier = Modifier,
     labelColor: Color = MaterialTheme.colorScheme.onPrimary,
     fontWeight: FontWeight = FontWeight.Light,
@@ -24,15 +24,14 @@ fun SingleCheckbox(
     labelStyle: TextStyle = MaterialTheme.typography.bodyMedium,
     checked: Boolean,
     setChecked: (status: Boolean) -> Unit,
+    enabled: Boolean = true,
     label: String
 ) {
     Row(
         modifier = modifier,
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Row (
-            modifier = prependedModifier,
-        ){}
         Text(
             modifier = labelModifier,
             textAlign = textAlign,
@@ -42,6 +41,7 @@ fun SingleCheckbox(
             text = label
         )
         Checkbox(
+            enabled = enabled,
             modifier = checkboxModifier,
             checked = checked,
             onCheckedChange = { setChecked(it) }

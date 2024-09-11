@@ -16,6 +16,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 
+enum class IconPosition {
+    LEFT, RIGHT
+}
+
 @Composable
 fun TextWithIcon(
     modifier: Modifier = Modifier,
@@ -25,25 +29,42 @@ fun TextWithIcon(
     text: String,
     fontWeight: FontWeight = FontWeight.Normal,
     fontColor: Color = MaterialTheme.colorScheme.onPrimary,
+    iconPosition: IconPosition = IconPosition.LEFT,
     fontStyle: TextStyle = MaterialTheme.typography.bodyMedium
 ) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
+
+    val isLeftPositioned = iconPosition == IconPosition.LEFT
+    val startPadding = if(isLeftPositioned) 8.dp else 0.dp
+    val endPadding = if(isLeftPositioned) 0.dp else 8.dp
+
+    @Composable
+    fun getIcon() {
+        return Icon(
             modifier = iconModifier
                 .size(24.dp),
             imageVector = imageVector,
             contentDescription = "Icon",
             tint = iconColor
         )
+    }
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        if(isLeftPositioned)
+            getIcon()
         Text(
             modifier = modifier
-                .padding(start = 8.dp),
+                .padding(
+                    start = startPadding,
+                    end = endPadding
+                ),
             text = text,
             fontWeight = fontWeight,
             style = fontStyle,
             color = fontColor,
         )
+        if(!isLeftPositioned)
+            getIcon()
     }
 }

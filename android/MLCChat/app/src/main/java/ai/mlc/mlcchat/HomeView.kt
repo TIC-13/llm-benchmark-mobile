@@ -51,8 +51,6 @@ fun HomeView(
     resultViewModel: ResultViewModel,
 ) {
 
-    val context = LocalContext.current
-
     //val isIdleMeasured = useMeasureIdleEnergyConsumption(
     //    context = context,
     //    resultViewModel = resultViewModel
@@ -60,29 +58,12 @@ fun HomeView(
 
     val isIdleMeasured = true
 
-    val (startBenchmarking) = useStartModelSelection(
-        onStart = { navController.navigate("modelSelection") }
-    )
-
     val (startConversation) = useStartConversation(
         onStart = { navController.navigate("home") }
     )
 
-    val (isDownloading, pendingModels, numModels, startDownload) = useDownloadModels(
-        viewModel = appViewModel,
-        onFinish = { startBenchmarking() }
-    )
-
-    fun initBenchmarkingFlux() {
-        if(!appViewModel.allBenchmarkingModelsReady()){
-            startDownload()
-        }else{
-            startBenchmarking()
-        }
-    }
-
     val isReady = appViewModel.isReady.value
-    val canStart = isReady && !isDownloading && isIdleMeasured
+    val canStart = isReady && isIdleMeasured
 
     Column (
         modifier = Modifier
@@ -113,7 +94,7 @@ fun HomeView(
                 
                 LargeRoundedButton(
                     icon = Icons.Default.BarChart,
-                    onClick = { initBenchmarkingFlux() },
+                    onClick = { navController.navigate("modelSelection") },
                     enabled = canStart,
                     text = "Start benchmarking"
                 )
@@ -150,107 +131,14 @@ fun HomeView(
                         subtitleText = "Be sure you are connected to the internet"
                     )
                 }
-                if(isDownloading) {
-                    DownloadView(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        pendingModels = pendingModels,
-                        numModels = numModels
-                    )
-                }
             }
         }
     }
-}
-
-data class DownloadModelsActions(
-    val isDownloading: Boolean,
-    val pendingModels: List<AppViewModel.ModelState>,
-    val numModels: Int,
-    val startDownload: () -> Unit,
-)
-
-@Composable
-fun useDownloadModels(
-    viewModel: AppViewModel,
-    onFinish: () -> Unit
-): DownloadModelsActions {
-
-    val isReady = viewModel.isReady.value
-    var isDownloading by remember { mutableStateOf(false) }
-
-    var pendingModels by remember {
-        mutableStateOf(viewModel.benchmarkingModels)
-    }
-
-    LaunchedEffect(key1 = isReady) {
-        pendingModels = viewModel.benchmarkingModels
-    }
-
-    val numModels = viewModel.benchmarkingModels.size
-
-    LaunchedEffect(isDownloading) {
-
-        if(!isDownloading)
-            return@LaunchedEffect
-
-        while(pendingModels.isNotEmpty()){
-            delay(100)
-
-            val modelState = pendingModels[0]
-
-            if(modelState.modelInitState.value == ModelInitState.Finished){
-                pendingModels = pendingModels.subList(1, pendingModels.size)
-                continue
-            }
-
-            if(modelState.modelInitState.value !== ModelInitState.Downloading){
-                modelState.handleStart()
-            }
-        }
-        isDownloading = false
-        onFinish()
-    }
-
-    val (showDownloadModal) = useModal(
-        title = "Download Models",
-        text = "To start the benchmarking, we need to download the LLM models.\n" +
-                "\n" +
-                "This may take some time and require a large download.\n" +
-                "\n" +
-                "Do you want to continue?",
-        onConfirm = { isDownloading = true },
-        confirmLabel = "Download"
-    )
-
-    return DownloadModelsActions(
-        isDownloading = isDownloading,
-        startDownload = showDownloadModal,
-        pendingModels = pendingModels,
-        numModels = numModels
-    )
 }
 
 data class StartBenchmarkActions(
     val startBenchmarking: () -> Unit
 )
-
-@Composable
-fun useStartModelSelection(
-    onStart: () -> Unit
-): StartBenchmarkActions {
-
-    val (showStartBenchmarkingModal) = useModal(
-        title = "Warning",
-        text = "The execution of LLMs on Android devices can be very taxing, and can cause crashes, especially on devices with less than 8GB of RAM.",
-        onConfirm = { onStart() },
-        confirmLabel = "Continue"
-    )
-
-    return StartBenchmarkActions(
-        startBenchmarking = showStartBenchmarkingModal
-    )
-}
 
 data class StartConversationActions(
     val startConversation: () -> Unit

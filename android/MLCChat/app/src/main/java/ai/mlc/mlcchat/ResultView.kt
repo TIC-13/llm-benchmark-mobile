@@ -409,7 +409,7 @@ fun getEnergyConsumption(result: BenchmarkingResult, idleSamples: IdleSamples?):
 
 
 @Composable
-fun ContinueButton(modifier: Modifier = Modifier) {
+fun ContinueButton(modifier: Modifier = Modifier, label: String = "CONTINUE") {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -420,7 +420,7 @@ fun ContinueButton(modifier: Modifier = Modifier) {
     ){
         Text(
             fontWeight = FontWeight.Bold,
-            text = "CONTINUE",
+            text = label,
             color = MaterialTheme.colorScheme.onPrimary
         )
     }

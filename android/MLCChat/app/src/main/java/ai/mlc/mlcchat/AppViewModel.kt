@@ -140,6 +140,10 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         appConfigFile.writeText(jsonString)
     }
 
+    fun updateBenchmarkingModels(models: List<AppViewModel.ModelState>) {
+        benchmarkingModels = models
+    }
+
     fun resetBenchmarkingModels() {
         benchmarkingModels = modelList
             .filter { model -> benchmarkingModelsLabels.any {label -> model.modelConfig.modelId.lowercase(Locale.getDefault()).contains(label.lowercase(Locale.getDefault()))} }
