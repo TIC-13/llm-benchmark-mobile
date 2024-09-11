@@ -58,17 +58,18 @@ fun ResultView(
         navController.popBackStack("main", false)
     }
 
+    val resultType = resultViewModel.getType()
+
     Scaffold(topBar =
         {
             AppTopBar(
                 title = "Result",
                 onBack = {
-                    if(resultViewModel.getType() == ResultType.BENCHMARKING)
-                        goToHome()
-                    else if(resultViewModel.getType() == ResultType.CONVERSATION)
-                        navController.popBackStack()
-                    else
-                        goToHome()
+                    when(resultType) {
+                        ResultType.BENCHMARKING -> goToHome()
+                        ResultType.CONVERSATION -> navController.popBackStack()
+                        else -> navController.popBackStack()
+                    }
                 }
             )
         }
@@ -116,7 +117,7 @@ fun ResultView(
                         results.map {
                             ResultCard(
                                 result = it,
-                                postResults = results.size > 0,
+                                postResults = resultType == ResultType.BENCHMARKING,
                                 resultViewModel = resultViewModel
                             )
                         }
