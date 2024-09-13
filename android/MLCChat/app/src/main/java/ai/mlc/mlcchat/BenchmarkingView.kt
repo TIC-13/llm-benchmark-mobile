@@ -36,8 +36,15 @@ fun BenchmarkingView(
         viewModel.chatState.modelChatState
     }
 
+    val context = LocalContext.current
+
     fun saveResult() {
-        resultViewModel.wrapResultUp(chatState.modelName.value)
+        resultViewModel.wrapResultUp(
+            context = context,
+            modelName = chatState.modelName.value,
+            sendResult = true
+        )
+
     }
     fun finishAll() {
         resultViewModel.setType(ResultType.BENCHMARKING)

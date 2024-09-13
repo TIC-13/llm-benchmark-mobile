@@ -117,7 +117,6 @@ fun ResultView(
                         results.map {
                             ResultCard(
                                 result = it,
-                                postResults = resultType == ResultType.BENCHMARKING,
                                 resultViewModel = resultViewModel
                             )
                         }
@@ -138,36 +137,13 @@ fun ResultView(
 fun ResultCard(
     modifier: Modifier = Modifier,
     result: BenchmarkingResult,
-    postResults: Boolean = false,
     resultViewModel: ResultViewModel
 ) {
 
-    val context = LocalContext.current
     val samples = result.samples
 
     val prefill = remember { samples.prefill.getMeasurements() }
     val decode = remember { samples.decode.getMeasurements() }
-
-    LaunchedEffect(Unit) {
-
-        if(!postResults) return@LaunchedEffect
-
-        val power = getPowerConsumption(result, resultViewModel.getIdleSamples())
-        val energy = getEnergyConsumption(result, resultViewModel.getIdleSamples())
-        
-        postResult(PostResult(
-            phone = getPhoneData(context),
-            llm_model = LLMModel(name = result.name),
-            load_time = result.loadTime?.toInt(),
-            ram = samples.ram.getMeasurements(),
-            cpu = samples.cpu.getMeasurements(),
-            gpu = samples.gpu.getMeasurements(),
-            decode = decode,
-            prefill = prefill,
-            energyAverage = if(!energy.isNaN()) energy else null,
-            powerAverage = if(!power.isNaN()) power else null
-        ))
-    }
 
     Column(
         modifier = modifier

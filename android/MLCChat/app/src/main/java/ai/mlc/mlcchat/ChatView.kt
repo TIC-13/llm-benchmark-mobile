@@ -78,10 +78,11 @@ fun ChatView(
     navController: NavController, chatState: AppViewModel.ChatState, resultViewModel: ResultViewModel
 ) {
 
+    val context = LocalContext.current
     val localFocusManager = LocalFocusManager.current
 
     fun toResults() {
-        resultViewModel.wrapResultUp(chatState.modelName.value)
+        resultViewModel.wrapResultUp(context, chatState.modelName.value)
         resultViewModel.setType(ResultType.CONVERSATION)
         navController.navigate("result")
     }

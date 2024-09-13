@@ -1,5 +1,8 @@
 package ai.mlc.mlcchat
 
+import ai.mlc.mlcchat.api.LLMModel
+import ai.mlc.mlcchat.api.PostResult
+import ai.mlc.mlcchat.api.postResult
 import ai.mlc.mlcchat.interfaces.BenchmarkingResult
 import ai.mlc.mlcchat.utils.benchmark.Sampler
 import ai.mlc.mlcchat.utils.benchmark.cpuUsage
@@ -8,12 +11,14 @@ import ai.mlc.mlcchat.utils.benchmark.getBatteryVoltageVolts
 import ai.mlc.mlcchat.utils.benchmark.gpuUsage
 import ai.mlc.mlcchat.utils.benchmark.isBatteryCharging
 import ai.mlc.mlcchat.utils.benchmark.ramUsage
+import ai.mlc.mlcchat.utils.benchmark.system.getPhoneData
 import android.app.Application
 import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.AndroidViewModel
 
 data class BenchmarkingSamples(
@@ -95,18 +100,50 @@ class ResultViewModel(
         loadTime = newLoadTime
     }
 
-    fun wrapResultUp(modelName: String) {
-        results.add(
-            BenchmarkingResult(
-                loadTime = loadTime,
-                name = modelName,
-                samples = samples,
-                idleSamples = idleSamples
-            )
+    fun wrapResultUp(context: Context, modelName: String, sendResult: Boolean = false) {
+        val result = BenchmarkingResult(
+            loadTime = loadTime,
+            name = modelName,
+            samples = samples,
+            idleSamples = idleSamples
         )
+        results.add(result)
+
+        if(sendResult)
+            sendResult(context, result)
+
         resetSampler()
         loadTime = null
     }
+
+    fun sendResult(context: Context, result: BenchmarkingResult) {
+
+        val samples = result.samples
+
+        val prefill = samples.prefill.getMeasurements()
+        val decode = samples.decode.getMeasurements()
+
+        val power = Double.NaN
+        val energy = Double.NaN
+        //val power = getPowerConsumption(result, getIdleSamples())
+        //val energy = getEnergyConsumption(result, getIdleSamples())
+
+        postResult(
+            PostResult(
+                phone = getPhoneData(context),
+                llm_model = LLMModel(name = result.name),
+                load_time = result.loadTime?.toInt(),
+                ram = samples.ram.getMeasurements(),
+                cpu = samples.cpu.getMeasurements(),
+                gpu = samples.gpu.getMeasurements(),
+                decode = decode,
+                prefill = prefill,
+                energyAverage = if(!energy.isNaN()) energy else null,
+                powerAverage = if(!power.isNaN()) power else null
+            )
+        )
+    }
+
 
     private fun resetSampler() {
         samples = BenchmarkingSamples()
