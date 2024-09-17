@@ -212,7 +212,7 @@ fun ModelSelectionView(
                         },
                     label =
                         if(anySelectedModelNotDownloaded())
-                            "DOWNLOAD" else "CONTINUE"
+                            "DOWNLOAD AND START" else "START"
                 )
             }
         }
