@@ -85,18 +85,19 @@ fun StartView(
                     .padding(paddingValues)
                     .padding(horizontal = 10.dp)
             ) {
-                Spacer(modifier = Modifier.height(30.dp))
                 LazyColumn() {
                     items(
-                        items = appViewModel.modelList,
-                        key = { modelState -> modelState.id }
-                    ) { modelState ->
+                        items = appViewModel.modelList.withIndex().toList(),
+                        key = { (_, modelState) -> modelState.id }
+                    ) { (index, modelState) ->
+                        Spacer(modifier = Modifier.height(15.dp))
                         ModelView(
                             navController = navController,
                             modelState = modelState,
                             appViewModel = appViewModel
                         )
-                        Spacer(modifier = Modifier.height(15.dp))
+                        if(index == appViewModel.modelList.size - 1)
+                            Spacer(modifier = Modifier.height(15.dp))
                     }
                 }
             }
