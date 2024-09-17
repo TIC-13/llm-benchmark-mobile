@@ -16,6 +16,8 @@ class ModelStatusLog(context: Context) {
     private val startedModelsSharedPreferences = context.getSharedPreferences("startedModels", Context.MODE_PRIVATE)
     private val finishedModelsSharedPreferences = context.getSharedPreferences("finishedModels", Context.MODE_PRIVATE)
 
+    private val selectionStatus = context.getSharedPreferences("selectionStatus", Context.MODE_PRIVATE)
+
     private fun generateTimeStamp(): String {
         val currentDateTime = ZonedDateTime.now(ZoneId.systemDefault())
         return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z").format(currentDateTime)
@@ -82,4 +84,16 @@ class ModelStatusLog(context: Context) {
     fun checkWasModelInterrupted(modelName: String): Boolean{
         return getStatus(modelName) == LogStatus.INTERRUPTED
     }
+
+    fun getIsSelected(modelName: String): Boolean {
+        return selectionStatus.getBoolean(modelName, true)
+    }
+
+    fun setIsSelected(modelName: String, value: Boolean) {
+        val editor = selectionStatus.edit()
+        editor.putBoolean(modelName, value)
+        editor.apply()
+    }
+
+
 }

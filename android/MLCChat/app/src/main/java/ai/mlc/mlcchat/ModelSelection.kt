@@ -73,21 +73,27 @@ fun ModelSelectionView(
     val context = LocalContext.current
     val modelStatusLog = ModelStatusLog(context)
 
+
     var selections by remember { mutableStateOf(viewModel.benchmarkingModels.map {
+            val modelName = it.modelConfig.modelId
             ModelSelection(
                 model = it,
-                isChecked = ! modelStatusLog.checkWasModelInterrupted(it.modelConfig.modelId)
+                isChecked = modelStatusLog.getIsSelected(modelName) &&
+                            !modelStatusLog.checkWasModelInterrupted(modelName)
             )
         })
     }
 
     fun toggleSelection(index: Int) {
-        selections = selections.mapIndexed { idx, sel ->
-            if(idx == index)
-                ModelSelection(sel.model, !sel.isChecked)
-            else
-                sel
+        fun select(idx: Int, sel: ModelSelection): ModelSelection {
+            if(idx == index) {
+                modelStatusLog.setIsSelected(sel.model.modelConfig.modelId, !sel.isChecked)
+                return ModelSelection(sel.model, !sel.isChecked)
+            }else{
+                return sel
+            }
         }
+        selections = selections.mapIndexed(::select)
     }
 
     fun getCheckedModels(): List<AppViewModel.ModelState> {
