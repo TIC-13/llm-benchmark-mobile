@@ -232,6 +232,11 @@ fun TitleView(modifier: Modifier = Modifier) {
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(5.dp)
     ){
+        Image(
+            painter = painterResource(id = R.drawable.blue_llama),
+            contentDescription = "Icon in the shape of lightning"
+        )
+        Spacer(modifier = Modifier.height(15.dp))
         Row(
             horizontalArrangement = Arrangement.spacedBy(15.dp),
             verticalAlignment = Alignment.CenterVertically
