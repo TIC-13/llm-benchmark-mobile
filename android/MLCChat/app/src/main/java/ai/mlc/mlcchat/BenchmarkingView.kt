@@ -44,8 +44,8 @@ fun BenchmarkingView(
             modelName = chatState.modelName.value,
             sendResult = true
         )
-
     }
+
     fun finishAll() {
         resultViewModel.setType(ResultType.BENCHMARKING)
         viewModel.resetBenchmarkingModels()

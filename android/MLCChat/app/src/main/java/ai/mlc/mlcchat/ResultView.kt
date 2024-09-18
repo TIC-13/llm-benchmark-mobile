@@ -173,7 +173,7 @@ fun ResultCard(
 
         ResultTable(result = result, resultViewModel = resultViewModel)
         
-        if(prefill.median.isNaN() || decode.median.isNaN()){
+        if(prefill.median == null || decode.median == null){
             Chip(
                 text = "Tok/s values not measured",
                 icon = Icons.Default.Warning
@@ -234,26 +234,20 @@ fun ResultTable(result: BenchmarkingResult, resultViewModel: ResultViewModel) {
     }
 
     val powerDifference = getPowerConsumption(result, resultViewModel.getIdleSamples())
-    val powerResult =
-        if(powerDifference.isNaN())
-            "N/A"
-        else
-            "${formatDouble(powerDifference)}W"
+    val powerResult =  formatDouble(powerDifference, "W")
 
     val energyConsumptionDifference = getEnergyConsumption(result, resultViewModel.getIdleSamples())
-    val energyConsumptionResult =
-        if(energyConsumptionDifference.isNaN())
-            "N/A"
-        else
-            "${formatDouble(energyConsumptionDifference)}J"
+    val energyConsumptionResult = formatDouble(energyConsumptionDifference, "J")
 
-    val loadTimeResult =
-        if(result.loadTime == null)
-            "N/A"
-        else
-            "${result.loadTime} ms"
+    val loadTimeResult = formatInt(result.loadTime, " ms")
 
-    val toksTotal = result.samples.prefill.median() + result.samples.decode.median()
+    val prefillMedian = result.samples.prefill.median()
+    val decodeMedian = result.samples.decode.median()
+
+    val toksTotal = if (prefillMedian !== null && decodeMedian !== null)
+        prefillMedian + decodeMedian
+    else
+        null
 
     Column(
         modifier = Modifier
@@ -261,12 +255,12 @@ fun ResultTable(result: BenchmarkingResult, resultViewModel: ResultViewModel) {
             .padding(10.dp, 0.dp, 0.dp, 0.dp),
         verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
-        if(!toksTotal.isNaN()){
+        if(toksTotal !== null){
             TableRow(
                 content = listOf(
                     RowContent(""),
                     RowContent("Tok/s", bold = true),
-                    RowContent("${formatDouble(toksTotal)} tok/s"),
+                    RowContent(formatDouble(toksTotal, " tok/s")),
                     RowContent("")
                 )
             )
@@ -291,25 +285,25 @@ fun ResultTable(result: BenchmarkingResult, resultViewModel: ResultViewModel) {
         TableRow(
             content = listOf(
                 RowContent("CPU", bold = true),
-                RowContent("${result.samples.cpu.average().toInt()}%"),
-                RowContent("${result.samples.cpu.std().toInt()}%"),
-                RowContent("${result.samples.cpu.peak().toInt()}%")
+                RowContent(formatInt(result.samples.cpu.average(), "%")),
+                RowContent(formatInt(result.samples.cpu.std(), "%")),
+                RowContent(formatInt(result.samples.cpu.peak(), "%"))
             )
         )
         TableRow(
             content = listOf(
                 RowContent("GPU", bold = true),
-                RowContent("${result.samples.gpu.average().toInt()}%"),
-                RowContent("${result.samples.gpu.std().toInt()}%"),
-                RowContent("${result.samples.gpu.peak().toInt()}%")
+                RowContent(formatInt(result.samples.gpu.average(), "%")),
+                RowContent(formatInt(result.samples.gpu.std(), "%")),
+                RowContent(formatInt(result.samples.gpu.peak(), "%"))
             )
         )
         TableRow(
             content = listOf(
                 RowContent("RAM", bold = true),
-                RowContent("${result.samples.ram.average().toInt()}MB"),
-                RowContent("${result.samples.ram.std().toInt()}MB"),
-                RowContent("${result.samples.ram.peak().toInt()}MB")
+                RowContent(formatInt(result.samples.ram.average(), "MB")),
+                RowContent(formatInt(result.samples.ram.std(), "MB")),
+                RowContent(formatInt(result.samples.ram.peak(), "MB"))
             )
         )
 
@@ -348,17 +342,17 @@ fun ResultTable(result: BenchmarkingResult, resultViewModel: ResultViewModel) {
             TableRow(
                 content = listOf(
                     RowContent("Prefill", bold = true),
-                    RowContent("${formatDouble(result.samples.prefill.median())} tok/s"),
-                    RowContent("${formatDouble(result.samples.prefill.std())} tok/s"),
-                    RowContent("${formatDouble(result.samples.prefill.peak())} tok/s")
+                    RowContent(formatDouble(result.samples.prefill.median(), "tok/s")),
+                    RowContent(formatDouble(result.samples.prefill.std(), " tok/s")),
+                    RowContent(formatDouble(result.samples.prefill.peak(), "tok/s"))
                 )
             )
             TableRow(
                 content = listOf(
                     RowContent("Decode", bold = true),
-                    RowContent("${formatDouble(result.samples.decode.median())} tok/s"),
-                    RowContent("${formatDouble(result.samples.decode.std())} tok/s"),
-                    RowContent("${formatDouble(result.samples.decode.peak())} tok/s")
+                    RowContent(formatDouble(result.samples.decode.median(), " tok/s")),
+                    RowContent(formatDouble(result.samples.decode.std(), "tok/s")),
+                    RowContent(formatDouble(result.samples.decode.peak(), "tok/s"))
                 )
             )
 
@@ -366,23 +360,48 @@ fun ResultTable(result: BenchmarkingResult, resultViewModel: ResultViewModel) {
     }
 }
 
-fun formatDouble(number: Number): String {
-    return String.format("%.1f", number)
+fun formatDouble(number: Number?, suffix: String): String {
+    if(number == null) return "-"
+    return String.format("%.1f", number) + suffix
 }
 
-fun getPowerConsumption(result: BenchmarkingResult, idleSamples: IdleSamples?): Double {
-    if(idleSamples == null) return Double.NaN
-    val powerConsumption = result.samples.voltages.average() * result.samples.currents.average()
-    val powerIdle = idleSamples.voltages.average()*idleSamples.currents.average()
+fun formatInt(number: Number?, suffix: String): String {
+    if(number == null) return "-"
+    return "${number.toInt()}${suffix}"
+}
+
+fun getPowerConsumption(result: BenchmarkingResult, idleSamples: IdleSamples?): Double? {
+    val avgVoltage = result.samples.voltages.average()
+    val avgCurrent = result.samples.currents.average()
+
+    if(idleSamples == null || avgCurrent == null || avgVoltage == null)
+        return null
+    val powerConsumption = avgVoltage * avgCurrent
+
+    val idleVoltage = idleSamples.voltages.average()
+    val idleCurrent = idleSamples.currents.average()
+
+    if(idleCurrent == null || idleVoltage == null)
+        return null
+
+    val powerIdle = idleVoltage*idleCurrent
     return powerConsumption - powerIdle
 }
 
-fun getEnergyConsumption(result: BenchmarkingResult, idleSamples: IdleSamples?): Double {
-    if(idleSamples == null) return Double.NaN
-    Log.d("idle", idleSamples.voltages.average().toString())
-    return getPowerConsumption(result, idleSamples) * (result.samples.prefillTime.sum() + result.samples.decodeTime.sum())
-}
+fun getEnergyConsumption(result: BenchmarkingResult, idleSamples: IdleSamples?): Double? {
+    val powerConsumption = getPowerConsumption(result, idleSamples)
+    val prefillTimeTotal = result.samples.prefillTime.sum()
+    val decodeTimeTotal = result.samples.decodeTime.sum()
 
+
+    if(idleSamples == null ||
+        powerConsumption == null ||
+        prefillTimeTotal == null ||
+        decodeTimeTotal == null
+        )
+        return null
+    return powerConsumption * (prefillTimeTotal * decodeTimeTotal)
+}
 
 @Composable
 fun ContinueButton(modifier: Modifier = Modifier, label: String = "CONTINUE") {

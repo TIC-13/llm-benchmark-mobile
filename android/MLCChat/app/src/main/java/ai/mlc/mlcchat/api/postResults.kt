@@ -22,10 +22,10 @@ data class LLMModel(
 )
 
 data class Measurement(
-    val average: Double,
-    val median: Double,
-    val peak: Double,
-    val std: Double,
+    val average: Double?,
+    val median: Double?,
+    val peak: Double?,
+    val std: Double?,
 )
 
 data class PostResult(

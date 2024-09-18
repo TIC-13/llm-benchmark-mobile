@@ -66,8 +66,13 @@ class ResultViewModel(
     }
 
     fun addBenchmarkingSample(context: Context) {
-        samples.cpu.addSample(cpuUsage(context).toDouble())
-        samples.gpu.addSample(gpuUsage().toDouble())
+        val cpuUse = cpuUsage(context)
+        val gpuUse = gpuUsage()
+
+        if(cpuUse !== null)
+            samples.cpu.addSample(cpuUse.toDouble())
+        if(gpuUse !== null)
+            samples.gpu.addSample(gpuUse.toDouble())
         samples.ram.addSample(ramUsage().toDouble())
     }
 

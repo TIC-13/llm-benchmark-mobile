@@ -333,8 +333,8 @@ fun BenchmarkView(
     val context = LocalContext.current
 
     var ram by remember { mutableStateOf(0) }
-    var cpu by remember { mutableStateOf(0) }
-    var gpu by remember { mutableStateOf(0) }
+    var cpu by remember { mutableStateOf<Int?>(0) }
+    var gpu by remember { mutableStateOf<Int?>(0) }
 
     LaunchedEffect(Unit) {
         withContext(Dispatchers.IO){
@@ -352,8 +352,8 @@ fun BenchmarkView(
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically,
     ){
-        Text(text = "CPU: ${cpu}%", color = textColor, fontWeight = fontWeight)
-        Text(text = "GPU: ${gpu}%", color = textColor, fontWeight = fontWeight)
+        Text(text = "CPU: ${if(cpu !== null) "${cpu}%" else "-"}", color = textColor, fontWeight = fontWeight)
+        Text(text = "GPU: ${if(gpu !== null) "${gpu}%" else "-"}", color = textColor, fontWeight = fontWeight)
         Text(text = "RAM: ${ram}MB", color = textColor, fontWeight = fontWeight)
     }
 }
@@ -421,11 +421,11 @@ fun MessageView(messageData: MessageData) {
 
                 if(messageData.prefillTime !== null) {
                     Spacer(modifier = Modifier.height(20.dp))
-                    BottomText(text = "Prefill time: ${messageData.prefillTime?.let { formatDouble(it.toDouble()/1000) }}s")
+                    BottomText(text = "Prefill time: ${messageData.prefillTime?.let { formatDouble(it.toDouble()/1000, "s")}}")
                 }
 
                 if(messageData.decodeTime !== null) {
-                    BottomText(text = "Decode time: ${messageData.decodeTime?.let { formatDouble(it.toDouble()/1000) }}s")
+                    BottomText(text = "Decode time: ${messageData.decodeTime?.let { formatDouble(it.toDouble()/1000, "s")}}")
                 }
             }
         } else {

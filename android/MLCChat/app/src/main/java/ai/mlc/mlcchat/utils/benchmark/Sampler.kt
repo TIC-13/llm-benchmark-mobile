@@ -24,22 +24,26 @@ class Sampler {
     }
 
     @Synchronized
-    fun sum(): Double {
+    fun sum(): Double? {
+        if(samples.isEmpty()) return null
         return samples.sum()
     }
 
     @Synchronized
-    fun average(): Double {
+    fun average(): Double? {
+        if(samples.isEmpty()) return null
         return samples.average()
     }
 
     @Synchronized
-    fun peak(): Double {
+    fun peak(): Double? {
+        if(samples.isEmpty()) return null
         return peak
     }
 
     @Synchronized
-    fun std(): Double {
+    fun std(): Double? {
+        if(samples.isEmpty()) return null
         val mean = samples.average()
         val sumOfSquaredDiffs = samples.sumOf { (it - mean) * (it - mean) }
         val variance = sumOfSquaredDiffs / samples.size
@@ -47,11 +51,8 @@ class Sampler {
     }
 
     @Synchronized
-    fun median(): Double {
-        if (samples.isEmpty()) {
-            //throw IllegalArgumentException("The list cannot be empty")
-            return Double.NaN
-        }
+    fun median(): Double? {
+        if (samples.isEmpty()) return null
 
         val sortedValues = samples.sorted()
         val middle = sortedValues.size / 2
