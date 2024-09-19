@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'ai.mlc.mlcchat'
+    namespace 'ai.luxai.benchmarkingllm'
     compileSdk 34
 
     defaultConfig {
