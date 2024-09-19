@@ -1,5 +1,6 @@
 package ai.luxai.benchmarkingllm.api
 
+import ai.luxai.benchmarkingllm.BuildConfig
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -46,8 +47,10 @@ interface ApiService {
     suspend fun createPost(@Body postData: PostResult): Response<Any>
 }
 
+const val apiAdress = BuildConfig.API_ADRESS
+
 val retrofit = Retrofit.Builder()
-    .baseUrl("http://localhost:3030/")
+    .baseUrl("$apiAdress/")
     .addConverterFactory(GsonConverterFactory.create())
     .build()
 
