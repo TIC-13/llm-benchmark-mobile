@@ -16,7 +16,7 @@ def apiAdress = localProperties.getProperty("API_ADRESS")
 def apiKey = localProperties.getProperty("API_KEY")
 
 if (apiAdress == null || apiKey == null) {
-    throw new GradleException("API_ADRESS or API_KEY is missing in local.properties.")
+    throw new GradleException("API_ADRESS or API_KEY is missing in local.properties. Edit local.properties and create them")
 }
 
 android {

@@ -2,7 +2,7 @@ package ai.luxai.benchmarkingllm
 
 import ai.luxai.benchmarkingllm.api.LLMModel
 import ai.luxai.benchmarkingllm.api.PostResult
-import ai.luxai.benchmarkingllm.api.postResult
+import ai.luxai.benchmarkingllm.api.encryptAndPostResult
 import ai.luxai.benchmarkingllm.interfaces.BenchmarkingResult
 import ai.luxai.benchmarkingllm.utils.benchmark.Sampler
 import ai.luxai.benchmarkingllm.utils.benchmark.cpuUsage
@@ -128,7 +128,7 @@ class ResultViewModel(
         //val power = getPowerConsumption(result, getIdleSamples())
         //val energy = getEnergyConsumption(result, getIdleSamples())
 
-        postResult(
+        encryptAndPostResult(
             PostResult(
                 phone = getPhoneData(context),
                 llm_model = LLMModel(name = result.name),
