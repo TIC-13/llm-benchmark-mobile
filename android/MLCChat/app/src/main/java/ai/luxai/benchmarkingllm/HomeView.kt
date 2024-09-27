@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Chat
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -106,6 +107,16 @@ fun HomeView(
                     enabled = canStart,
                     text = "Chat with LLMs"
                 )
+
+                Spacer(modifier = Modifier.height(15.dp))
+
+                LargeRoundedButton(
+                    icon = Icons.Default.Info,
+                    onClick = { navController.navigate("info") },
+                    enabled = canStart,
+                    text = "About app"
+                )
+
             }
             Column(
                 modifier = Modifier

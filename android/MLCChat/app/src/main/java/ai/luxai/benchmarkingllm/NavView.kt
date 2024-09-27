@@ -64,5 +64,11 @@ fun NavView(
             )
         }
 
+        composable("info") {
+            InfoScreen(
+                navController
+            )
+        }
+
     }
 }
