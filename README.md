@@ -15,6 +15,13 @@
 
 This app is built on the MLC LLM Android app. Therefore, the instructions and steps for building and running the app are identical to those of the MLC LLM app. To get started, follow this [documentation](https://llm.mlc.ai/docs/).
 
+
+This text is clear but can be made a bit smoother and more precise. Here's an improved version:
+
+## Environment
+
+In the Android project, set the backend address in `local.properties` under `API_ADDRESS` and assign a base64-encoded 32-byte (AES-256) value to `API_KEY`. Ensure that this key matches the one used in the backend.
+
 ## Screenshots
 
 Here are some screenshots of the app in action:
