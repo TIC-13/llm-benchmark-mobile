@@ -3,13 +3,12 @@ package ai.luxai.benchmarkingllm
 import ai.luxai.benchmarkingllm.components.AccordionItem
 import ai.luxai.benchmarkingllm.components.AccordionText
 import ai.luxai.benchmarkingllm.components.AppTopBar
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material3.Icon
@@ -20,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -37,31 +35,45 @@ fun InfoScreen(navController: NavController) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
                     .padding(paddingValues)
             ) {
 
                 TextSection(
                     modifier = Modifier.padding(15.dp, 30.dp, 15.dp, 15.dp),
-                    title = "What does this app do?",
-                    content = "This app benchmarks LLMs"
+                    title = "About the app",
+                    content = "This app performs benchmarking of LLMs (Large Language Models) running natively on Android devices. The main metrics captured include tokens per second (in Prefil and Decode phases), along with GPU and RAM consumption. The app uses the MLC LLM engine to compile and execute the models.\n" +
+                            "\n" +
+                            "More information about MLC LLM: llm.mlc.ai"
                 )
 
-                AccordionItem(title = "How the benchmarking works") {
-                    AccordionItem(title = "CPU Measurement") {
-                        AccordionText(text = "dsalçkhfçasdlkf")
+                AccordionItem(title = "How the Benchmarks Work") {
+                    AccordionItem(title = "GPU Benchmarking") {
+                        AccordionText(text = "GPU usage is monitored through specific system files: /sys/kernel/gpu/gpu_busy for Mali GPUs and /sys/class/kgsl/kgsl-3d0/gpubusy for Adreno GPUs.")
                     }
-                    AccordionItem(title = "GPU Measurement") {
-                        AccordionText(text = "dsalçkhfçasdlkf")
+                    AccordionItem(title = "RAM Benchmarking") {
+                        AccordionText(text = "To measure RAM usage, the app uses the PSS (Proportional Set Size) value, which accounts for both the memory used solely by the process and the memory shared with other processes, but only in proportion to the number of processes using it.")
                     }
-                    AccordionItem(title = "RAM Measurement") {
-                        AccordionText(text = "dsalçkhfçasdlkf")
+                    AccordionItem(title = "Why doesn't the app measure CPU usage?") {
+                        AccordionText(text = "Since Android 8.0, the operating system has restricted access to the /proc file during the app's runtime. This file was used, among other things, to obtain the CPU usage percentage. Due to these restrictions, it is not possible to capture the CPU usage percentage in the release version of the app, only in the debug version.")
                     }
                 }
 
                 TextSection(
                     modifier = Modifier.padding(15.dp, 30.dp, 15.dp, 15.dp),
                     title = "About Lux.AI",
-                    content = "Lux.AI is a project",
+                    content = "Lux.AI is a project developed at the Center for Informatics at UFPE, as part of the PPI (Priority Programs and Projects of the IT Law), with support from the Ministry of Science, Technology, Innovations, and Communications, through the IT Law (Law No. 8.248/91) and the SOFTEX Program.\n" +
+                            "\n" +
+                            "Lux.AI’s main areas of study and development include:\n" +
+                            "\n" +
+                            "1. Computational Photography\n" +
+                            "2. Artificial Intelligence\n" +
+                            "3. Image Quality Analysis\n" +
+                            "4. Performance Analysis of Heterogeneous Systems\n" +
+                            "\n" +
+                            "Lux.AI develops mobile applications with AI-based functionalities and applies techniques such as training, fine-tuning, pruning, and other performance optimization methods for AI models. Additionally, it offers consulting and personalized services to the industry, covering everything from AI model training and fine-tuning to performance improvement on restrictive hardware.\n" +
+                            "\n" +
+                            "More information about Lux.AI: luxai.cin.ufpe.br",
                     titleIcon = Icons.Default.Camera
                 )
                 
