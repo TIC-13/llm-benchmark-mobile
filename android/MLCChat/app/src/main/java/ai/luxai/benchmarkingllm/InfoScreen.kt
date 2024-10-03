@@ -3,9 +3,13 @@ package ai.luxai.benchmarkingllm
 import ai.luxai.benchmarkingllm.components.AccordionItem
 import ai.luxai.benchmarkingllm.components.AccordionText
 import ai.luxai.benchmarkingllm.components.AppTopBar
+import ai.luxai.benchmarkingllm.components.OpenLinkInBrowser
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -71,12 +75,16 @@ fun InfoScreen(navController: NavController) {
                             "3. Image Quality Analysis\n" +
                             "4. Performance Analysis of Heterogeneous Systems\n" +
                             "\n" +
-                            "Lux.AI develops mobile applications with AI-based functionalities and applies techniques such as training, fine-tuning, pruning, and other performance optimization methods for AI models. Additionally, it offers consulting and personalized services to the industry, covering everything from AI model training and fine-tuning to performance improvement on restrictive hardware.\n" +
-                            "\n" +
-                            "More information about Lux.AI: luxai.cin.ufpe.br",
-                    titleIcon = Icons.Default.Camera
+                            "Lux.AI develops mobile applications with AI-based functionalities and applies techniques such as training, fine-tuning, pruning, and other performance optimization methods for AI models. Additionally, it offers consulting and personalized services to the industry, covering everything from AI model training and fine-tuning to performance improvement on restrictive hardware.",
+                    titleIcon = Icons.Default.Camera,
+                    componentAfterTitle = {
+                        OpenLinkInBrowser(
+                            modifier = Modifier.padding(15.dp, 10.dp, 0.dp, 0.dp),
+                            text = "Lux.AI's website",
+                            uri = "https://luxai.cin.ufpe.br"
+                        )
+                    }
                 )
-                
             }
         }
     }
@@ -87,7 +95,8 @@ fun TextSection(
     modifier: Modifier = Modifier,
     title: String,
     content: String,
-    titleIcon: ImageVector? = null
+    titleIcon: ImageVector? = null,
+    componentAfterTitle: @Composable() (ColumnScope.() -> Unit)? = null
 ) {
     Column(
         modifier = modifier
@@ -109,6 +118,10 @@ fun TextSection(
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold
             )
+        }
+
+        if (componentAfterTitle != null) {
+            componentAfterTitle()
         }
 
         Text(
