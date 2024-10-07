@@ -39,7 +39,7 @@ fun AccordionItem(
     title: String,
     titleModifier: Modifier = Modifier,
     iconModifier: Modifier = Modifier,
-    titleColor: Color = MaterialTheme.colorScheme.onSecondary,
+    titleColor: Color = Color.White,
     titleStyle: TextStyle = MaterialTheme.typography.bodyMedium,
     titleWeight: FontWeight = FontWeight.SemiBold,
     content: @Composable () -> Unit
@@ -87,7 +87,7 @@ fun AccordionItem(
 fun AccordionText(
     modifier: Modifier = Modifier,
     text: String,
-    color: Color = MaterialTheme.colorScheme.onPrimary,
+    color: Color = Color.White,
     style: TextStyle = MaterialTheme.typography.bodySmall
 ){
     Text(

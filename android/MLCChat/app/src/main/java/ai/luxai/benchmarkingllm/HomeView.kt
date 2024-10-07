@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -39,8 +40,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontVariation.weight
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import kotlinx.coroutines.delay
 
@@ -75,7 +78,7 @@ fun HomeView(
 
             Column(
                 modifier = Modifier
-                    .weight(2f)
+                    .weight(1.5f)
                     .fillMaxSize()
                     .padding(30.dp, 0.dp),
                 horizontalAlignment = Alignment.Start,
@@ -89,7 +92,7 @@ fun HomeView(
                     .weight(2f)
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Top,
+                verticalArrangement = Arrangement.Center,
             ) {
                 
                 LargeRoundedButton(
@@ -118,9 +121,9 @@ fun HomeView(
                 )
 
             }
+
             Column(
-                modifier = Modifier
-                    .weight(1f),
+                modifier = Modifier.weight(0.5f),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Bottom,
             ) {
@@ -128,14 +131,14 @@ fun HomeView(
                 if(!isIdleMeasured) {
                     LoadingTopBottomIndicator(
                         modifier = Modifier
-                            .fillMaxHeight(0.5f)
+                            .fillMaxHeight()
                             .fillMaxWidth(),
                         text = "Measuring idle energy consumption"
                     )
                 }else if(!isReady){
                     LoadingTopBottomIndicator(
                         modifier = Modifier
-                            .fillMaxHeight(0.5f)
+                            .fillMaxHeight()
                             .fillMaxWidth(),
                         text = "Getting models ready",
                         subtitleText = "Be sure you are connected to the internet"
@@ -253,7 +256,7 @@ fun TitleView(modifier: Modifier = Modifier) {
         ) {
             Text(
                 text = stringResource(id = R.string.app_name),
-                color = MaterialTheme.colorScheme.onPrimary,
+                color = Color.White,
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Bold
             )
@@ -264,7 +267,7 @@ fun TitleView(modifier: Modifier = Modifier) {
         }
         Text(
             text = stringResource(id = R.string.app_description),
-            color = MaterialTheme.colorScheme.onPrimary,
+            color = Color.White,
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Light
         )

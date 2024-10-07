@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -46,6 +47,7 @@ fun InfoScreen(navController: NavController) {
                 TextSection(
                     modifier = Modifier.padding(15.dp, 30.dp, 15.dp, 15.dp),
                     title = "About the app",
+                    textColor = Color.White,
                     content = "This app performs benchmarking of LLMs (Large Language Models) running natively on Android devices. The main metrics captured include tokens per second (in Prefil and Decode phases), along with GPU and RAM consumption. The app uses the MLC LLM engine to compile and execute the models.\n" +
                             "\n" +
                             "More information about MLC LLM: llm.mlc.ai"
@@ -66,6 +68,7 @@ fun InfoScreen(navController: NavController) {
                 TextSection(
                     modifier = Modifier.padding(15.dp, 30.dp, 15.dp, 15.dp),
                     title = "About Lux.AI",
+                    textColor = Color.White,
                     content = "Lux.AI is a project developed at the Center for Informatics at UFPE, as part of the PPI (Priority Programs and Projects of the IT Law), with support from the Ministry of Science, Technology, Innovations, and Communications, through the IT Law (Law No. 8.248/91) and the SOFTEX Program.\n" +
                             "\n" +
                             "Lux.AI’s main areas of study and development include:\n" +
@@ -96,7 +99,9 @@ fun TextSection(
     title: String,
     content: String,
     titleIcon: ImageVector? = null,
-    componentAfterTitle: @Composable() (ColumnScope.() -> Unit)? = null
+    iconTint: Color = Color.White,
+    componentAfterTitle: @Composable() (ColumnScope.() -> Unit)? = null,
+    textColor: Color = MaterialTheme.colorScheme.onPrimary
 ) {
     Column(
         modifier = modifier
@@ -108,13 +113,13 @@ fun TextSection(
                 Icon(
                     modifier = Modifier.padding(0.dp, 0.dp, 10.dp, 0.dp),
                     imageVector = titleIcon,
-                    tint = MaterialTheme.colorScheme.onPrimary,
+                    tint = iconTint,
                     contentDescription = "LuxAI Icon"
                 )
             }
             Text(
                 text = title,
-                color = MaterialTheme.colorScheme.onPrimary,
+                color = textColor,
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold
             )
@@ -127,7 +132,7 @@ fun TextSection(
         Text(
             modifier = Modifier.padding(15.dp),
             text = content,
-            color = MaterialTheme.colorScheme.onPrimary,
+            color = textColor,
             style = MaterialTheme.typography.bodyMedium,
         )
     }
