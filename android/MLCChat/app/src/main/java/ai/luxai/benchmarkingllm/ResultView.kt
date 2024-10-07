@@ -4,7 +4,9 @@ import ai.luxai.benchmarkingllm.components.AccordionItem
 import ai.luxai.benchmarkingllm.components.AccordionText
 import ai.luxai.benchmarkingllm.components.AppTopBar
 import ai.luxai.benchmarkingllm.components.Chip
+import ai.luxai.benchmarkingllm.components.LockScreenOrientation
 import ai.luxai.benchmarkingllm.interfaces.BenchmarkingResult
+import android.content.pm.ActivityInfo
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -237,6 +239,8 @@ fun ResultTable(result: BenchmarkingResult, resultViewModel: ResultViewModel) {
     val decodeMedian = result.samples.decode.median()
 
     val toksTotal = decodeMedian
+
+    LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 
     Column(
         modifier = Modifier

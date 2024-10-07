@@ -1,7 +1,7 @@
 package ai.luxai.benchmarkingllm
 
-import ai.luxai.mlcllm.MLCEngine
-import ai.luxai.mlcllm.OpenAIProtocol
+import ai.mlc.mlcllm.MLCEngine
+import ai.mlc.mlcllm.OpenAIProtocol
 import android.app.Application
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -22,7 +22,6 @@ import java.nio.channels.Channels
 import java.util.UUID
 import java.util.concurrent.Executors
 import kotlin.concurrent.thread
-import ai.luxai.mlcllm.OpenAIProtocol.ChatCompletionMessage
 import kotlinx.coroutines.*
 import java.util.Locale
 
@@ -698,7 +697,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
                 viewModelScope.launch {
                     val channel = engine.chat.completions.create(
                         messages = listOf(
-                            ChatCompletionMessage(
+                            OpenAIProtocol.ChatCompletionMessage(
                                 role = OpenAIProtocol.ChatCompletionRole.user,
                                 content = prompt
                             )

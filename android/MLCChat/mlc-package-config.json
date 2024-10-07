@@ -1,31 +1,24 @@
 {
     "device": "android",
-    "model_list": [ 
+    "model_list": [
         {
-            "model": "HF://mlc-ai/TinyLlama-1.1B-Chat-v1.0-q4f16_1-MLC",
+            "model": "HF://mlc-ai/gemma-2b-it-q4f16_1-MLC",
             "estimated_vram_bytes": 3980990464,
             "model_id": "gemma-2b-it-q4f16_1-MLC",
          "bundle_weight": true
 
         },
         {
+            "model": "HF://mlc-ai/Llama-3-8B-Instruct-q3f16_1-MLC",
+            "estimated_vram_bytes": 3980990464,
+            "model_id": "Llama-3-8B-Instruct-q3f16_1-MLC",
+            "bundle_weight": true
+
+        },
+        {
             "model": "HF://mlc-ai/gpt2-q0f16-MLC",
             "estimated_vram_bytes": 3980990464,
             "model_id": "gpt2-q0f16-MLC",
-         "bundle_weight": true
-
-        },
-        {
-            "model": "HF://mlc-ai/phi-1_5-q4f32_1-MLC",
-            "estimated_vram_bytes": 3980990464,
-            "model_id": "phi-1_5-q4f32_1-MLC",
-         "bundle_weight": true
-
-        },
-        {
-            "model": "HF://mlc-ai/phi-2-q4f16_1-MLC",
-            "estimated_vram_bytes": 3980990464,
-            "model_id": "phi-2-q4f16_1-MLC",
          "bundle_weight": true
 
         },
@@ -37,51 +30,9 @@
 
         },
         {
-            "model": "HF://mlc-ai/Qwen1.5-0.5B-Chat-q4f16_1-MLC",
-            "estimated_vram_bytes": 3980990464,
-            "model_id": "Qwen1.5-0.5B-Chat-q4f16_1-MLC",
-         "bundle_weight": true
-
-        },
-        {
-            "model": "HF://mlc-ai/Qwen1.5-1.8B-Chat-q4f16_1-MLC",
-            "estimated_vram_bytes": 3980990464,
-            "model_id": "Qwen1.5-1.8B-Chat-q4f16_1-MLC",
-         "bundle_weight": true
-
-        },
-        {
             "model": "HF://mlc-ai/Qwen2-0.5B-Instruct-q4f16_1-MLC",
             "estimated_vram_bytes": 3980990464,
             "model_id": "Qwen2-0.5B-Instruct-q4f16_1-MLC",
-         "bundle_weight": true
-
-        },
-        {
-            "model": "HF://mlc-ai/Qwen2-1.5B-Instruct-q4f16_1-MLC",
-            "estimated_vram_bytes": 3980990464,
-            "model_id": "Qwen2-1.5B-Instruct-q4f16_1-MLC",
-         "bundle_weight": true
-
-        },
-        {
-            "model": "HF://mlc-ai/RedPajama-INCITE-Chat-3B-v1-q4f16_1-MLC",
-            "estimated_vram_bytes": 3980990464,
-            "model_id": "RedPajama-INCITE-Chat-3B-v1-q4f16_1-MLC",
-         "bundle_weight": true
-
-        },
-        {
-            "model": "HF://mlc-ai/TinyLlama-1.1B-Chat-v0.4-q4f16_1-MLC",
-            "estimated_vram_bytes": 3980990464,
-            "model_id": "TinyLlama-1.1B-Chat-v0.4-q4f16_1-MLC",
-         "bundle_weight": true
-
-        },
-        {
-            "model": "HF://mlc-ai/TinyLlama-1.1B-Chat-v1.0-q4f16_1-MLC",
-            "estimated_vram_bytes": 3980990464,
-            "model_id": "TinyLlama-1.1B-Chat-v1.0-q4f16_1-MLC",
          "bundle_weight": true
 
         }

@@ -1,8 +1,10 @@
 package ai.luxai.benchmarkingllm
 
 import ai.luxai.benchmarkingllm.components.AppTopBar
+import ai.luxai.benchmarkingllm.components.LockScreenOrientation
 import ai.luxai.benchmarkingllm.utils.benchmark.ModelStatusLog
 import android.content.Context
+import android.content.pm.ActivityInfo
 import android.util.Log
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.material3.Scaffold
@@ -170,6 +172,8 @@ fun useBenchmarking(
             }
         }
     }
+
+    LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 
     return ExecutingModelsState(
         modelName = modelName,
