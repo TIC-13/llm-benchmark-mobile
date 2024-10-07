@@ -236,10 +236,7 @@ fun ResultTable(result: BenchmarkingResult, resultViewModel: ResultViewModel) {
     val prefillMedian = result.samples.prefill.median()
     val decodeMedian = result.samples.decode.median()
 
-    val toksTotal = if (prefillMedian !== null && decodeMedian !== null)
-        prefillMedian + decodeMedian
-    else
-        null
+    val toksTotal = decodeMedian
 
     Column(
         modifier = Modifier
