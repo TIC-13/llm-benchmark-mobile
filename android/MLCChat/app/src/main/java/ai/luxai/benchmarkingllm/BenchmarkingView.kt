@@ -62,7 +62,8 @@ fun BenchmarkingView(
 
     Scaffold(topBar = {
         AppTopBar(
-            title = "$modelName - Model $numModelsDone of $numModelsTotal"
+            title = modelName,
+            subtitle = "Model $numModelsDone of $numModelsTotal"
         )
     }, modifier = Modifier.pointerInput(Unit) {
         detectTapGestures(onTap = {
@@ -119,11 +120,7 @@ fun useBenchmarking(
 
     val numModelsTotal = viewModel.benchmarkingModels.size
     val numModelsDone = numModelsTotal - pendingModels.size + 1
-    val modelName = chatState.modelName.value.split("-")[0].replaceFirstChar {
-        if (it.isLowerCase()) it.titlecase(
-            Locale.ROOT
-        ) else it.toString()
-    }
+    val modelName = chatState.modelName.value
 
     fun goToNextModel(): Unit {
         if(pendingModels.isNotEmpty()){

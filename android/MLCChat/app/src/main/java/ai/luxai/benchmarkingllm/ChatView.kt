@@ -58,6 +58,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -93,7 +94,7 @@ fun ChatView(
     Scaffold(topBar =
     {
         AppTopBar(
-            title = chatState.modelName.value.split("-")[0],
+            title = chatState.modelName.value,
             onBack = { navController.popBackStack() },
             backEnabled = chatState.interruptable(),
             actions = {
@@ -262,7 +263,7 @@ fun ConversationView(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .defaultMinSize(0.dp, 80.dp)
+                .defaultMinSize(0.dp, 60.dp)
                 .background(color = MaterialTheme.colorScheme.primary),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
@@ -273,17 +274,18 @@ fun ConversationView(
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Light,
                     color = MaterialTheme.colorScheme.onPrimary,
+                    style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight()
-                        .padding(top = 5.dp)
                 )
             }
             BenchmarkView(
                 modifier = Modifier
                     .fillMaxWidth(),
                 fontWeight = FontWeight.Light,
-                textColor = MaterialTheme.colorScheme.onPrimary
+                textColor = MaterialTheme.colorScheme.onPrimary,
+                style = MaterialTheme.typography.bodyMedium
             )
         }
         Column (
@@ -326,7 +328,8 @@ fun useMeasureEnergyConsumption(
 fun BenchmarkView(
     modifier: Modifier = Modifier,
     textColor: Color = Color.Black,
-    fontWeight: FontWeight = FontWeight.Normal
+    fontWeight: FontWeight = FontWeight.Normal,
+    style: TextStyle = MaterialTheme.typography.bodyMedium,
 ) {
 
     val context = LocalContext.current
@@ -351,9 +354,9 @@ fun BenchmarkView(
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically,
     ){
-        Text(text = "CPU: ${if(cpu !== null) "${cpu}%" else "-"}", color = textColor, fontWeight = fontWeight)
-        Text(text = "GPU: ${if(gpu !== null) "${gpu}%" else "-"}", color = textColor, fontWeight = fontWeight)
-        Text(text = "RAM: ${ram}MB", color = textColor, fontWeight = fontWeight)
+        Text(text = "CPU: ${if(cpu !== null) "${cpu}%" else "-"}", color = textColor, fontWeight = fontWeight, style = style)
+        Text(text = "GPU: ${if(gpu !== null) "${gpu}%" else "-"}", color = textColor, fontWeight = fontWeight, style = style)
+        Text(text = "RAM: ${ram}MB", color = textColor, fontWeight = fontWeight, style = style)
     }
 }
 
