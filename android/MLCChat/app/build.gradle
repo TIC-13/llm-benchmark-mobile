@@ -3,9 +3,30 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+def localPropertiesFile = rootProject.file("local.properties")
+def localProperties = new Properties()
+
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withInputStream { stream ->
+        localProperties.load(stream)
+    }
+}
+
+def apiAdress = localProperties.getProperty("API_ADRESS")
+def apiKey = localProperties.getProperty("API_KEY")
+
+if (apiAdress == null || apiKey == null) {
+    throw new GradleException("API_ADRESS or API_KEY is missing in local.properties. Edit local.properties and create them")
+}
+
 android {
-    namespace 'ai.mlc.mlcchat'
-    compileSdk 35
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    namespace 'ai.luxai.benchmarkingllm'
+    compileSdk 34
 
     defaultConfig {
         applicationId "ai.mlc.mlcchat"
@@ -18,6 +39,9 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+
+        buildConfigField "String", "API_ADRESS", "\"${apiAdress}\""
+        buildConfigField "String", "API_KEY", "\"${apiKey}\""
     }
 
     buildTypes {
@@ -70,5 +94,7 @@ dependencies {
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
 }
