@@ -1,8 +1,8 @@
 ---
 name: "❓ General Questions"
 about: General questions you have about MLC-LLM.
-title: '[Question] '
-labels: ['question']
+title: "[Question] "
+labels: question
 assignees: ''
 
 ---
@@ -10,4 +10,3 @@ assignees: ''
 ## ❓ General Questions
 
 <!-- Describe your questions -->
-

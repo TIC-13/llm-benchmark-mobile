@@ -1,8 +1,8 @@
 ---
-name: "Tracking"
+name: Tracking
 about: A tracking issue that tracks ongoing item in the project
-title: '[Tracking] '
-labels: ['status: tracking']
+title: "[Tracking] "
+labels: ''
 assignees: ''
 
 ---

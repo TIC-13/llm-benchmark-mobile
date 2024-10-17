@@ -1,8 +1,8 @@
 ---
 name: "\U0001F4DA Documentation"
 about: Report an issue related to https://llm.mlc.ai/docs/
-title: '[Doc] '
-labels: ['documentation']
+title: "[Doc] "
+labels: documentation
 assignees: ''
 
 ---

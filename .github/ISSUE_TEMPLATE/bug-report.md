@@ -1,8 +1,8 @@
 ---
-name: "🐛 Bug Report"
+name: "\U0001F41B Bug Report"
 about: Submit a bug report to help us improve MLC-LLM
-title: '[Bug] '
-labels: ['bug']
+title: "[Bug] "
+labels: bug
 assignees: ''
 
 ---

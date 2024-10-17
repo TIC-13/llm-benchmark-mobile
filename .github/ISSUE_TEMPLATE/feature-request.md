@@ -1,8 +1,9 @@
 ---
 name: "\U0001F680 Feature Request"
-about: Submit a proposal/request for a new MLC-LLM feature, or an enhancement on existing features.
-title: '[Feature Request] '
-labels: ['feature request']
+about: Submit a proposal/request for a new MLC-LLM feature, or an enhancement on existing
+  features.
+title: "[Feature Request] "
+labels: ''
 assignees: ''
 
 ---
