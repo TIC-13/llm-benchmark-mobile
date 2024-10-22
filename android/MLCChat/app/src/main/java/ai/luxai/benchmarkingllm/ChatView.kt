@@ -7,6 +7,7 @@ import ai.luxai.benchmarkingllm.utils.benchmark.launchEffectWithCoroutinesAndDel
 import ai.luxai.benchmarkingllm.utils.benchmark.ramUsage
 import android.content.Context
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -91,11 +92,22 @@ fun ChatView(
         chatState.modelChatState
     }
 
+    fun onBackButton() {
+        if(chatState.interruptable()){
+            chatState.requestResetChat(clearsHistory = true)
+            navController.popBackStack()
+        }
+    }
+
+    BackHandler {
+        onBackButton()
+    }
+
     Scaffold(topBar =
     {
         AppTopBar(
             title = chatState.modelName.value,
-            onBack = { navController.popBackStack() },
+            onBack = { onBackButton() },
             backEnabled = chatState.interruptable(),
             actions = {
                 IconButton(
