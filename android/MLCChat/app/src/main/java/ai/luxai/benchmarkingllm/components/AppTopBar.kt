@@ -33,7 +33,7 @@ fun AppTopBar(
     val isExecuting = remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = isExecuting) {
-        delay(500)
+        delay(1000)
         isExecuting.value = false
     }
 
