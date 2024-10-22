@@ -9,7 +9,7 @@ fun gpuUsage(): Int? {
     val filePath = "/sys/kernel/gpu/gpu_busy"
     return try {
         val percentString = File(filePath).readText().trim()
-        percentString.dropLast(1).toInt()
+        percentString.dropLast(1).trim().toInt()
     } catch (e: FileNotFoundException) {
         println("Erro na leitura do arquivo em Mali: $filePath")
         gpuUsageAdreno()?.toInt()
