@@ -40,6 +40,7 @@ import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -103,6 +104,15 @@ fun ChatView(
         onBackButton()
     }
 
+    fun onRefresh() {
+        if(chatState.modelChatState.value == ModelChatState.Ready) {
+            chatState.requestResetChat(clearsHistory = true)
+        }
+    }
+
+    val canRefresh = chatState.modelChatState.value == ModelChatState.Ready
+
+
     Scaffold(topBar =
     {
         AppTopBar(
@@ -111,13 +121,13 @@ fun ChatView(
             backEnabled = chatState.interruptable(),
             actions = {
                 IconButton(
-                    onClick = { chatState.requestResetChat() },
-                    enabled = chatState.interruptable()
+                    onClick = ::onRefresh,
+                    enabled = canRefresh
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Replay,
                         contentDescription = "reset the chat",
-                        tint = MaterialTheme.colorScheme.onPrimary
+                        tint = if(canRefresh) MaterialTheme.colorScheme.onPrimary else Color.Gray
                     )
                 }
                 IconButton(
