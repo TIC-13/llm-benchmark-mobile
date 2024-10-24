@@ -115,7 +115,7 @@ fun ResultView(
                                     text = "When the response takes too long, the app assumes that the model is broken or has entered a loop and interrupts the response. In that case, the tok/s values are not measured."
                                 )
                             }
-                            Chip(text = "STD = Standard Deviation")
+                            AccordionText(text = "STD = Standard Deviation")
                         }
 
                         results.map {
