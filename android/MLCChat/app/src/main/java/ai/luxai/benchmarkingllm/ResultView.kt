@@ -7,6 +7,7 @@ import ai.luxai.benchmarkingllm.components.Chip
 import ai.luxai.benchmarkingllm.components.LockScreenOrientation
 import ai.luxai.benchmarkingllm.interfaces.BenchmarkingResult
 import android.content.pm.ActivityInfo
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -47,24 +48,33 @@ fun ResultView(
 
     val results = resultViewModel.getResults()
 
-    fun goToHome() {
+    val resultType = resultViewModel.getType()
+
+    fun finish() {
         chatState.requestResetChat()
-        navController.popBackStack("main", false)
+
+        when(resultType) {
+            ResultType.BENCHMARKING -> navController.popBackStack("main", false)
+            ResultType.CONVERSATION -> navController.popBackStack("home", false)
+        }
     }
 
-    val resultType = resultViewModel.getType()
+    fun backButton() {
+        when(resultType) {
+            ResultType.BENCHMARKING -> finish()
+            ResultType.CONVERSATION -> navController.popBackStack()
+        }
+    }
+
+    BackHandler {
+        backButton()
+    }
 
     Scaffold(topBar =
         {
             AppTopBar(
                 title = "Result",
-                onBack = {
-                    when(resultType) {
-                        ResultType.BENCHMARKING -> goToHome()
-                        ResultType.CONVERSATION -> navController.popBackStack()
-                        else -> navController.popBackStack()
-                    }
-                }
+                onBack = ::backButton
             )
         }
     ) {
@@ -119,8 +129,9 @@ fun ResultView(
                     ContinueButton(
                         modifier = Modifier
                             .clickable {
-                                goToHome()
-                            }
+                                finish()
+                            },
+                        label = "FINISH"
                     )
                 }
             }
