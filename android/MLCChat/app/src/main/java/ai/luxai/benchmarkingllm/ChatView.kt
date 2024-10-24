@@ -487,6 +487,27 @@ fun SendMessageView(chatState: AppViewModel.ChatState) {
 
     val canGoBack = chatState.modelChatState.value == ModelChatState.Ready
 
+    var triggerGenerateMessage by remember {
+        mutableStateOf(false)
+    }
+
+    var text by rememberSaveable { mutableStateOf("") }
+
+    suspend fun generateMessage() {
+        val textToSend = text
+        text = ""
+        localFocusManager.clearFocus()
+        delay(100)
+        chatState.requestGenerate(textToSend)
+    }
+
+    LaunchedEffect(key1 = triggerGenerateMessage) {
+        if(!triggerGenerateMessage)
+            return@LaunchedEffect
+        generateMessage()
+        triggerGenerateMessage = false
+    }
+
     Row(
         horizontalArrangement = Arrangement.spacedBy(5.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -495,7 +516,6 @@ fun SendMessageView(chatState: AppViewModel.ChatState) {
             .fillMaxWidth()
             .padding(bottom = 5.dp)
     ) {
-        var text by rememberSaveable { mutableStateOf("") }
         OutlinedTextField(
             value = text,
             onValueChange = { text = it },
@@ -514,9 +534,7 @@ fun SendMessageView(chatState: AppViewModel.ChatState) {
         )
         IconButton(
             onClick = {
-                localFocusManager.clearFocus()
-                chatState.requestGenerate(text)
-                text = ""
+                triggerGenerateMessage = true
             },
             modifier = Modifier
                 .aspectRatio(1f)
