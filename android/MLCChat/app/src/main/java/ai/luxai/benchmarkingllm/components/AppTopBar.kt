@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Color
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -74,7 +75,7 @@ fun AppTopBar(
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
                         contentDescription = "back home page",
-                        tint = MaterialTheme.colorScheme.onPrimary
+                        tint = if(backEnabled) MaterialTheme.colorScheme.onPrimary else Color.Gray
                     )
                 }
             }

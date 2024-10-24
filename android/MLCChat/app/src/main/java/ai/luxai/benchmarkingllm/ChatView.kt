@@ -83,7 +83,10 @@ fun ChatView(
     val context = LocalContext.current
     val localFocusManager = LocalFocusManager.current
 
+    val canRefresh = chatState.modelChatState.value == ModelChatState.Ready
+
     fun toResults() {
+        if(!canRefresh) return
         resultViewModel.wrapResultUp(context, chatState.modelName.value)
         resultViewModel.setType(ResultType.CONVERSATION)
         navController.navigate("result")
@@ -94,14 +97,15 @@ fun ChatView(
     }
 
     fun onBackButton() {
-        if(chatState.interruptable()){
+        if(canRefresh){
             chatState.requestResetChat(clearsHistory = true)
             navController.popBackStack()
         }
     }
 
     BackHandler {
-        onBackButton()
+        if(canRefresh)
+            onBackButton()
     }
 
     fun onRefresh() {
@@ -110,14 +114,12 @@ fun ChatView(
         }
     }
 
-    val canRefresh = chatState.modelChatState.value == ModelChatState.Ready
-
     Scaffold(topBar =
     {
         AppTopBar(
             title = chatState.modelName.value,
             onBack = { onBackButton() },
-            backEnabled = chatState.interruptable(),
+            backEnabled = canRefresh,
             actions = {
                 IconButton(
                     onClick = ::onRefresh,
@@ -136,7 +138,7 @@ fun ChatView(
                     Icon(
                         imageVector = Icons.Filled.BarChart,
                         contentDescription = "continue to results",
-                        tint = MaterialTheme.colorScheme.onPrimary
+                        tint = if(canRefresh) MaterialTheme.colorScheme.onPrimary else Color.Gray
                     )
             }
         }
