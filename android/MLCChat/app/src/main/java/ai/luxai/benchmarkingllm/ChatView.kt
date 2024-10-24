@@ -112,7 +112,6 @@ fun ChatView(
 
     val canRefresh = chatState.modelChatState.value == ModelChatState.Ready
 
-
     Scaffold(topBar =
     {
         AppTopBar(
@@ -481,7 +480,11 @@ fun MessageView(messageData: MessageData) {
 @ExperimentalMaterial3Api
 @Composable
 fun SendMessageView(chatState: AppViewModel.ChatState) {
+
     val localFocusManager = LocalFocusManager.current
+
+    val canGoBack = chatState.modelChatState.value == ModelChatState.Ready
+
     Row(
         horizontalArrangement = Arrangement.spacedBy(5.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -521,7 +524,7 @@ fun SendMessageView(chatState: AppViewModel.ChatState) {
             Icon(
                 imageVector = Icons.Filled.Send,
                 contentDescription = "send message",
-                tint = MaterialTheme.colorScheme.onPrimary,
+                tint = if(canGoBack) MaterialTheme.colorScheme.onPrimary else Color.Gray,
                 modifier = Modifier.background(color = MaterialTheme.colorScheme.primary)
             )
         }
