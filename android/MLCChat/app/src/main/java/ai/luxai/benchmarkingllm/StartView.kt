@@ -42,6 +42,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
@@ -234,7 +235,7 @@ fun ModelView(
                     Icon(
                         imageVector = Icons.Outlined.Delete,
                         contentDescription = "start downloading",
-                        tint = MaterialTheme.colorScheme.error
+                        tint = MaterialTheme.colorScheme.onPrimary
                     )
                 }
             }
@@ -263,17 +264,8 @@ fun ModelView(
                     isDeletingModel = false
                     modelState.handleClear()
                 }) {
-                    Text(text = "Delete model", color = MaterialTheme.colorScheme.error)
+                    Text(text = "Delete model", color = MaterialTheme.colorScheme.onPrimary)
                 }
-
-                /* Deletes the model permanently, it only can be downloaded again if the app is re-installed
-                TextButton(onClick = {
-                    isDeletingModel = false
-                    modelState.handleDelete()
-                }) {
-                    Text(text = "delete model", color = MaterialTheme.colorScheme.error)
-                }
-                 */
             }
         }
     }
