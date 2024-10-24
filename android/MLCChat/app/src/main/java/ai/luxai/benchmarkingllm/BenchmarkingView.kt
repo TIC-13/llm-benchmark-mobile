@@ -6,6 +6,7 @@ import ai.luxai.benchmarkingllm.utils.benchmark.ModelStatusLog
 import android.content.Context
 import android.content.pm.ActivityInfo
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -30,6 +31,8 @@ fun BenchmarkingView(
     viewModel: AppViewModel,
     resultViewModel: ResultViewModel
 ){
+
+    BackHandler { {} }
 
     val localFocusManager = LocalFocusManager.current
     val chatState = viewModel.chatState
