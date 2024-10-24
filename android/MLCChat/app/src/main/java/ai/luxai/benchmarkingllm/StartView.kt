@@ -132,7 +132,9 @@ fun ModelView(
     modelState: AppViewModel.ModelState,
     appViewModel: AppViewModel
 ) {
+
     var isDeletingModel by rememberSaveable { mutableStateOf(false) }
+
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
@@ -224,7 +226,7 @@ fun ModelView(
                 modelState.modelInitState.value == ModelInitState.Finished
             ) {
                 IconButton(
-                    onClick = { isDeletingModel = true },
+                    onClick = { isDeletingModel = !isDeletingModel },
                     modifier = Modifier
                         .aspectRatio(1f)
                         .weight(1f)
