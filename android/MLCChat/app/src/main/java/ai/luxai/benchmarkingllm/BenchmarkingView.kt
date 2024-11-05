@@ -23,7 +23,7 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.delay
 import java.io.BufferedReader
 import java.io.InputStreamReader
-import java.util.Locale
+import kotlin.reflect.KSuspendFunction0
 
 @Composable
 fun BenchmarkingView(
@@ -42,7 +42,8 @@ fun BenchmarkingView(
 
     val context = LocalContext.current
 
-    fun saveResult() {
+    suspend fun saveResult() {
+        resultViewModel.runSavePostResult(context, chatState.modelName.value)
         resultViewModel.wrapResultUp(
             context = context,
             modelName = chatState.modelName.value,
@@ -94,7 +95,7 @@ data class ExecutingModelsState(
 @Composable
 fun useBenchmarking(
     viewModel: AppViewModel,
-    onSaveSingleResult: () -> Unit,
+    onSaveSingleResult: KSuspendFunction0<Unit>,
     onFinishAll: () -> Unit,
     numQuestions: Int = 2,
 ): ExecutingModelsState {

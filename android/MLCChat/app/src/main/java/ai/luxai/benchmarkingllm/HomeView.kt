@@ -19,9 +19,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Chat
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.MoreTime
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -105,10 +107,19 @@ fun HomeView(
                 Spacer(modifier = Modifier.height(15.dp))
 
                 LargeRoundedButton(
-                    icon = Icons.Default.Chat,
+                    icon = Icons.AutoMirrored.Filled.Chat,
                     onClick = { startConversation() },
                     enabled = canStart,
                     text = "Chat with LLMs"
+                )
+
+                Spacer(modifier = Modifier.height(15.dp))
+
+                LargeRoundedButton(
+                    icon = Icons.Default.MoreTime,
+                    onClick = { navController.navigate("savedResults") },
+                    enabled = canStart,
+                    text = "Last results"
                 )
 
                 Spacer(modifier = Modifier.height(15.dp))
@@ -119,7 +130,6 @@ fun HomeView(
                     enabled = canStart,
                     text = "About app"
                 )
-
             }
 
             Column(
@@ -303,7 +313,7 @@ fun LargeRoundedButton(
         ) {
             Icon(
                 modifier = Modifier
-                    .size(48.dp)
+                    .size(24.dp)
                     .weight(2f),
                 imageVector = icon,
                 contentDescription = null,

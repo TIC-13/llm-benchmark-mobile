@@ -11,6 +11,7 @@ import ai.luxai.benchmarkingllm.utils.benchmark.getBatteryVoltageVolts
 import ai.luxai.benchmarkingllm.utils.benchmark.gpuUsage
 import ai.luxai.benchmarkingllm.utils.benchmark.isBatteryCharging
 import ai.luxai.benchmarkingllm.utils.benchmark.ramUsage
+import ai.luxai.benchmarkingllm.utils.benchmark.savePostResult
 import ai.luxai.benchmarkingllm.utils.benchmark.system.getPhoneData
 import android.app.Application
 import android.content.Context
@@ -100,13 +101,14 @@ class ResultViewModel(
         loadTime = newLoadTime
     }
 
+    //if you run, do it before wrapResultUp
+    suspend fun runSavePostResult(context: Context, modelName: String) {
+        val benchResult = getBenchmarkingResult(modelName)
+        savePostResult(context, benchResult)
+    }
+
     fun wrapResultUp(context: Context, modelName: String, sendResult: Boolean = false) {
-        val result = BenchmarkingResult(
-            loadTime = loadTime,
-            name = modelName,
-            samples = samples,
-            idleSamples = idleSamples
-        )
+        val result = getBenchmarkingResult(modelName)
         results.add(result)
 
         if(sendResult)
@@ -116,7 +118,16 @@ class ResultViewModel(
         loadTime = null
     }
 
-    fun sendResult(context: Context, result: BenchmarkingResult) {
+    private fun getBenchmarkingResult(modelName: String): BenchmarkingResult {
+        return BenchmarkingResult(
+            loadTime = loadTime,
+            name = modelName,
+            samples = samples,
+            idleSamples = idleSamples
+        )
+    }
+
+    private fun getPostResult(context: Context, result: BenchmarkingResult): PostResult {
 
         val samples = result.samples
 
@@ -125,25 +136,26 @@ class ResultViewModel(
 
         val power = Double.NaN
         val energy = Double.NaN
-        //val power = getPowerConsumption(result, getIdleSamples())
-        //val energy = getEnergyConsumption(result, getIdleSamples())
 
-        encryptAndPostResult(
-            PostResult(
-                phone = getPhoneData(context),
-                llm_model = LLMModel(name = result.name),
-                load_time = result.loadTime?.toInt(),
-                ram = samples.ram.getMeasurements(),
-                cpu = samples.cpu.getMeasurements(),
-                gpu = samples.gpu.getMeasurements(),
-                decode = decode,
-                prefill = prefill,
-                energyAverage = if(!energy.isNaN()) energy else null,
-                powerAverage = if(!power.isNaN()) power else null
-            )
+        return PostResult(
+            phone = getPhoneData(context),
+            llm_model = LLMModel(name = result.name),
+            load_time = result.loadTime?.toInt(),
+            ram = samples.ram.getMeasurements(),
+            cpu = samples.cpu.getMeasurements(),
+            gpu = samples.gpu.getMeasurements(),
+            decode = decode,
+            prefill = prefill,
+            energyAverage = if(!energy.isNaN()) energy else null,
+            powerAverage = if(!power.isNaN()) power else null
         )
     }
 
+    private fun sendResult(context: Context, result: BenchmarkingResult) {
+        encryptAndPostResult(
+            getPostResult(context, result)
+        )
+    }
 
     private fun resetSampler() {
         samples = BenchmarkingSamples()

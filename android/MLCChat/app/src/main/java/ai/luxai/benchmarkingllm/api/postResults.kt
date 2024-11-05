@@ -3,6 +3,7 @@ package ai.luxai.benchmarkingllm.api
 import ai.luxai.benchmarkingllm.BuildConfig
 import android.util.Log
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

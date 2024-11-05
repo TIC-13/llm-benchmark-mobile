@@ -70,5 +70,12 @@ fun NavView(
             )
         }
 
+        composable("savedResults") {
+            StoredResultsView(
+                navController,
+                resultViewModel
+            )
+        }
+
     }
 }
