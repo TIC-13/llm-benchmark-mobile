@@ -1,5 +1,6 @@
 package ai.luxai.benchmarkingllm
 
+import ai.luxai.benchmarkingllm.components.AppTopBar
 import ai.luxai.benchmarkingllm.components.LoadingTopBottomIndicator
 import ai.luxai.benchmarkingllm.hooks.useModal
 import android.content.Context
@@ -17,7 +18,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Chat
 import androidx.compose.material.icons.filled.BarChart
@@ -28,6 +31,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -56,11 +60,6 @@ fun HomeView(
     resultViewModel: ResultViewModel,
 ) {
 
-    //val isIdleMeasured = useMeasureIdleEnergyConsumption(
-    //    context = context,
-    //    resultViewModel = resultViewModel
-    //)
-
     val isIdleMeasured = true
 
     val (startConversation) = useStartConversation(
@@ -72,88 +71,101 @@ fun HomeView(
 
     Column (
         modifier = Modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+            .fillMaxSize()
     ){
         HomeScreenBackground {
-
             Column(
                 modifier = Modifier
-                    .weight(1.5f)
                     .fillMaxSize()
-                    .padding(30.dp, 0.dp),
-                horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.Center
-            ) {
-                TitleView()
-            }
-
-            Column(
-                modifier = Modifier
-                    .weight(2f)
-                    .fillMaxSize(),
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
             ) {
+
+                Column(
+                    modifier = Modifier,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Bottom,
+                ) {
+
+                    if (!isIdleMeasured) {
+                        LoadingTopBottomIndicator(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .fillMaxWidth(),
+                            text = "Measuring idle energy consumption"
+                        )
+                    } else if (!isReady) {
+                        LoadingTopBottomIndicator(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .fillMaxWidth(),
+                            text = "Getting models ready",
+                            subtitleText = "Be sure you are connected to the internet"
+                        )
+                    }
+                }
+
+
+                Spacer(modifier = Modifier.height(50.dp))
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        //.fillMaxHeight(0.3f)
+                        .padding(30.dp, 0.dp),
+                    horizontalAlignment = Alignment.Start,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    TitleView()
+                }
                 
-                LargeRoundedButton(
-                    icon = Icons.Default.BarChart,
-                    onClick = { navController.navigate("modelSelection") },
-                    enabled = canStart,
-                    text = "Start benchmarking"
-                )
+                Spacer(modifier = Modifier.height(30.dp))
 
-                Spacer(modifier = Modifier.height(15.dp))
+                Column(
+                    modifier = Modifier,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                ) {
 
-                LargeRoundedButton(
-                    icon = Icons.AutoMirrored.Filled.Chat,
-                    onClick = { startConversation() },
-                    enabled = canStart,
-                    text = "Chat with LLMs"
-                )
-
-                Spacer(modifier = Modifier.height(15.dp))
-
-                LargeRoundedButton(
-                    icon = Icons.Default.MoreTime,
-                    onClick = { navController.navigate("savedResults") },
-                    enabled = canStart,
-                    text = "Last results"
-                )
-
-                Spacer(modifier = Modifier.height(15.dp))
-
-                LargeRoundedButton(
-                    icon = Icons.Default.Info,
-                    onClick = { navController.navigate("info") },
-                    enabled = canStart,
-                    text = "About app"
-                )
-            }
-
-            Column(
-                modifier = Modifier.weight(0.5f),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Bottom,
-            ) {
-
-                if(!isIdleMeasured) {
-                    LoadingTopBottomIndicator(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .fillMaxWidth(),
-                        text = "Measuring idle energy consumption"
+                    LargeRoundedButton(
+                        icon = Icons.Default.BarChart,
+                        onClick = { navController.navigate("modelSelection") },
+                        enabled = canStart,
+                        text = "Start benchmarking"
                     )
-                }else if(!isReady){
-                    LoadingTopBottomIndicator(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .fillMaxWidth(),
-                        text = "Getting models ready",
-                        subtitleText = "Be sure you are connected to the internet"
+
+                    Spacer(modifier = Modifier.height(15.dp))
+
+                    LargeRoundedButton(
+                        icon = Icons.AutoMirrored.Filled.Chat,
+                        onClick = { startConversation() },
+                        enabled = canStart,
+                        text = "Chat with LLMs"
+                    )
+
+                    Spacer(modifier = Modifier.height(15.dp))
+
+                    LargeRoundedButton(
+                        icon = Icons.Default.MoreTime,
+                        onClick = { navController.navigate("savedResults") },
+                        enabled = canStart,
+                        text = "Last results"
+                    )
+
+                    Spacer(modifier = Modifier.height(15.dp))
+
+                    LargeRoundedButton(
+                        icon = Icons.Default.Info,
+                        onClick = { navController.navigate("info") },
+                        enabled = canStart,
+                        text = "About app"
                     )
                 }
+
+                Spacer(modifier = Modifier.height(50.dp))
+
+
             }
         }
     }
