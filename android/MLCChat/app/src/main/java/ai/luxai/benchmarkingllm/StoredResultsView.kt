@@ -1,19 +1,21 @@
 package ai.luxai.benchmarkingllm
 
+import ai.luxai.benchmarkingllm.components.AlertCard
 import ai.luxai.benchmarkingllm.components.AppTopBar
 import ai.luxai.benchmarkingllm.utils.benchmark.getAllPostResults
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -23,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
@@ -52,21 +55,35 @@ fun StoredResultsView(
             HomeScreenBackground {
                 Column(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxWidth(1f)
+                        .fillMaxHeight(0.9f)
                         .verticalScroll(rememberScrollState())
                         .padding(paddingValues),
-                    verticalArrangement = Arrangement.Center,
+                    verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.CenterHorizontally
                     ) {
+                    Spacer(modifier = Modifier.height(30.dp))
                         allPostResults.map {
                             Spacer(modifier = Modifier.height(30.dp))
-                        ResultCard(
-                            result = it,
-                            resultViewModel = resultViewModel
-                        )
+                            ResultCard(
+                                result = it,
+                                resultViewModel = resultViewModel
+                            )
+                        }
+                    if(allPostResults.isEmpty()) {
+                        AlertCard(text = "No benchmarking has been done yet")
                     }
                     Spacer(modifier = Modifier.height(30.dp))
                 }
+                ContinueButton(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .clickable (
+                            onClick = { navController.navigate("modelSelection") },
+                            role = Role.Button,
+                        ),
+                    label = "START BENCHMARKING"
+                )
             }
     }
 }
