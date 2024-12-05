@@ -1,9 +1,9 @@
 package ai.luxai.benchmarkingllm
 
+import OpenLinkInBrowser
 import ai.luxai.benchmarkingllm.components.AccordionItem
 import ai.luxai.benchmarkingllm.components.AccordionText
 import ai.luxai.benchmarkingllm.components.AppTopBar
-import ai.luxai.benchmarkingllm.components.OpenLinkInBrowser
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row

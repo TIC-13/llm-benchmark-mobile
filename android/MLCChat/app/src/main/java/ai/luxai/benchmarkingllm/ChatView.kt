@@ -1,6 +1,7 @@
 package ai.luxai.benchmarkingllm
 
 import ai.luxai.benchmarkingllm.components.AppTopBar
+import ai.luxai.benchmarkingllm.templates.formatDouble
 import ai.luxai.benchmarkingllm.utils.benchmark.cpuUsage
 import ai.luxai.benchmarkingllm.utils.benchmark.gpuUsage
 import ai.luxai.benchmarkingllm.utils.benchmark.launchEffectWithCoroutinesAndDelay
