@@ -25,19 +25,25 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BarChart
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.Replay
 import androidx.compose.material.icons.filled.Send
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -67,6 +73,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -385,29 +392,88 @@ fun BenchmarkView(
 }
 
 @Composable
-fun MessagesView(modifier: Modifier = Modifier, lazyColumnListState: LazyListState, coroutineScope: CoroutineScope, chatState: AppViewModel.ChatState) {
-    LazyColumn(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(5.dp, alignment = Alignment.Bottom),
-        state = lazyColumnListState
-    ) {
-        coroutineScope.launch {
-            lazyColumnListState.animateScrollToItem(chatState.messages.size)
+fun MessagesView(
+    modifier: Modifier = Modifier,
+    lazyColumnListState: LazyListState,
+    coroutineScope: CoroutineScope,
+    chatState: AppViewModel.ChatState,
+) {
+    Box(modifier = modifier.fillMaxSize()) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(5.dp, alignment = Alignment.Bottom),
+            state = lazyColumnListState
+        ) {
+            coroutineScope.launch {
+                lazyColumnListState.animateScrollToItem(chatState.messages.size)
+            }
+            itemsIndexed(
+                items = chatState.messages,
+            ) { index, message ->
+                MessageView(
+                    modifier = if(index == 0) Modifier.padding(top = 150.dp) else Modifier,
+                    messageData = message
+                )
+            }
+            item {
+                // place holder item for scrolling to the bottom
+            }
         }
-        items(
-            items = chatState.messages,
-            key = { message -> message.id },
-        ) { message ->
-            MessageView(messageData = message)
-        }
-        item {
-            // place holder item for scrolling to the bottom
-        }
+
+            AlertCard(
+                message = "This app might freeze temporarily. If this happens, please wait and do not exit the app",
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .padding(8.dp)
+                    .zIndex(1f)
+            )
+
     }
 }
 
 @Composable
-fun MessageView(messageData: MessageData) {
+fun AlertCard(
+    message: String,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(8.dp),
+        colors = CardColors(
+            containerColor = MaterialTheme.colorScheme.secondary,
+            contentColor = MaterialTheme.colorScheme.onSecondary,
+            disabledContentColor = MaterialTheme.colorScheme.secondaryContainer,
+            disabledContainerColor = MaterialTheme.colorScheme.onSecondaryContainer
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(16.dp, 10.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Lightbulb,
+                contentDescription = "lightbulb",
+                tint = MaterialTheme.colorScheme.onSecondary
+            )
+            Spacer(modifier = Modifier.width(15.dp))
+            Text(
+                text = message,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSecondary,
+                modifier = Modifier.weight(1f)
+            )
+        }
+    }
+}
+
+
+@Composable
+fun MessageView(
+    modifier: Modifier = Modifier,
+    messageData: MessageData
+) {
 
     @Composable
     fun BottomText(text: String) {
@@ -427,7 +493,7 @@ fun MessageView(messageData: MessageData) {
         if (messageData.role == MessageRole.Assistant) {
             Column(
                 horizontalAlignment = Alignment.Start,
-                modifier = Modifier
+                modifier = modifier
                     .background(
                         color = MaterialTheme.colorScheme.secondaryContainer,
                         shape = RoundedCornerShape(20.dp)
@@ -457,7 +523,7 @@ fun MessageView(messageData: MessageData) {
         } else {
             Row(
                 horizontalArrangement = Arrangement.End,
-                modifier = Modifier.fillMaxWidth()
+                modifier = modifier.fillMaxWidth()
             ) {
                 Text(
                     text = messageData.text,
