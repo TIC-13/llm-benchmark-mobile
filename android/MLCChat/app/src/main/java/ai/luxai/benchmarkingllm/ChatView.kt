@@ -122,6 +122,8 @@ fun ChatView(
         }
     }
 
+    val goToResultsEnabled = canRefresh && chatState.messages.size > 0
+
     Scaffold(topBar =
     {
         AppTopBar(
@@ -141,12 +143,12 @@ fun ChatView(
                 }
                 IconButton(
                     onClick = { toResults() },
-                    enabled = true
+                    enabled = goToResultsEnabled
                 ) {
                     Icon(
                         imageVector = Icons.Filled.BarChart,
                         contentDescription = "continue to results",
-                        tint = if(canRefresh) MaterialTheme.colorScheme.onPrimary else Color.Gray
+                        tint = if(goToResultsEnabled) MaterialTheme.colorScheme.onPrimary else Color.Gray
                     )
             }
         }
