@@ -3,9 +3,11 @@ package ai.luxai.benchmarkingllm.templates
 import OpenLinkInBrowser
 import ai.luxai.benchmarkingllm.HomeScreenBackground
 import ai.luxai.benchmarkingllm.IdleSamples
+import ai.luxai.benchmarkingllm.R
 import ai.luxai.benchmarkingllm.ResultViewModel
 import ai.luxai.benchmarkingllm.components.AccordionItem
 import ai.luxai.benchmarkingllm.components.AccordionText
+import ai.luxai.benchmarkingllm.components.AccordionTitle
 import ai.luxai.benchmarkingllm.components.AlertCard
 import ai.luxai.benchmarkingllm.components.AppTopBar
 import ai.luxai.benchmarkingllm.components.LockScreenOrientation
@@ -23,11 +25,13 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Icon
@@ -39,9 +43,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -84,19 +90,33 @@ fun ResultTemplate(
                 Spacer(modifier = Modifier.height(30.dp))
                 AccordionItem(
                     modifier = Modifier.fillMaxWidth(0.8f),
-                    title = "Help"
+                    titleContent = {
+                        Icon(
+                            modifier = Modifier.size(30.dp).padding(end = 5.dp),
+                            painter = painterResource(id = R.drawable.help_circle_outline),
+                            contentDescription = "help icon",
+                            tint = Color.White,
+                        )
+                        AccordionTitle(text = "Help")
+                    }
                 ) {
-                    AccordionItem(title = "What is prefill?") {
+                    AccordionItem(
+                        titleContent = { AccordionTitle(text = "What is prefill?")}
+                    ) {
                         AccordionText(
                             text = "Prefill tok/s measures how many tokens the model can process per second during the initial setup phase."
                         )
                     }
-                    AccordionItem(title = "What is decode?") {
+                    AccordionItem(
+                        titleContent = { AccordionTitle(text = "What is decode?")}
+                    ) {
                         AccordionText(
                             text = "Decode tok/s measures how many tokens the model can generate per second during the decoding phase."
                         )
                     }
-                    AccordionItem(title = "Why can't the tok/s values be measured?") {
+                    AccordionItem(
+                        titleContent = { AccordionTitle(text = "Why can't the tok/s values be measured?") }
+                    ) {
                         AccordionText(
                             text = "When the response takes too long, the app assumes that the model is broken or has entered a loop and interrupts the response. In that case, the tok/s values are not measured."
                         )

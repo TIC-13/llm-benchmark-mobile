@@ -29,19 +29,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-
 @Composable
 fun AccordionItem(
     modifier: Modifier = Modifier,
     isExpanded: Boolean = false,
     backgroundColor: Color = Color.Transparent,
     shape: Shape = RoundedCornerShape(10.dp),
-    title: String,
-    titleModifier: Modifier = Modifier,
-    iconModifier: Modifier = Modifier,
-    titleColor: Color = Color.White,
-    titleStyle: TextStyle = MaterialTheme.typography.bodyMedium,
-    titleWeight: FontWeight = FontWeight.SemiBold,
+    titleContent: @Composable (Modifier) -> Unit,
     content: @Composable () -> Unit
 ) {
     var expanded by remember { mutableStateOf(isExpanded) }
@@ -60,18 +54,10 @@ fun AccordionItem(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(
-                modifier = titleModifier.weight(1f),
-                color = titleColor,
-                text = title,
-                style = titleStyle,
-                fontWeight = titleWeight,
-            )
-            Icon(
-                modifier = iconModifier,
-                imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                contentDescription = if (expanded) "Collapse" else "Expand",
-                tint = titleColor
+            titleContent(Modifier.weight(1f))
+            AccordionIcon(
+                expanded = expanded,
+                color = Color.White
             )
         }
         AnimatedVisibility(visible = expanded) {
@@ -84,16 +70,47 @@ fun AccordionItem(
 }
 
 @Composable
-fun AccordionText(
+fun AccordionTitle(
     modifier: Modifier = Modifier,
     text: String,
     color: Color = Color.White,
-    style: TextStyle = MaterialTheme.typography.bodySmall
-){
+    style: TextStyle = MaterialTheme.typography.bodyMedium,
+    fontWeight: FontWeight = FontWeight.SemiBold
+) {
     Text(
         modifier = modifier,
         text = text,
         color = color,
         style = style,
+        fontWeight = fontWeight
+    )
+}
+
+@Composable
+fun AccordionIcon(
+    modifier: Modifier = Modifier,
+    expanded: Boolean,
+    color: Color = Color.White
+) {
+    Icon(
+        modifier = modifier,
+        imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+        contentDescription = if (expanded) "Collapse" else "Expand",
+        tint = color
+    )
+}
+
+@Composable
+fun AccordionText(
+    modifier: Modifier = Modifier,
+    text: String,
+    color: Color = Color.White,
+    style: TextStyle = MaterialTheme.typography.bodySmall
+) {
+    Text(
+        modifier = modifier,
+        text = text,
+        color = color,
+        style = style
     )
 }

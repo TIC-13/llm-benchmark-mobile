@@ -3,6 +3,7 @@ package ai.luxai.benchmarkingllm
 import OpenLinkInBrowser
 import ai.luxai.benchmarkingllm.components.AccordionItem
 import ai.luxai.benchmarkingllm.components.AccordionText
+import ai.luxai.benchmarkingllm.components.AccordionTitle
 import ai.luxai.benchmarkingllm.components.AppTopBar
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -53,14 +54,22 @@ fun InfoScreen(navController: NavController) {
                             "More information about MLC LLM: llm.mlc.ai"
                 )
 
-                AccordionItem(title = "How the Benchmarks Work") {
-                    AccordionItem(title = "GPU Benchmarking") {
+                AccordionItem(
+                    titleContent = { AccordionTitle(text = "How the Benchmarks Work") }
+                ) {
+                    AccordionItem(
+                        titleContent = { AccordionTitle(text = "GPU Benchmarking") }
+                    ) {
                         AccordionText(text = "GPU usage is monitored through specific system files: /sys/kernel/gpu/gpu_busy for Mali GPUs and /sys/class/kgsl/kgsl-3d0/gpubusy for Adreno GPUs.")
                     }
-                    AccordionItem(title = "RAM Benchmarking") {
+                    AccordionItem(
+                        titleContent = { AccordionTitle(text = "RAM Benchmarking") }
+                    ) {
                         AccordionText(text = "To measure RAM usage, the app uses the PSS (Proportional Set Size) value, which accounts for both the memory used solely by the process and the memory shared with other processes, but only in proportion to the number of processes using it.")
                     }
-                    AccordionItem(title = "Why doesn't the app measure CPU usage?") {
+                    AccordionItem(
+                        titleContent = { AccordionTitle(text = "Why doesn't the app measure CPU usage?") }
+                    ) {
                         AccordionText(text = "Since Android 8.0, the operating system has restricted access to the /proc file during the app's runtime. This file was used, among other things, to obtain the CPU usage percentage. Due to these restrictions, it is not possible to capture the CPU usage percentage in the release version of the app, only in the debug version.")
                     }
                 }
