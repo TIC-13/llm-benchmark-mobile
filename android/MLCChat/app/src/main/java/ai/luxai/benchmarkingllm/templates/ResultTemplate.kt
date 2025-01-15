@@ -8,7 +8,6 @@ import ai.luxai.benchmarkingllm.components.AccordionItem
 import ai.luxai.benchmarkingllm.components.AccordionText
 import ai.luxai.benchmarkingllm.components.AlertCard
 import ai.luxai.benchmarkingllm.components.AppTopBar
-import ai.luxai.benchmarkingllm.components.Chip
 import ai.luxai.benchmarkingllm.components.LockScreenOrientation
 import ai.luxai.benchmarkingllm.interfaces.BenchmarkingResult
 import android.content.pm.ActivityInfo
@@ -24,12 +23,14 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -176,12 +177,24 @@ fun ResultCard(
         ResultTable(result = result, resultViewModel = resultViewModel)
 
         if(prefill.median == null || decode.median == null){
-            Chip(
-                text = "Tok/s values not measured",
-                icon = Icons.Default.Warning
-            )
+            Row(
+                modifier = Modifier.padding(top = 15.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Warning,
+                    contentDescription = "warning icon",
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = "Tok/s values not measured",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Normal,
+                    color =  MaterialTheme.colorScheme.onSecondaryContainer
+                )
+            }
         }
-
         Spacer(modifier = Modifier.height(15.dp))
     }
 }
