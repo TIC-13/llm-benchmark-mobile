@@ -40,7 +40,7 @@ fun ResultView(
         resultViewModel = resultViewModel,
         results = results,
         title = "Result",
-        bottomButtonLabel = "FINISH",
+        bottomButtonLabel = if(resultType == ResultType.BENCHMARKING) "FINISH" else "BACK",
         onBack = { backButton() },
         onContinue = { finish() }
     )
