@@ -1,5 +1,3 @@
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
@@ -11,27 +9,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun OpenLinkInBrowser(
+fun PressableLink(
     modifier: Modifier = Modifier,
     text: String,
-    uri: String,
-    icon: ImageVector? = null // Optional ImageVector for the icon
+    onPress: () -> Unit,
+    icon: ImageVector? = null
 ) {
-    val context = LocalContext.current
+
     val annotatedString = AnnotatedString(text)
 
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
 
-        ) {
+    ) {
         if (icon != null) {
             Icon(
                 imageVector = icon,
@@ -47,10 +44,7 @@ fun OpenLinkInBrowser(
                 color = Color(0xFF77cff8),
                 textDecoration = TextDecoration.Underline
             ),
-            onClick = {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-                context.startActivity(intent)
-            }
+            onClick = { onPress() }
         )
     }
 }

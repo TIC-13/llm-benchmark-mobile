@@ -77,5 +77,9 @@ fun NavView(
             )
         }
 
+        composable("licenses") {
+            LicensesScreen(navController)
+        }
+
     }
 }

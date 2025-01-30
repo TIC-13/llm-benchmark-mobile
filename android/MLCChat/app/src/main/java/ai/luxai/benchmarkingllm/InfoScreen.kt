@@ -1,10 +1,11 @@
 package ai.luxai.benchmarkingllm
 
-import OpenLinkInBrowser
+import PressableLink
 import ai.luxai.benchmarkingllm.components.AccordionItem
 import ai.luxai.benchmarkingllm.components.AccordionText
 import ai.luxai.benchmarkingllm.components.AccordionTitle
 import ai.luxai.benchmarkingllm.components.AppTopBar
+import ai.luxai.benchmarkingllm.utils.benchmark.navigateToUrl
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -15,7 +16,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.LibraryBooks
 import androidx.compose.material.icons.filled.Camera
+import androidx.compose.material.icons.filled.LibraryBooks
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -25,12 +28,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
+val textSectionModifier = Modifier.padding(15.dp, 30.dp, 15.dp, 15.dp)
+val linkModifier = Modifier.padding(15.dp, 10.dp, 0.dp, 0.dp)
+
 @Composable
 fun InfoScreen(navController: NavController) {
+
+    val context = LocalContext.current
+
     Scaffold(topBar = {
         AppTopBar(
             title = "About",
@@ -46,7 +56,7 @@ fun InfoScreen(navController: NavController) {
             ) {
 
                 TextSection(
-                    modifier = Modifier.padding(15.dp, 30.dp, 15.dp, 15.dp),
+                    modifier = textSectionModifier,
                     title = "About the app",
                     textColor = Color.White,
                     content = "This app performs benchmarking of LLMs (Large Language Models) running natively on Android devices. The main metrics captured include tokens per second (in Prefil and Decode phases), along with GPU and RAM consumption. The app uses the MLC LLM engine to compile and execute the models.\n" +
@@ -75,7 +85,7 @@ fun InfoScreen(navController: NavController) {
                 }
 
                 TextSection(
-                    modifier = Modifier.padding(15.dp, 30.dp, 15.dp, 15.dp),
+                    modifier = textSectionModifier,
                     title = "About Lux.AI",
                     textColor = Color.White,
                     content = "Lux.AI is a project developed at the Center for Informatics at UFPE, as part of the PPI (Priority Programs and Projects of the IT Law), with support from the Ministry of Science, Technology, Innovations, and Communications, through the IT Law (Law No. 8.248/91) and the SOFTEX Program.\n" +
@@ -90,13 +100,27 @@ fun InfoScreen(navController: NavController) {
                             "Lux.AI develops mobile applications with AI-based functionalities and applies techniques such as training, fine-tuning, pruning, and other performance optimization methods for AI models. Additionally, it offers consulting and personalized services to the industry, covering everything from AI model training and fine-tuning to performance improvement on restrictive hardware.",
                     titleIcon = Icons.Default.Camera,
                     componentAfterTitle = {
-                        OpenLinkInBrowser(
-                            modifier = Modifier.padding(15.dp, 10.dp, 0.dp, 0.dp),
+                        PressableLink(
+                            modifier = linkModifier,
                             text = "Lux.AI's website",
-                            uri = "https://luxai.cin.ufpe.br"
+                            onPress = { navigateToUrl(context, "https://luxai.cin.ufpe.br") },
                         )
                     }
                 )
+                TextSection(
+                    modifier = textSectionModifier,
+                    title = "See licences",
+                    titleIcon = Icons.AutoMirrored.Filled.LibraryBooks,
+                    content = "",
+                    componentAfterTitle = {
+                        PressableLink(
+                            modifier = linkModifier,
+                            text = "Licenses",
+                            onPress = { navController.navigate("licenses") }
+                        )
+                    }
+                )
+
             }
         }
     }

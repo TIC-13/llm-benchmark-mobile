@@ -1,6 +1,6 @@
 package ai.luxai.benchmarkingllm.templates
 
-import OpenLinkInBrowser
+import PressableLink
 import ai.luxai.benchmarkingllm.HomeScreenBackground
 import ai.luxai.benchmarkingllm.IdleSamples
 import ai.luxai.benchmarkingllm.R
@@ -12,6 +12,7 @@ import ai.luxai.benchmarkingllm.components.AlertCard
 import ai.luxai.benchmarkingllm.components.AppTopBar
 import ai.luxai.benchmarkingllm.components.LockScreenOrientation
 import ai.luxai.benchmarkingllm.interfaces.BenchmarkingResult
+import ai.luxai.benchmarkingllm.utils.benchmark.navigateToUrl
 import android.content.pm.ActivityInfo
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -46,6 +47,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
@@ -65,6 +67,7 @@ fun ResultTemplate(
 ) {
 
     val localFocusManager = LocalFocusManager.current
+    val context = LocalContext.current
 
     Scaffold(topBar = {
         AppTopBar(
@@ -134,11 +137,11 @@ fun ResultTemplate(
                     AlertCard(text = "No benchmarking has been done yet")
                 }
                 Spacer(modifier = Modifier.height(30.dp))
-                OpenLinkInBrowser(
+                PressableLink(
                     icon = Icons.Default.Link,
                     modifier = Modifier.padding(15.dp, 10.dp, 0.dp, 0.dp),
                     text = "Global ranking",
-                    uri = "http://cinsoftex.drayddns.com:8082/llmRanking"
+                    onPress = { navigateToUrl(context, "http://cinsoftex.drayddns.com:8082/llmRanking") }
                 )
                 Spacer(modifier = Modifier.height(30.dp))
             }
