@@ -1,6 +1,7 @@
 package ai.luxai.benchmarkingllm.templates
 
 import PressableLink
+import ai.luxai.benchmarkingllm.BuildConfig
 import ai.luxai.benchmarkingllm.HomeScreenBackground
 import ai.luxai.benchmarkingllm.IdleSamples
 import ai.luxai.benchmarkingllm.R
@@ -69,6 +70,14 @@ fun ResultTemplate(
     val localFocusManager = LocalFocusManager.current
     val context = LocalContext.current
 
+    val rankingAddress = remember {
+        BuildConfig.RANKING_ADDRESS
+    }
+
+    val rankingAddressIsValid = remember {
+        rankingAddress.startsWith("http")
+    }
+
     Scaffold(topBar = {
         AppTopBar(
             title = title,
@@ -91,11 +100,21 @@ fun ResultTemplate(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Spacer(modifier = Modifier.height(30.dp))
+                if(rankingAddressIsValid) {
+                    PressableLink(
+                        icon = Icons.Default.Link,
+                        modifier = Modifier.padding(bottom = 15.dp),
+                        text = "Global ranking",
+                        onPress = { navigateToUrl(context, rankingAddress) }
+                    )
+                }
                 AccordionItem(
                     modifier = Modifier.fillMaxWidth(0.8f),
                     titleContent = {
                         Icon(
-                            modifier = Modifier.size(30.dp).padding(end = 5.dp),
+                            modifier = Modifier
+                                .size(30.dp)
+                                .padding(end = 5.dp),
                             painter = painterResource(id = R.drawable.help_circle_outline),
                             contentDescription = "help icon",
                             tint = Color.White,
@@ -136,13 +155,6 @@ fun ResultTemplate(
                 if(results.isEmpty()) {
                     AlertCard(text = "No benchmarking has been done yet")
                 }
-                Spacer(modifier = Modifier.height(30.dp))
-                PressableLink(
-                    icon = Icons.Default.Link,
-                    modifier = Modifier.padding(15.dp, 10.dp, 0.dp, 0.dp),
-                    text = "Global ranking",
-                    onPress = { navigateToUrl(context, "http://cinsoftex.drayddns.com:8082/llmRanking") }
-                )
                 Spacer(modifier = Modifier.height(30.dp))
             }
             ContinueButton(
