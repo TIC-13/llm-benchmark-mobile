@@ -36,7 +36,7 @@ fun cpuUsage(context: Context): Int? {
         process.waitFor()
         process.destroy()
 
-        Log.e("CPU", allTopStringBuilder.toString())
+        //Log.e("CPU", allTopStringBuilder.toString())
 
         val processLine = processStringBuilder.toString()
 

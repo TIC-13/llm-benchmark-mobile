@@ -12,12 +12,8 @@ if (localPropertiesFile.exists()) {
     }
 }
 
-def apiAdress = localProperties.getProperty("API_ADRESS")
+def apiAddress = localProperties.getProperty("API_ADDRESS")
 def apiKey = localProperties.getProperty("API_KEY")
-
-if (apiAdress == null || apiKey == null) {
-    throw new GradleException("API_ADRESS or API_KEY is missing in local.properties. Edit local.properties and create them")
-}
 
 android {
 
@@ -40,7 +36,7 @@ android {
             useSupportLibrary true
         }
 
-        buildConfigField "String", "API_ADRESS", "\"${apiAdress}\""
+        buildConfigField "String", "API_ADRESS", "\"${apiAddress}\""
         buildConfigField "String", "API_KEY", "\"${apiKey}\""
     }
 
