@@ -25,15 +25,6 @@ import kotlin.concurrent.thread
 import kotlinx.coroutines.*
 import java.util.Locale
 
-val benchmarkingModelsLabels = listOf(
-    "llama",
-    "gemma",
-    "gpt",
-    "phi",
-    "qwen",
-    "red",
-)
-
 class AppViewModel(application: Application) : AndroidViewModel(application) {
     val modelList = emptyList<ModelState>().toMutableStateList()
     var benchmarkingModels = emptyList<ModelState>()
@@ -145,7 +136,6 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
 
     fun resetBenchmarkingModels() {
         benchmarkingModels = modelList
-            .filter { model -> benchmarkingModelsLabels.any {label -> model.modelConfig.modelId.lowercase(Locale.getDefault()).contains(label.lowercase(Locale.getDefault()))} }
     }
 
     private fun addModelConfig(modelConfig: ModelConfig, modelUrl: String, isBuiltin: Boolean) {
