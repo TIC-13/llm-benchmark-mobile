@@ -3,6 +3,9 @@ package ai.luxai.benchmarkingllm
 import ai.luxai.benchmarkingllm.components.AppTopBar
 import ai.luxai.benchmarkingllm.components.LoadingTopBottomIndicator
 import ai.luxai.benchmarkingllm.hooks.useModal
+import ai.luxai.benchmarkingllm.hooks.useNoActionOnDelay
+import ai.luxai.benchmarkingllm.hooks.useRankingAddress
+import ai.luxai.benchmarkingllm.utils.benchmark.navigateToUrl
 import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -42,8 +45,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontVariation.weight
@@ -59,6 +64,11 @@ fun HomeView(
     appViewModel: AppViewModel,
     resultViewModel: ResultViewModel,
 ) {
+
+    val context = LocalContext.current
+
+    val run = useNoActionOnDelay()
+    val rankingAddress = useRankingAddress()
 
     val isIdleMeasured = true
 
@@ -106,7 +116,6 @@ fun HomeView(
                     }
                 }
 
-
                 Spacer(modifier = Modifier.height(50.dp))
 
                 Column(
@@ -129,8 +138,8 @@ fun HomeView(
                 ) {
 
                     LargeRoundedButton(
-                        icon = Icons.Default.BarChart,
-                        onClick = { navController.navigate("modelSelection") },
+                        icon = VectorIcon(Icons.Default.BarChart),
+                        onClick = { run { navController.navigate("modelSelection") }},
                         enabled = canStart,
                         text = "Start benchmarking"
                     )
@@ -138,8 +147,8 @@ fun HomeView(
                     Spacer(modifier = Modifier.height(15.dp))
 
                     LargeRoundedButton(
-                        icon = Icons.AutoMirrored.Filled.Chat,
-                        onClick = { startConversation() },
+                        icon = VectorIcon(Icons.AutoMirrored.Filled.Chat),
+                        onClick = { run { startConversation() } },
                         enabled = canStart,
                         text = "Chat with LLMs"
                     )
@@ -147,33 +156,39 @@ fun HomeView(
                     Spacer(modifier = Modifier.height(15.dp))
 
                     LargeRoundedButton(
-                        icon = Icons.Default.MoreTime,
-                        onClick = { navController.navigate("savedResults") },
+                        icon = VectorIcon(Icons.Default.MoreTime),
+                        onClick = { run { navController.navigate("savedResults") } },
                         enabled = canStart,
                         text = "Last results"
                     )
 
+                    if(rankingAddress.isValid) {
+                        Spacer(modifier = Modifier.height(15.dp))
+
+                        LargeRoundedButton(
+                            icon = PainterIcon(painterResource(R.drawable.web)),
+                            onClick = { run { navigateToUrl(context, rankingAddress.address) } },
+                            enabled = canStart,
+                            text = "Global ranking"
+                        )
+
+                    }
+
                     Spacer(modifier = Modifier.height(15.dp))
 
                     LargeRoundedButton(
-                        icon = Icons.Default.Info,
-                        onClick = { navController.navigate("info") },
+                        icon = VectorIcon(Icons.Default.Info),
+                        onClick = { run { navController.navigate("info") } },
                         enabled = canStart,
                         text = "About app"
                     )
                 }
 
                 Spacer(modifier = Modifier.height(50.dp))
-
-
             }
         }
     }
 }
-
-data class StartBenchmarkActions(
-    val startBenchmarking: () -> Unit
-)
 
 data class StartConversationActions(
     val startConversation: () -> Unit
@@ -260,18 +275,12 @@ fun HomeScreenBackground(
     }
 }
 
-
 @Composable
 fun TitleView(modifier: Modifier = Modifier) {
     Column (
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(5.dp)
     ){
-        Image(
-            painter = painterResource(id = R.drawable.blue_llama),
-            contentDescription = "Icon in the shape of lightning"
-        )
-        Spacer(modifier = Modifier.height(15.dp))
         Row(
             horizontalArrangement = Arrangement.spacedBy(15.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -296,9 +305,13 @@ fun TitleView(modifier: Modifier = Modifier) {
     }
 }
 
+sealed class HomeButtonIcon
+data class VectorIcon(val icon: ImageVector): HomeButtonIcon()
+data class PainterIcon(val icon: Painter): HomeButtonIcon()
+
 @Composable
 fun LargeRoundedButton(
-    icon: ImageVector,
+    icon: HomeButtonIcon,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -323,13 +336,24 @@ fun LargeRoundedButton(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            Icon(
-                modifier = Modifier
-                    .size(24.dp)
-                    .weight(2f),
-                imageVector = icon,
-                contentDescription = null,
-            )
+            when(icon) {
+                is VectorIcon ->
+                    Icon(
+                        modifier = Modifier
+                            .size(24.dp)
+                            .weight(2f),
+                        imageVector = icon.icon,
+                        contentDescription = null,
+                    )
+                is PainterIcon ->
+                    Icon(
+                        modifier = Modifier
+                            .size(24.dp)
+                            .weight(2f),
+                        painter = icon.icon,
+                        contentDescription = null,
+                    )
+            }
             Text(
                 modifier = Modifier
                     .weight(3f),

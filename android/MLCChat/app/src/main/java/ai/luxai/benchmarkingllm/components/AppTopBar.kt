@@ -1,5 +1,6 @@
 package ai.luxai.benchmarkingllm.components
 
+import ai.luxai.benchmarkingllm.hooks.useNoActionOnDelay
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
@@ -30,13 +31,8 @@ fun AppTopBar(
     backEnabled: Boolean = true,
     actions: @Composable() (RowScope.() -> Unit) = {}
 ) {
-    // State to track if a click action is already in progress
-    val isExecuting = remember { mutableStateOf(false) }
 
-    LaunchedEffect(key1 = isExecuting) {
-        delay(1000)
-        isExecuting.value = false
-    }
+    val run = useNoActionOnDelay()
 
     CenterAlignedTopAppBar(
         title = {
@@ -65,10 +61,7 @@ fun AppTopBar(
             if (onBack !== null) {
                 IconButton(
                     onClick = {
-                        if (!isExecuting.value) {
-                            isExecuting.value = true
-                            onBack()
-                        }
+                        run { onBack() }
                     },
                     enabled = backEnabled
                 ) {

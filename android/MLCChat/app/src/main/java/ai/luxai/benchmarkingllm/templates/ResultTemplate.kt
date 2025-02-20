@@ -12,6 +12,7 @@ import ai.luxai.benchmarkingllm.components.AccordionTitle
 import ai.luxai.benchmarkingllm.components.AlertCard
 import ai.luxai.benchmarkingllm.components.AppTopBar
 import ai.luxai.benchmarkingllm.components.LockScreenOrientation
+import ai.luxai.benchmarkingllm.hooks.useRankingAddress
 import ai.luxai.benchmarkingllm.interfaces.BenchmarkingResult
 import ai.luxai.benchmarkingllm.utils.benchmark.navigateToUrl
 import android.content.pm.ActivityInfo
@@ -36,6 +37,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -70,13 +72,7 @@ fun ResultTemplate(
     val localFocusManager = LocalFocusManager.current
     val context = LocalContext.current
 
-    val rankingAddress = remember {
-        BuildConfig.RANKING_ADDRESS
-    }
-
-    val rankingAddressIsValid = remember {
-        rankingAddress.startsWith("http")
-    }
+    val rankingAddress = useRankingAddress()
 
     Scaffold(topBar = {
         AppTopBar(
@@ -100,13 +96,18 @@ fun ResultTemplate(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Spacer(modifier = Modifier.height(30.dp))
-                if(rankingAddressIsValid) {
-                    PressableLink(
-                        icon = Icons.Default.Link,
-                        modifier = Modifier.padding(bottom = 15.dp),
-                        text = "Global ranking",
-                        onPress = { navigateToUrl(context, rankingAddress) }
-                    )
+                if(rankingAddress.isValid) {
+                    Button(onClick = { navigateToUrl(context, rankingAddress.address) }) {
+                        Icon(
+                            painter = painterResource(R.drawable.web),
+                            contentDescription = null
+                        )
+                        Text(
+                            modifier = Modifier.padding(start = 15.dp),
+                            text = "See global ranking"
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(15.dp))
                 }
                 AccordionItem(
                     modifier = Modifier.fillMaxWidth(0.8f),
