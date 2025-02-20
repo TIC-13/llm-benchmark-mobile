@@ -3,6 +3,8 @@ package ai.luxai.benchmarkingllm
 import ai.luxai.benchmarkingllm.components.AppTopBar
 import ai.luxai.benchmarkingllm.components.LoadingTopBottomIndicator
 import ai.luxai.benchmarkingllm.hooks.useModal
+import ai.luxai.rag.FileUtilities
+import ai.luxai.rag.Rag
 import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -44,6 +46,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontVariation.weight
@@ -52,6 +55,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import kotlinx.coroutines.delay
+import java.io.File
 
 @Composable
 fun HomeView(
@@ -59,6 +63,17 @@ fun HomeView(
     appViewModel: AppViewModel,
     resultViewModel: ResultViewModel,
 ) {
+
+    val context = LocalContext.current
+
+    LaunchedEffect(key1 = Unit) {
+        Rag.load(
+            context,
+            chunksFile = FileUtilities.copyAssetToFile(context, "chunks.csv"),
+            vectorsFile = FileUtilities.copyAssetToFile(context, "embeddings.csv"),
+            tokenizerFile = FileUtilities.copyAssetToFile(context, "tokenizer.json")
+        )
+    }
 
     val isIdleMeasured = true
 

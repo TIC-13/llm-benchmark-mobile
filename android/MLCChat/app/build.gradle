@@ -23,7 +23,7 @@ android {
     }
 
     namespace 'ai.luxai.benchmarkingllm'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "ai.luxai.benchmarkingllm"
@@ -65,11 +65,14 @@ android {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
+        exclude('LICENSE-EPL-1.0.txt')
+        exclude('LICENSE-EDL-1.0.txt')
     }
 }
 
 dependencies {
     implementation project(":mlc4j")
+    implementation project(":rag-android")
     implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
     implementation 'com.github.jeziellago:compose-markdown:0.5.2'

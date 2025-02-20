@@ -6,6 +6,7 @@ import ai.luxai.benchmarkingllm.utils.benchmark.cpuUsage
 import ai.luxai.benchmarkingllm.utils.benchmark.gpuUsage
 import ai.luxai.benchmarkingllm.utils.benchmark.launchEffectWithCoroutinesAndDelay
 import ai.luxai.benchmarkingllm.utils.benchmark.ramUsage
+import ai.luxai.rag.Rag
 import android.content.Context
 import android.util.Log
 import androidx.activity.compose.BackHandler
@@ -567,7 +568,8 @@ fun SendMessageView(chatState: AppViewModel.ChatState) {
         text = ""
         localFocusManager.clearFocus()
         delay(100)
-        chatState.requestGenerate(textToSend)
+        val promptWithContext = Rag.getPrompt(textToSend)
+        chatState.requestGenerate(promptWithContext)
     }
 
     LaunchedEffect(key1 = triggerGenerateMessage) {

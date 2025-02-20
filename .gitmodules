@@ -13,3 +13,6 @@
 [submodule "3rdparty/stb"]
 	path = 3rdparty/stb
 	url = https://github.com/nothings/stb.git
+[submodule "android/MLCChat/rag-android"]
+	path = android/MLCChat/rag-android
+	url = https://github.com/TIC-13/rag-android
